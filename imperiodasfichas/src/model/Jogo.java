@@ -1,11 +1,11 @@
 package model;
 
-abstract class Jogo {
+public abstract class Jogo {
     private String nomeJogo;
     private String regras;
     private int valorInicial;
 
-    public Jogo(String nomeJogo, String regras, int valorInicial) {
+    protected Jogo(String nomeJogo, String regras, int valorInicial) {
         this.nomeJogo = nomeJogo;
         this.regras = regras;
         this.valorInicial = valorInicial;

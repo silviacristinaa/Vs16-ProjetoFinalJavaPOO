@@ -19,15 +19,36 @@ public class GerenciadorJogo {
         this.jogosDisponiveis = jogosDisponiveis;
     }
 
-
     public boolean adicionarJogo(Jogo jogo) {
         if (jogosDisponiveis.contains(jogo)) {
             return false;
         }
         return jogosDisponiveis.add(jogo);
     }
-    public boolean removerJogo(Jogo jogo) {
+    public boolean removerJogo(String nomeJogo) {
+        Jogo jogo = buscarJogo(nomeJogo);
+        if (jogo == null) {
+            return false;
+        }
         return jogosDisponiveis.remove(jogo);
+    }
+
+    public Jogo buscarJogo(String nomeJogo) {
+        for (Jogo jogo : jogosDisponiveis) {
+            if (jogo.getNomeJogo().equals(nomeJogo)) {
+                return jogo;
+            }
+        }
+        return null;
+    }
+
+    public Jogador buscarJogador(String nickname) {
+        for (Jogador jogador : jogadores) {
+            if (jogador.getNickname().equals(nickname)) {
+                return jogador;
+            }
+        }
+        return null;
     }
 
     public boolean adicionarJogador(Jogador jogador) {
@@ -37,19 +58,36 @@ public class GerenciadorJogo {
         return jogadores.add(jogador);
     }
 
-    public boolean removerJogador(Jogador jogador) {
+    public boolean removerJogador(String nicknameJogador) {
+        Jogador jogador = buscarJogador(nicknameJogador);
+        if (jogador == null) {
+            System.out.println("Jogador não encontrado.");
+            return false;
+        }
         return jogadores.remove(jogador);
     }
 
-    public boolean comprarFicha(Jogador jogador,int quantidadeFicha) {
-        if(jogador.getCarteira().getDinheiro() < quantidadeFicha * valorFicha || !jogadores.contains(jogador)) {
+    public boolean comprarFicha(String nicknameJogador, int quantidadeFicha) {
+        Jogador jogador = buscarJogador(nicknameJogador);
+        if (jogador == null) {
+            System.out.println("Jogador não encontrado.");
+            return false;
+        }
+        if(jogador.getCarteira().getDinheiro() < quantidadeFicha * valorFicha) {
+            System.out.println("Jogador não possui dinheiro suficiente para comprar as fichas.");
             return false;
         }
         return jogador.getCarteira().depositarFichas(quantidadeFicha);
     }
 
-    public boolean venderFicha(Jogador jogador, int quantidadeFicha) {
-        if(!jogadores.contains(jogador) || !jogador.getCarteira().sacarFichas(quantidadeFicha)) {
+    public boolean venderFicha(String nicknameJogador, int quantidadeFicha) {
+        Jogador jogador = buscarJogador(nicknameJogador);
+        if (jogador == null) {
+            System.out.println("Jogador não encontrado");
+            return false;
+        }
+        if(!jogador.getCarteira().sacarFichas(quantidadeFicha)) {
+            System.out.println("Jogador só possui " + jogador.getCarteira().getFichas() + " fichas.");
             return false;
         }
         return jogador.getCarteira().depositarDinheiro(quantidadeFicha * valorFicha);

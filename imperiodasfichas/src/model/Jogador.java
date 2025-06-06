@@ -10,9 +10,10 @@ public class Jogador {
     private Carteira carteira;
     private ArrayList<Partida> partidas;
 
-    public Jogador(String nome, int idade, double fichas) {
+    public Jogador(String nome, int idade, String nickname) {
         this.nome = nome;
         this.idade = idade;
+        this.nickname = nickname;
         this.carteira = new Carteira();
         this.partidas = new ArrayList<>();
     }
@@ -29,6 +30,10 @@ public class Jogador {
         return idade;
     }
 
+    public String getNickname() {
+        return nickname;
+    }
+
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -39,9 +44,6 @@ public class Jogador {
 
     public void setCarteira(Carteira carteira) {
         this.carteira = carteira;
-    }
-    public String getNickname() {
-        return nickname;
     }
 
     public void setNickname(String nickname) {

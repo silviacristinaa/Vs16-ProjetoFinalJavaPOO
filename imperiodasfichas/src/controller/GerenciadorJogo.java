@@ -11,7 +11,7 @@ public class GerenciadorJogo {
     private double valorFicha;
     private List<Jogador> jogadores;
     private List<Jogo> jogosDisponiveis;
-    
+
     public GerenciadorJogo(String nome, double valorFicha, List<Jogo> jogosDisponiveis) {
         this.nome = nome;
         this.valorFicha = valorFicha;
@@ -52,7 +52,15 @@ public class GerenciadorJogo {
     }
 
     public boolean adicionarJogador(Jogador jogador) {
-        if (jogador.getIdade() < 18 || jogadores.contains(jogador)) {
+        if (jogadores.contains(jogador)) {
+            return false;
+        }
+        return jogadores.add(jogador);
+    }
+
+    public boolean adicionarJogador(String nome, int idade, String nickname) {
+        Jogador jogador = new Jogador(nome, idade, nickname);
+        if (jogadores.contains(jogador)) {
             return false;
         }
         return jogadores.add(jogador);
@@ -121,5 +129,5 @@ public class GerenciadorJogo {
         this.jogosDisponiveis = jogosDisponiveis;
     }
 
-    
+
 }

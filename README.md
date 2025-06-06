@@ -113,7 +113,7 @@ public class ImperioDasFichas {
 📌 **Kanban do Projeto:**  
 🔗 [Acompanhe o progresso no GitHub Projects](https://github.com/users/Gabssanjoss/projects/2/views/1)
 
-## 👥 Equipe de Desenvolvimento
+## 👥 Millenium Falcon Developers
 
 👩‍💼 **Tech Lead:** Gabriela Anjos  
 

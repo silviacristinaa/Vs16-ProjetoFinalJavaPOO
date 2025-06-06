@@ -19,6 +19,17 @@ public class GerenciadorJogo {
         this.jogosDisponiveis = jogosDisponiveis;
     }
 
+
+    public boolean adicionarJogo(Jogo jogo) {
+        if (jogosDisponiveis.contains(jogo)) {
+            return false;
+        }
+        return jogosDisponiveis.add(jogo);
+    }
+    public boolean removerJogo(Jogo jogo) {
+        return jogosDisponiveis.remove(jogo);
+    }
+
     public boolean adicionarJogador(Jogador jogador) {
         if (jogador.getIdade() < 18 || jogadores.contains(jogador)) {
             return false;

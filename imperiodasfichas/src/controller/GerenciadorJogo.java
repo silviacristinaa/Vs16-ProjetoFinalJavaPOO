@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Jogador;
-import model.Jogo;
+import model.jogos.Jogo;
 
 public class GerenciadorJogo {
     private String nome;

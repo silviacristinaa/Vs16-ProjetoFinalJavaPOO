@@ -1,4 +1,4 @@
-package model;
+package model.jogos;
 
 import java.util.Objects;
 
@@ -19,6 +19,24 @@ public abstract class Jogo {
 
     public abstract boolean jogar(int ValorApostado, int opcaoEscolhida);
 
+    public abstract boolean apostaValida(int valorApostado, int opcaoEscolhida);
+
+    protected boolean validarValor(int valorApostado) {
+        if (valorApostado <= 0) {
+            System.out.println("Valor apostado deve ser maior que zero.");
+            return false;
+        }
+        if (valorApostado < getValorInicial()) {
+            System.out.printf("Valor apostado deve ser maior ou igual ao valor inicial (%d).\n", getValorInicial());
+            return false;
+        }
+        return true;
+    }
+
+    public abstract boolean validarOpcao(int opcaoEscolhida);
+    public abstract boolean verificarResultado(int resultado, int opcaoEscolhida);
+
+    public abstract void exibirResultado(boolean ganhou, int resultado, int valorApostado);
 
     public int getValorInicial() {
         return valorInicial;

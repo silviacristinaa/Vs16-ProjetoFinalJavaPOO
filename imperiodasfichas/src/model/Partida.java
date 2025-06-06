@@ -1,5 +1,7 @@
 package model;
 
+import model.jogos.Jogo;
+
 import java.time.LocalDateTime;
 
 public class Partida {

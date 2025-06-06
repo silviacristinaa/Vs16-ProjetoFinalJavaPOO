@@ -1,11 +1,13 @@
 ### IntelliJ IDEA ###
 out/
-!**/src/main/**/out/
-!**/src/test/**/out/
-imperiodasfichas/.idea
-
 .idea
 *.iml
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+imperiodasfichas/.idea
+
+
 ### Eclipse ###
 .apt_generated
 .classpath
@@ -30,5 +32,3 @@ bin/
 
 ### Mac OS ###
 .DS_Store
-
-*.iml

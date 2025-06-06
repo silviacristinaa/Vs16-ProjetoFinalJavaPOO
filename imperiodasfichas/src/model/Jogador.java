@@ -1,16 +1,20 @@
 package model;
 
+import java.util.ArrayList;
+
 public class Jogador {
 
     private String nome;
     private String nickname;
     private int idade;
     private Carteira carteira;
+    private ArrayList<Partida> partidas;
 
-    public Jogador(String nome, int idade, Carteira carteira) {
+    public Jogador(String nome, int idade, double fichas) {
         this.nome = nome;
         this.idade = idade;
-        this.carteira = carteira;
+        this.carteira = new Carteira();
+        this.partidas = new ArrayList<>();
     }
 
     public String getNome() {

@@ -52,7 +52,7 @@ public class GerenciadorJogo {
     }
 
     public boolean adicionarJogador(Jogador jogador) {
-        if (jogador.getIdade() < 18 || jogadores.contains(jogador)) {
+        if (jogadores.contains(jogador)) {
             return false;
         }
         return jogadores.add(jogador);

@@ -4,9 +4,9 @@ public class Carteira {
     private int fichas;
     private double dinheiro;
 
-    public Carteira(int fichas, double dinheiro) {
-        this.fichas = fichas;
-        this.dinheiro = dinheiro;
+    public Carteira() {
+        this.fichas = 10;
+        this.dinheiro = 0;
     }
 
     public int getFichas() {

@@ -78,10 +78,14 @@ public class GerenciadorJogo {
             System.out.println("Jogador não encontrado.");
             return false;
         }
-        if(jogador.getCarteira().getDinheiro() < quantidadeFicha * valorFicha) {
+
+        double custoTotal =  quantidadeFicha * valorFicha;
+
+        if(jogador.getCarteira().getDinheiro() < custoTotal) {
             System.out.println("Jogador não possui dinheiro suficiente para comprar as fichas.");
             return false;
         }
+        jogador.getCarteira().sacarDinheiro(custoTotal);
         return jogador.getCarteira().depositarFichas(quantidadeFicha);
     }
 

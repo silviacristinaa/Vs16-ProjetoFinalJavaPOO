@@ -11,20 +11,17 @@ public class JogoDao implements DaoGenerico<Jogo, String> {
     private final DataBaseSingleton dataBase = DataBaseSingleton.getInstance();
 
     @Override
-    public boolean adicionar(Jogo entidade) {
+    public Jogo adicionar(Jogo entidade) {
         if (buscar(entidade.getNomeJogo()) == null) {
-            return dataBase.getJogos().add(entidade);
+            dataBase.getJogos().add(entidade);
+            return entidade;
         }
-        return false;
+        return null;
     }
 
     @Override
-    public boolean remover(String nomeDoJogo) {
-        Jogo jogo = buscar(nomeDoJogo);
-        if (jogo != null) {
-            return dataBase.getJogos().remove(jogo);
-        }
-        return false;
+    public boolean remover(Jogo jogo) {
+        return dataBase.getJogos().remove(jogo);
     }
 
     @Override

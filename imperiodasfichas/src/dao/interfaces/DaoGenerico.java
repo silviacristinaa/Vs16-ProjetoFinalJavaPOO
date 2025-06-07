@@ -5,9 +5,9 @@ import java.util.List;
 
 public interface DaoGenerico<T, K> {
     
-    boolean adicionar(T entidade);
+    T adicionar(T entidade);
     
-    boolean remover(K key);
+    boolean remover(T entidade);
     
     T buscar(K key);
     

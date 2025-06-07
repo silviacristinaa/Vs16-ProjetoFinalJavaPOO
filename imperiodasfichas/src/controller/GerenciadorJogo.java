@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Jogador;
-import model.Jogo;
+import model.jogos.Jogo;
 
 public class GerenciadorJogo {
     private String nome;
@@ -51,15 +51,12 @@ public class GerenciadorJogo {
         return null;
     }
 
-    public boolean adicionarJogador(Jogador jogador) {
-        if (jogadores.contains(jogador)) {
-            return false;
-        }
-        return jogadores.add(jogador);
+    public boolean adicionarJogador(String nome, int idade, String nickname) {
+        Jogador novo = new Jogador(nome, idade, nickname);
+        return adicionarJogador(novo);
     }
 
-    public boolean adicionarJogador(String nome, int idade, String nickname) {
-        Jogador jogador = new Jogador(nome, idade, nickname);
+    public boolean adicionarJogador(Jogador jogador) {
         if (jogadores.contains(jogador)) {
             return false;
         }

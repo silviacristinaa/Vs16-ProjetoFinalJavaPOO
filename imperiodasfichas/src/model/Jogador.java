@@ -34,6 +34,10 @@ public class Jogador {
         return nickname;
     }
 
+    public ArrayList<Partida> getPartidas() {
+        return partidas;
+    }
+
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -48,6 +52,10 @@ public class Jogador {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public void setPartidas(ArrayList<Partida> partidas) {
+        this.partidas = partidas;
     }
 
     @Override

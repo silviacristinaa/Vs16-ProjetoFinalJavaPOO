@@ -1,4 +1,6 @@
-package model;
+package model.jogos.roletas;
+
+import model.jogos.Jogo;
 
 public class Roleta extends Jogo {
 
@@ -23,23 +25,13 @@ public class Roleta extends Jogo {
         return ganhou;
     }
 
-    private boolean apostaValida(int valorApostado, int opcaoEscolhida) {
+    @Override
+    public boolean apostaValida(int valorApostado, int opcaoEscolhida) {
         return validarValor(valorApostado) && validarOpcao(opcaoEscolhida);
     }
 
-    private boolean validarValor(int valorApostado) {
-        if (valorApostado <= 0) {
-            System.out.println("Valor apostado deve ser maior que zero.");
-            return false;
-        }
-        if (valorApostado < getValorInicial()) {
-            System.out.printf("Valor apostado deve ser maior ou igual ao valor inicial (%d).\n", getValorInicial());
-            return false;
-        }
-        return true;
-    }
-
-    private boolean validarOpcao(int opcaoEscolhida) {
+    @Override
+    public boolean validarOpcao(int opcaoEscolhida) {
         if (opcaoEscolhida != 0 && opcaoEscolhida != 1) {
             System.out.println("Opção inválida. Escolha 0 para PAR ou 1 para ÍMPAR.");
             return false;
@@ -47,14 +39,16 @@ public class Roleta extends Jogo {
         return true;
     }
 
-    private boolean verificarResultado(int resultado, int opcaoEscolhida) {
+    @Override
+    public boolean verificarResultado(int resultado, int opcaoEscolhida) {
         boolean isPar = resultado % 2 == 0;
         if (isPar && opcaoEscolhida == 0) {
             return true;
         } else return !isPar && opcaoEscolhida == 1;
     }
 
-    private void exibirResultado(boolean ganhou, int resultado, int valorApostado) {
+    @Override
+    public void exibirResultado(boolean ganhou, int resultado, int valorApostado) {
         if (ganhou) {
             int premio = valorApostado * 2;
             System.out.printf("Parabéns! Você ganhou. Resultado: %d - Prêmio: %d\n", resultado, premio);

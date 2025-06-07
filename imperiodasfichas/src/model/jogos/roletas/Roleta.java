@@ -33,7 +33,7 @@ public class Roleta extends Jogo {
     @Override
     public boolean validarOpcao(int opcaoEscolhida) {
         if (opcaoEscolhida != 0 && opcaoEscolhida != 1) {
-            System.out.println("Opção inválida. Escolha 0 para PAR ou 1 para ÍMPAR.");
+            System.out.println("\nOpção inválida. Escolha 0 para PAR ou 1 para ÍMPAR.");
             return false;
         }
         return true;
@@ -51,7 +51,7 @@ public class Roleta extends Jogo {
     public void exibirResultado(boolean ganhou, int resultado, int valorApostado) {
         if (ganhou) {
             int premio = valorApostado * 2;
-            System.out.printf("Parabéns! Você ganhou. Resultado: %d - Prêmio: %d\n", resultado, premio);
+            System.out.printf("Parabéns! Você ganhou! \nResultado da Roleta: %d\nPrêmio: %d fichas\n", resultado, premio);
         } else {
             System.out.printf("Você perdeu. Resultado da roleta: %d\n", resultado);
         }

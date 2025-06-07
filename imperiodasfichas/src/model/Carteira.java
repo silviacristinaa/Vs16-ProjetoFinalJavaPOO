@@ -18,7 +18,7 @@ public class Carteira {
     }
 
     public boolean depositarDinheiro(double valor) {
-        if (valor < 0) {
+        if (valor <= 0) {
             return false;
         }
         this.dinheiro += valor;
@@ -47,5 +47,10 @@ public class Carteira {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return ">> Fichas atuais: " + fichas + "\n>> Dinheiro atual: " + dinheiro;
     }
 }

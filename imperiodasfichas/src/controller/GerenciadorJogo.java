@@ -56,8 +56,7 @@ public class GerenciadorJogo {
         return adicionarJogador(novo);
     }
 
-    public boolean adicionarJogador(String nome, int idade, String nickname) {
-        Jogador jogador = new Jogador(nome, idade, nickname);
+    public boolean adicionarJogador(Jogador jogador) {
         if (jogadores.contains(jogador)) {
             return false;
         }

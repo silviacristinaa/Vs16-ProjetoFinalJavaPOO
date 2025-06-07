@@ -52,11 +52,7 @@ public class ImperioDasFichas {
                     System.out.print("Nickname:");
                     String nickname = scanner.nextLine();
 
-<<<<<<< HEAD
                     if (!gerenciador.adicionarJogador(nome, idade, nickname)) {
-=======
-                    if (!gerenciador.adicionarJogador(new Jogador(nome, idade, nickname))) {
->>>>>>> 4cd5fd3c38df71aa7dd4650cf110c36ada076b84
                         System.out.println("Erro. Já existe um jogador com esse nickname.");
                         break;
                     }

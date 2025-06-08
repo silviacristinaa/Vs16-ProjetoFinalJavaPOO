@@ -34,7 +34,8 @@ public class ImperioDasFichas {
             System.out.println("🚪  3. Desistir de tentar a sorte");
 
             System.out.print("\n🧭 Escolha uma opção: ");
-            opcao = Integer.parseInt(scanner.nextLine());
+
+            opcao = lerNumeroInteiro(scanner.nextLine());
 
             switch (opcao) {
 
@@ -45,7 +46,7 @@ public class ImperioDasFichas {
                     String nome = scanner.nextLine();
 
                     System.out.print("Idade: ");
-                    int idade = Integer.parseInt(scanner.nextLine());
+                    int idade = lerNumeroInteiro(scanner.nextLine());
 
                     if (idade < 18) {
                         System.out.println("Não é permitido jogadores menor de idade. Somente maior de 18 anos.");
@@ -97,7 +98,7 @@ public class ImperioDasFichas {
             System.out.println("🚪 5. Retornar");
 
             System.out.print("\n🧭 Escolha uma opção: ");
-            opcao = Integer.parseInt(scanner.nextLine());
+            opcao = lerNumeroInteiro(scanner.nextLine());
 
             switch (opcao) {
                 case 1:
@@ -129,7 +130,7 @@ public class ImperioDasFichas {
 
                 case 3:
                     System.out.print("\n🎟️  Digite o número de fichas que deseja comprar: ");
-                    int qtdComprar = Integer.parseInt(scanner.nextLine());
+                    int qtdComprar = lerNumeroInteiro(scanner.nextLine());
 
                     if (qtdComprar <= 0) {
                         System.out.println("❌ Valor inválido! Somente valores positivos.");
@@ -145,7 +146,7 @@ public class ImperioDasFichas {
 
                 case 4:
                     System.out.print("\n🎯 Digite o número de fichas que deseja vender: ");
-                    int qtdVender = Integer.parseInt(scanner.nextLine());
+                    int qtdVender = lerNumeroInteiro(scanner.nextLine());
 
                     if (qtdVender <= 0) {
                         System.out.println("❌ Valor inválido! Somente valores positivos.");
@@ -180,7 +181,7 @@ public class ImperioDasFichas {
             System.out.println("🎰 2. Jogar Roleta");
             System.out.println("🚪 3. Voltar ao Menu Inicial...");
             System.out.print("\n🧭 Escolha uma opção: ");
-            opcao = Integer.parseInt(scanner.nextLine());
+            opcao = lerNumeroInteiro(scanner.nextLine());
 
             switch (opcao) {
                 case 1:
@@ -235,7 +236,7 @@ public class ImperioDasFichas {
         System.out.printf("🎟️ Você tem %d fichas.\n", jogador.getCarteira().getFichas());
         System.out.print("Quantas fichas deseja apostar?\n");
         System.out.print("\nFICHAS APOSTADAS: ");
-        int valorApostado = Integer.parseInt(scanner.nextLine());
+        int valorApostado = lerNumeroInteiro(scanner.nextLine());
 
         if (valorApostado <= 0 || valorApostado < roleta.getValorInicial()) {
             System.out.println("\n=======================================================");
@@ -252,7 +253,7 @@ public class ImperioDasFichas {
         System.out.println("Digite '0' para escolher PAR");
         System.out.println("Digite '1' para escolher ÍMPAR");
         System.out.print("\nSUA ESCOLHA: ");
-        int escolha = Integer.parseInt(scanner.nextLine());
+        int escolha = lerNumeroInteiro(scanner.nextLine());
 
         if (!roleta.apostaValida(valorApostado, escolha)) {
             System.out.println("❌ Aposta cancelada.");
@@ -269,5 +270,14 @@ public class ImperioDasFichas {
         }
     }
 
-}
+    private static int lerNumeroInteiro(String textoUsuario) {
+        if (ehNumero(textoUsuario)) {
+            return Integer.parseInt(textoUsuario);
+        }
+        return -1;
+    }
 
+    private static boolean ehNumero(String texto) {
+        return texto.matches("-?\\d+");
+    }
+}

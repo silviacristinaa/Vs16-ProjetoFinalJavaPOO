@@ -28,8 +28,9 @@ Com cada giro da roleta, o jogador descobre se venceu ou perdeu, e seu saldo de 
 
 ---
 
-<h2>🧩 Diagrama de Classes</h2>
-<p>O diagrama abaixo representa a estrutura do sistema <strong>Império das Fichas</strong>, com as classes principais, relacionamentos e responsabilidades:</p>
+## 🧩 Diagrama de Classes
+
+O diagrama abaixo representa a estrutura do sistema **Império das Fichas**, com as classes principais, relacionamentos e responsabilidades:
 
 <p align="center">
   <img src="imperiodasfichas/src/images/diagrama.jpg" alt="Diagrama de Classes" width="700"/>
@@ -80,11 +81,9 @@ java -cp out app.ImperioDasFichas
 ### 🧪 Funcionalidades para Testar
 
 - 👤 Cadastro de jogadores
-
 - 🎰 Jogo de roleta (par ou ímpar)
 - 💰 Compra e venda de fichas
 - 👜 Gerenciamento de saldo em fichas e dinheiro
-
 
 ### 📌 Testando com Classe Main Temporária (Exemplo)
 
@@ -108,7 +107,24 @@ public class ImperioDasFichas {
 }
 ```
 
+
 ---
+
+## ⚠️ Erro no Commit
+
+Durante o desenvolvimento, houve um erro em que um commit relacionado à **Parte II** do projeto foi realizado na **branch `main`**, quando deveria ter sido feito na **branch `develop`**.
+
+
+---
+
+## 🛠️ Etapa II – Em Andamento
+
+A **Parte II** do projeto está atualmente em andamento, com funcionalidades adicionais e ajustes sendo implementados.
+
+Fique atento às atualizações que serão feitas em breve!
+
+---
+
 
 📌 **Kanban do Projeto:**  
 🔗 [Acompanhe o progresso no GitHub Projects](https://github.com/users/Gabssanjoss/projects/2/views/1)
@@ -122,3 +138,7 @@ public class ImperioDasFichas {
 - William Augusto
 - Robson Batista
 - Silvia Cristina
+
+
+
+

@@ -4,6 +4,7 @@ import controller.GerenciadorJogo;
 import model.Jogador;
 import model.jogos.Jogo;
 import model.jogos.roletas.Roleta;
+import model.jogos.roletas.RoletaCores;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -16,11 +17,12 @@ public class ImperioDasFichas {
         Scanner scanner = new Scanner(System.in);
 
         int opcao;
-        boolean jogadorCadastrado = false;
 
-        // Adição do jogo "Roleta Clássica" no Array de jogos
+        // Adição dos jogos de roleta
         Jogo roleta = new Roleta("Roleta Clássica", "Aposte em PAR (0) ou ÍMPAR (1). Se acertar, você ganha o dobro!");
+        Jogo roletaCores = new RoletaCores("Roleta das Cores", "Aposte em uma cor: VERMELHO (0), AZUL (1), AMARELO (2), VERDE (3). Se acertar, ganha 4x o valor apostado!");
         gerenciador.adicionarJogo(roleta);
+        gerenciador.adicionarJogo(roletaCores);
 
         do {
             System.out.println("\n=======================================");
@@ -221,25 +223,39 @@ public class ImperioDasFichas {
     public static void menuRoleta(Jogador jogador) {
         Scanner scanner = new Scanner(System.in);
 
-        Jogo roleta = gerenciador.buscarJogo("Roleta Clássica");
+        System.out.println("\n🎰 Escolha o tipo de Roleta:");
+        System.out.println("1. Roleta Clássica (Par/Ímpar)");
+        System.out.println("2. Roleta das Cores");
+        System.out.print("\n🧭 Escolha uma opção: ");
+        int tipoRoleta = Integer.parseInt(scanner.nextLine());
 
-        if (roleta == null) {
+        Jogo roletaSelecionada = null;
+        if (tipoRoleta == 1) {
+            roletaSelecionada = gerenciador.buscarJogo("Roleta Clássica");
+        } else if (tipoRoleta == 2) {
+            roletaSelecionada = gerenciador.buscarJogo("Roleta das Cores");
+        } else {
+            System.out.println("❌ Opção inválida.");
+            return;
+        }
+
+        if (roletaSelecionada == null) {
             System.out.println("❌ Roleta não está disponível no momento.");
             return;
         }
 
-        System.out.println("\n🎰 Bem-vindo à Roleta Clássica!");
+        System.out.println("\n🎰 Bem-vindo à " + roletaSelecionada.getNomeJogo() + "!");
         System.out.println("\n==========================================================================================");
-        roleta.exibirRegras();
+        roletaSelecionada.exibirRegras();
         System.out.println("==========================================================================================\n");
         System.out.printf("🎟️ Você tem %d fichas.\n", jogador.getCarteira().getFichas());
         System.out.print("Quantas fichas deseja apostar?\n");
         System.out.print("\nFICHAS APOSTADAS: ");
         int valorApostado = Integer.parseInt(scanner.nextLine());
 
-        if (valorApostado <= 0 || valorApostado < roleta.getValorInicial()) {
+        if (valorApostado <= 0 || valorApostado < roletaSelecionada.getValorInicial()) {
             System.out.println("\n=======================================================");
-            System.out.printf("❌ Aposta inválida. Mínimo: %d fichas.\n", roleta.getValorInicial());
+            System.out.printf("❌ Aposta inválida. Mínimo: %d fichas.\n", roletaSelecionada.getValorInicial());
             System.out.println("=======================================================");
             return;
         }
@@ -248,26 +264,40 @@ public class ImperioDasFichas {
             return;
         }
 
-        System.out.println("\nEscolha sua aposta:");
-        System.out.println("Digite '0' para escolher PAR");
-        System.out.println("Digite '1' para escolher ÍMPAR");
-        System.out.print("\nSUA ESCOLHA: ");
-        int escolha = Integer.parseInt(scanner.nextLine());
+        int escolha = -1;
+        if (tipoRoleta == 1) {
+            System.out.println("\nEscolha sua aposta:");
+            System.out.println("Digite '0' para escolher PAR");
+            System.out.println("Digite '1' para escolher ÍMPAR");
+            System.out.print("\nSUA ESCOLHA: ");
+            escolha = Integer.parseInt(scanner.nextLine());
+        } else if (tipoRoleta == 2) {
+            System.out.println("\nEscolha sua cor:");
+            System.out.println("Digite '0' para VERMELHO");
+            System.out.println("Digite '1' para AZUL");
+            System.out.println("Digite '2' para AMARELO");
+            System.out.println("Digite '3' para VERDE");
+            System.out.print("\nSUA ESCOLHA: ");
+            escolha = Integer.parseInt(scanner.nextLine());
+        }
 
-        if (!roleta.apostaValida(valorApostado, escolha)) {
+        if (roletaSelecionada.apostaValida(valorApostado, escolha)) {
             System.out.println("❌ Aposta cancelada.");
             return;
         }
 
         jogador.getCarteira().sacarFichas(valorApostado);
 
-        boolean ganhou = roleta.jogar(valorApostado, escolha);
+        boolean ganhou = roletaSelecionada.jogar(valorApostado, escolha);
 
         if (ganhou) {
-            int premio = valorApostado * 2;
+            int premio;
+            if (tipoRoleta == 1) {
+                premio = valorApostado * 2;
+            } else {
+                premio = valorApostado * 4;
+            }
             jogador.getCarteira().depositarFichas(premio);
         }
     }
-
 }
-

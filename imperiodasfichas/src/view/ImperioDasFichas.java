@@ -37,7 +37,7 @@ public class ImperioDasFichas {
 
             System.out.print("\n🧭 Escolha uma opção: ");
 
-            opcao = lerNumeroInteiro(scanner.nextLine());
+            opcao = lerInteiro(scanner.nextLine());
 
             switch (opcao) {
 
@@ -48,7 +48,7 @@ public class ImperioDasFichas {
                     String nome = scanner.nextLine();
 
                     System.out.print("Idade: ");
-                    int idade = lerNumeroInteiro(scanner.nextLine());
+                    int idade = lerInteiro(scanner.nextLine());
 
                     if (idade < 18) {
                         System.out.println("Não é permitido jogadores menor de idade. Somente maior de 18 anos.");
@@ -100,12 +100,12 @@ public class ImperioDasFichas {
             System.out.println("🚪 5. Retornar");
 
             System.out.print("\n🧭 Escolha uma opção: ");
-            opcao = lerNumeroInteiro(scanner.nextLine());
+            opcao = lerInteiro(scanner.nextLine());
 
             switch (opcao) {
                 case 1:
                     System.out.print("\n💰 Digite o valor do depósito: R$ ");
-                    double deposito = Double.parseDouble(scanner.nextLine());
+                    double deposito = lerDouble(scanner.nextLine());
 
                     if (!jogador.getCarteira().depositarDinheiro(deposito)) {
                         System.out.println("❌ Valor inválido. Somente valores positivos.");
@@ -116,7 +116,7 @@ public class ImperioDasFichas {
 
                 case 2:
                     System.out.print("\n💸 Digite o valor que deseja sacar: R$ ");
-                    double saque = Double.parseDouble(scanner.nextLine());
+                    double saque = lerDouble(scanner.nextLine());
 
                     if (saque <= 0) {
                         System.out.println("❌ Valor inválido! Somente valores positivos.");
@@ -132,7 +132,7 @@ public class ImperioDasFichas {
 
                 case 3:
                     System.out.print("\n🎟️  Digite o número de fichas que deseja comprar: ");
-                    int qtdComprar = lerNumeroInteiro(scanner.nextLine());
+                    int qtdComprar = lerInteiro(scanner.nextLine());
 
                     if (qtdComprar <= 0) {
                         System.out.println("❌ Valor inválido! Somente valores positivos.");
@@ -148,7 +148,7 @@ public class ImperioDasFichas {
 
                 case 4:
                     System.out.print("\n🎯 Digite o número de fichas que deseja vender: ");
-                    int qtdVender = lerNumeroInteiro(scanner.nextLine());
+                    int qtdVender = lerInteiro(scanner.nextLine());
 
                     if (qtdVender <= 0) {
                         System.out.println("❌ Valor inválido! Somente valores positivos.");
@@ -183,7 +183,7 @@ public class ImperioDasFichas {
             System.out.println("🎰 2. Jogar Roleta");
             System.out.println("🚪 3. Voltar ao Menu Inicial...");
             System.out.print("\n🧭 Escolha uma opção: ");
-            opcao = lerNumeroInteiro(scanner.nextLine());
+            opcao = lerInteiro(scanner.nextLine());
 
             switch (opcao) {
                 case 1:
@@ -228,7 +228,7 @@ public class ImperioDasFichas {
         System.out.println("1. Roleta Clássica (Par/Ímpar)");
         System.out.println("2. Roleta das Cores");
         System.out.print("\n🧭 Escolha uma opção: ");
-        int tipoRoleta = Integer.parseInt(scanner.nextLine());
+        int tipoRoleta = lerInteiro(scanner.nextLine());
 
         Jogo roletaSelecionada = null;
         if (tipoRoleta == 1) {
@@ -252,7 +252,7 @@ public class ImperioDasFichas {
         System.out.printf("🎟️ Você tem %d fichas.\n", jogador.getCarteira().getFichas());
         System.out.print("Quantas fichas deseja apostar?\n");
         System.out.print("\nFICHAS APOSTADAS: ");
-        int valorApostado = lerNumeroInteiro(scanner.nextLine());
+        int valorApostado = lerInteiro(scanner.nextLine());
 
         if (valorApostado <= 0 || valorApostado < roletaSelecionada.getValorInicial()) {
             System.out.println("\n=======================================================");
@@ -271,7 +271,7 @@ public class ImperioDasFichas {
             System.out.println("Digite '0' para escolher PAR");
             System.out.println("Digite '1' para escolher ÍMPAR");
             System.out.print("\nSUA ESCOLHA: ");
-            escolha = Integer.parseInt(scanner.nextLine());
+            escolha = lerInteiro(scanner.nextLine());
         } else if (tipoRoleta == 2) {
             System.out.println("\nEscolha sua cor:");
             System.out.println("Digite '0' para VERMELHO");
@@ -279,7 +279,7 @@ public class ImperioDasFichas {
             System.out.println("Digite '2' para AMARELO");
             System.out.println("Digite '3' para VERDE");
             System.out.print("\nSUA ESCOLHA: ");
-            escolha = Integer.parseInt(scanner.nextLine());
+            escolha = lerInteiro(scanner.nextLine());
         }
 
         if (roletaSelecionada.apostaValida(valorApostado, escolha)) {
@@ -301,5 +301,26 @@ public class ImperioDasFichas {
             jogador.getCarteira().depositarFichas(premio);
         }
     }
-}
 
+    private static int lerInteiro(String textoUsuario) {
+        if (ehInteiro(textoUsuario)) {
+            return Integer.parseInt(textoUsuario);
+        }
+        return -1;
+    }
+
+    private static Double lerDouble(String textoUsuario) {
+        if (ehDouble(textoUsuario)) {
+            return Double.parseDouble(textoUsuario);
+        }
+        return -1.0;
+    }
+
+    private static boolean ehInteiro(String texto) {
+        return texto.matches("-?\\d+");
+    }
+
+    private static boolean ehDouble(String texto) {
+        return texto.matches("-?\\d+(\\.\\d+)?");
+    }
+}

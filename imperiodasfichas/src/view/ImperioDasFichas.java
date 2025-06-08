@@ -269,19 +269,17 @@ public class ImperioDasFichas {
             System.out.println("\nEscolha sua aposta:");
             System.out.println("Digite '0' para escolher PAR");
             System.out.println("Digite '1' para escolher ÍMPAR");
-            System.out.print("\nSUA ESCOLHA: ");
-            escolha = Integer.parseInt(scanner.nextLine());
-        } else if (tipoRoleta == 2) {
+        } else {
             System.out.println("\nEscolha sua cor:");
             System.out.println("Digite '0' para VERMELHO");
             System.out.println("Digite '1' para AZUL");
             System.out.println("Digite '2' para AMARELO");
             System.out.println("Digite '3' para VERDE");
-            System.out.print("\nSUA ESCOLHA: ");
-            escolha = Integer.parseInt(scanner.nextLine());
         }
+        System.out.print("\nSUA ESCOLHA: ");
+        escolha = Integer.parseInt(scanner.nextLine());
 
-        if (roletaSelecionada.apostaValida(valorApostado, escolha)) {
+        if (!roletaSelecionada.apostaValida(valorApostado, escolha)) {
             System.out.println("❌ Aposta cancelada.");
             return;
         }

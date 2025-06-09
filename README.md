@@ -33,7 +33,7 @@ Com cada giro da roleta, o jogador descobre se venceu ou perdeu, e seu saldo de 
 O diagrama abaixo representa a estrutura do sistema **Império das Fichas**, com as classes principais, relacionamentos e responsabilidades:
 
 <p align="center">
-  <img src="imperiodasfichas/src/images/diagrama.jpg" alt="Diagrama de Classes" width="700"/>
+  <img src="imperiodasfichas/src/images/diagrama.webp" alt="Diagrama de Classes" width="700"/>
 </p>
 
 ---

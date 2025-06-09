@@ -51,7 +51,4 @@ public class JogadorDao implements DaoGenerico<Jogador, String> {
     public List<Jogador> listar() {
         return dataBase.getJogadores();
     }
-    
-   
-    
 }

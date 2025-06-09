@@ -303,7 +303,7 @@ public class ImperioDasFichas {
             return;
         }
 
-        gerenciadorJogo.iniciarPartida(jogoSelecionado, jogador, escolha, opcaoEscolhida);    
+        gerenciadorJogo.iniciarPartida(jogoSelecionado, jogador, valorApostado, escolha);
     }
 
     private static void menuCacaNiquel(Jogador jogador) {

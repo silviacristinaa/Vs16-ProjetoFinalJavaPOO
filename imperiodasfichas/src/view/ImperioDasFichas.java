@@ -282,7 +282,7 @@ public class ImperioDasFichas {
             escolha = lerInteiro(scanner.nextLine());
         }
 
-        if (roletaSelecionada.apostaValida(valorApostado, escolha)) {
+        if (!roletaSelecionada.apostaValida(valorApostado, escolha)) {
             System.out.println("❌ Aposta cancelada.");
             return;
         }

@@ -4,12 +4,16 @@ import model.Jogador;
 import model.Partida;
 import model.jogos.Jogo;
 
-public class Roleta extends Jogo {
+public class RoletaCores extends Jogo {
 
-    public Roleta(String nomeJogo, String regras) {
-        super(nomeJogo, regras, 5);
+    public RoletaCores(String nomeJogo, String regras) {
+        super(nomeJogo, regras, 10);
     }
 
+    @Override
+    public void exibirRegras() {
+        System.out.println("Regras do jogo " + getNomeJogo() + ": " + getRegras());
+    }
 
     @Override
     public Partida jogar(Jogador jogador,int valorApostado, int opcaoEscolhida) {
@@ -20,7 +24,7 @@ public class Roleta extends Jogo {
         int resultadoRoleta = girarRoleta();
         boolean ganhou = verificarResultado(resultadoRoleta, opcaoEscolhida);
         Partida partida = new Partida(valorApostado, ganhou, this, jogador);
-        exibirResultado(partida ,resultadoRoleta);
+        exibirResultado(partida, resultadoRoleta);
         return partida;
     }
 
@@ -31,35 +35,29 @@ public class Roleta extends Jogo {
 
     @Override
     public boolean validarOpcao(int opcaoEscolhida) {
-        if (opcaoEscolhida != 0 && opcaoEscolhida != 1) {
-            System.out.println("\nOpção inválida. Escolha 0 para PAR ou 1 para ÍMPAR.");
-            return false;
-        }
-        return true;
+        return opcaoEscolhida >= 0 && opcaoEscolhida < CoresDaRoleta.values().length;
     }
 
     @Override
     public boolean verificarResultado(int resultado, int opcaoEscolhida) {
-        boolean isPar = resultado % 2 == 0;
-        if (isPar && opcaoEscolhida == 0) {
-            return true;
-        } else return !isPar && opcaoEscolhida == 1;
+        return resultado == opcaoEscolhida;
     }
 
     @Override
     public void exibirResultado(Partida partida, int resultado) {
+        String corResultado = CoresDaRoleta.values()[resultado].name();
         if (partida.isGanhou()) {
-            int premio = partida.getQuantidadeFichasApostado() * 2;
+            int premio = partida.getQuantidadeFichasApostado() * 4;
             partida.getJogador().getCarteira().adicionarFichas(premio);
-            System.out.printf("Parabéns! Você ganhou! \nResultado da Roleta: %d\nPrêmio: %d fichas\n", resultado, premio);
+            System.out.printf("Parabéns! Você ganhou! \nResultado da Roleta: %s\nPrêmio: %d fichas\n", corResultado, premio);
         } else {
-            System.out.printf("Você perdeu. Resultado da roleta: %d\n", resultado);
+            System.out.printf("Você perdeu. Resultado da roleta: %s\n", corResultado);
         }
     }
 
     private int girarRoleta() {
-        int resultado = (int) (Math.random() * 36); // 0 a 35
         System.out.println("Girando a roleta...");
-        return resultado;
+        CoresDaRoleta[] cores = CoresDaRoleta.values();
+        return (int) (Math.random() * cores.length);
     }
 }

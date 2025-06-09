@@ -7,14 +7,14 @@ import java.time.LocalDateTime;
 public class Partida {
     private LocalDateTime dataHora;
     private int quantidadeFichasApostado;
-    private int resultadoPartida;
+    private boolean ganhou;
     private Jogo jogo;
     private Jogador jogador;
 
-    public Partida(LocalDateTime dataHora, int quantidadeFichasApostado, int resultadoPartida, Jogo jogo, Jogador jogador) {
-        this.dataHora = dataHora;
+    public Partida(int quantidadeFichasApostado, boolean ganhou, Jogo jogo, Jogador jogador) {
+        this.dataHora = LocalDateTime.now();
         this.quantidadeFichasApostado = quantidadeFichasApostado;
-        this.resultadoPartida = resultadoPartida;
+        this.ganhou = ganhou;
         this.jogo = jogo;
         this.jogador = jogador;
     }
@@ -35,12 +35,12 @@ public class Partida {
         this.quantidadeFichasApostado = quantidadeFichasApostado;
     }
 
-    public int getResultadoPartida() {
-        return resultadoPartida;
+    public boolean isGanhou() {
+        return ganhou;
     }
 
-    public void setResultadoPartida(int resultadoPartida) {
-        this.resultadoPartida = resultadoPartida;
+    public void setGanhou(boolean resultadoPartida) {
+        this.ganhou = resultadoPartida;
     }
 
     public Jogo getJogo() {
@@ -61,6 +61,6 @@ public class Partida {
 
     @Override
     public String toString() {
-        return "Nome do Jogo: " + this.jogo.getNomeJogo() + "\nHorário: " + this.dataHora + "\nFichas Apostadas: " + this.quantidadeFichasApostado + "\nGanhos/Perdas: " + this.resultadoPartida;
+        return "Nome do Jogo: " + this.jogo.getNomeJogo() + "\nHorário: " + this.dataHora + "\nFichas Apostadas: " + this.quantidadeFichasApostado + "\nGanhos/Perdas: " + this.ganhou;
     }
 }

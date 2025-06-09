@@ -10,9 +10,6 @@ public class Roleta extends Jogo {
         super(nomeJogo, regras, 5);
     }
 
-    public void exibirRegras() {
-        System.out.println("Regras do jogo " + getNomeJogo() + ": " + getRegras());
-    }
 
     @Override
     public Partida jogar(Jogador jogador,int valorApostado, int opcaoEscolhida) {

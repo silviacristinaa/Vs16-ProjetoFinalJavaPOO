@@ -4,10 +4,6 @@ import model.jogos.Jogo;
 
 public class RoletaCores extends Jogo {
 
-    public enum CoresDaRoleta {
-        VERMELHO, AZUL, AMARELO, VERDE
-    }
-
     public RoletaCores(String nomeJogo, String regras) {
         super(nomeJogo, regras, 10);
     }
@@ -19,7 +15,7 @@ public class RoletaCores extends Jogo {
 
     @Override
     public boolean jogar(int valorApostado, int opcaoEscolhida) {
-        if (apostaValida(valorApostado, opcaoEscolhida)) {
+        if (!apostaValida(valorApostado, opcaoEscolhida)) {
             return false;
         }
 
@@ -32,7 +28,7 @@ public class RoletaCores extends Jogo {
 
     @Override
     public boolean apostaValida(int valorApostado, int opcaoEscolhida) {
-        return !validarValor(valorApostado) || !validarOpcao(opcaoEscolhida);
+        return validarValor(valorApostado) && validarOpcao(opcaoEscolhida);
     }
 
     @Override

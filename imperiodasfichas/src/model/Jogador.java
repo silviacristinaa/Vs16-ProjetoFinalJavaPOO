@@ -59,6 +59,11 @@ public class Jogador {
     }
 
     @Override
+    public String toString() {
+        return ">> Nickname atual: " + nickname + "\n>> Nome atual: " + nome + "\n>> Idade atual: " + idade;
+    }
+
+    @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;

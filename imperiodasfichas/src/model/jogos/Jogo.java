@@ -2,6 +2,9 @@ package model.jogos;
 
 import java.util.Objects;
 
+import model.Jogador;
+import model.Partida;
+
 public abstract class Jogo {
     private String nomeJogo;
     private String regras;
@@ -17,7 +20,7 @@ public abstract class Jogo {
         System.out.println("Regras do jogo " + nomeJogo + ": " + regras);
     }
 
-    public abstract boolean jogar(int ValorApostado, int opcaoEscolhida);
+    public abstract Partida jogar(Jogador jogador ,int valorApostado, int opcaoEscolhida);
 
     public abstract boolean apostaValida(int valorApostado, int opcaoEscolhida);
 
@@ -36,7 +39,7 @@ public abstract class Jogo {
     public abstract boolean validarOpcao(int opcaoEscolhida);
     public abstract boolean verificarResultado(int resultado, int opcaoEscolhida);
 
-    public abstract void exibirResultado(boolean ganhou, int resultado, int valorApostado);
+    public abstract void exibirResultado(Partida partida, int resultado);
 
     public int getValorInicial() {
         return valorInicial;

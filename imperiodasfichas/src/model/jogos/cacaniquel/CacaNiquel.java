@@ -1,5 +1,7 @@
 package model.jogos.cacaniquel;
 
+import model.Jogador;
+import model.Partida;
 import model.jogos.Jogo;
 import java.util.Random;
 
@@ -12,13 +14,14 @@ public class CacaNiquel extends Jogo {
     }
 
     @Override
-    public boolean jogar(int valorApostado, int opcaoEscolhida) {
+    public Partida jogar(Jogador jogador,int valorApostado, int opcaoEscolhida) {
         int resultadoCodificado = girarRolos();
-
+        jogador.getCarteira().removerFichas(valorApostado);
         boolean ganhou = verificarResultado(resultadoCodificado, opcaoEscolhida);
-        exibirResultado(ganhou, resultadoCodificado, valorApostado);
+        Partida partida = new Partida(valorApostado, ganhou, this, jogador);
+        exibirResultado(partida, resultadoCodificado);
 
-        return ganhou;
+        return partida;
     }
 
     private int girarRolos() {
@@ -53,13 +56,14 @@ public class CacaNiquel extends Jogo {
     }
 
     @Override
-    public void exibirResultado(boolean ganhou, int resultado, int valorApostado) {
+    public void exibirResultado(Partida partida, int resultado) {
         int[] arrayResultado = pegarResultadoDescodificado(resultado);
 
         String resultadoEmoji = simbolos[arrayResultado[0]] + " | " + simbolos[arrayResultado[1]] + " | " + simbolos[arrayResultado[2]];
 
-        if (ganhou) {
-            int premio = valorApostado * 2;
+        if (partida.isGanhou()) {
+            int premio = partida.getQuantidadeFichasApostado() * 2;
+            partida.getJogador().getCarteira().adicionarFichas(premio);
             System.out.printf("Parabéns! Você ganhou! \nResultado do Caça Níquel: %s\nPrêmio: %d fichas\n", resultadoEmoji, premio);
         } else {
             System.out.printf("Você perdeu. Resultado do Caça Níquel: %s\n", resultadoEmoji);

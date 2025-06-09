@@ -33,20 +33,33 @@ public class Carteira {
         return false;
     }
 
-    public boolean depositarFichas(int valor) {
-        if (valor < 0) {
+    public boolean depositarFichasCompradas(int quantidadeFicha, double valorFicha) {
+        if (quantidadeFicha < 0) {
             return false;
         }
-        this.fichas += valor;
+        this.fichas += quantidadeFicha;
+        this.dinheiro -= quantidadeFicha * valorFicha;
         return true;
     }
 
-    public boolean sacarFichas(int valor) {
-        if (this.fichas >= valor) {
-            this.fichas -= valor;
+    public boolean sacarFichasVendidas(int quantidadeFicha, double valorFicha) {
+        if (this.fichas >= quantidadeFicha && quantidadeFicha > 0) {
+            this.fichas -= quantidadeFicha;
+            this.dinheiro += quantidadeFicha * valorFicha;
             return true;
         }
         return false;
+    }
+
+    public void adicionarFichas(int quantidade) {
+        if (quantidade > 0) {
+            this.fichas += quantidade;
+        }
+    }
+    public void removerFichas(int quantidade) {
+        if (quantidade > 0 && this.fichas >= quantidade) {
+            this.fichas -= quantidade;
+        }
     }
 
     @Override

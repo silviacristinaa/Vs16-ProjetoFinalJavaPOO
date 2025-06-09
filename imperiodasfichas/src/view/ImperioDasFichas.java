@@ -1,5 +1,6 @@
 package view;
 
+import controller.GerenciadorJogador;
 import controller.GerenciadorJogo;
 import model.Jogador;
 import model.jogos.Jogo;
@@ -12,21 +13,23 @@ import java.util.Scanner;
 
 public class ImperioDasFichas {
 
-    static final GerenciadorJogo gerenciador = new GerenciadorJogo("Império das Fichas", 1.00, new ArrayList<>());
+    static final GerenciadorJogador gerenciadorJogador = new GerenciadorJogador();
+    static final GerenciadorJogo gerenciadorJogo = new GerenciadorJogo("Império das Fichas", 1.00, gerenciadorJogador);
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
         int opcao;
+        Jogador jogador = null;
 
         // Adição dos jogos de roleta
         Jogo roleta = new Roleta("Roleta Clássica", "Aposte em PAR (0) ou ÍMPAR (1). Se acertar, você ganha o dobro!");
         Jogo roletaCores = new RoletaCores("Roleta das Cores", "Aposte em uma cor: VERMELHO (0), AZUL (1), AMARELO (2), VERDE (3). Se acertar, ganha 4x o valor apostado!");
         Jogo cacaNiquel = new CacaNiquel("Caça Níquel", "Aperte a alavanca. Se acertar, ganhe o dobro do valor apostado!");
 
-        gerenciador.adicionarJogo(roleta);
-        gerenciador.adicionarJogo(roletaCores);
-        gerenciador.adicionarJogo(cacaNiquel);
+        gerenciadorJogo.adicionarJogo(roleta);
+        gerenciadorJogo.adicionarJogo(roletaCores);
+        gerenciadorJogo.adicionarJogo(cacaNiquel);
 
         do {
             System.out.println("\n=======================================");
@@ -61,14 +64,14 @@ public class ImperioDasFichas {
 
                     System.out.print("Nickname: ");
                     String nickname = scanner.nextLine();
+                    jogador = gerenciadorJogador.adicionarJogador(nome, idade, nickname);
 
-                    if (!gerenciador.adicionarJogador(nome, idade, nickname)) {
+                    if (jogador == null) {
                         System.out.println("Erro. Já existe um jogador com esse nickname.");
                         break;
                     }
 
-                    Jogador jogadorNovo = gerenciador.buscarJogador(nickname);
-                    menuOpcoesJogador(jogadorNovo);
+                    menuOpcoesJogador(jogador);
 
                     break;
                 case 2:
@@ -111,7 +114,7 @@ public class ImperioDasFichas {
                     System.out.print("\n💰 Digite o valor do depósito: R$ ");
                     double deposito = lerDouble(scanner.nextLine());
 
-                    if (!jogador.getCarteira().depositarDinheiro(deposito)) {
+                    if (!gerenciadorJogador.fazerDeposito(jogador.getNickname(), deposito)) {
                         System.out.println("❌ Valor inválido. Somente valores positivos.");
                     } else {
                         System.out.println("✅ Valor de R$ " + deposito + " depositado com sucesso!");
@@ -127,7 +130,7 @@ public class ImperioDasFichas {
                         break;
                     }
 
-                    if (!jogador.getCarteira().sacarDinheiro(saque)) {
+                    if (!gerenciadorJogador.fazerSaque(jogador.getNickname(), saque)) {
                         System.out.println("❌ Valor inválido. Saldo insuficiente.");
                     } else {
                         System.out.println("✅ Valor de R$ " + saque + " sacado com sucesso!");
@@ -143,7 +146,7 @@ public class ImperioDasFichas {
                         break;
                     }
 
-                    if (!gerenciador.comprarFicha(jogador.getNickname(), qtdComprar)) {
+                    if (!gerenciadorJogo.comprarFicha(jogador.getNickname(), qtdComprar)) {
                         System.out.println("❌ Dinheiro insuficiente para comprar as fichas!");
                     } else {
                         System.out.println("✅ Compra de " + qtdComprar + " fichas realizada com sucesso!");
@@ -159,7 +162,7 @@ public class ImperioDasFichas {
                         break;
                     }
 
-                    if (!gerenciador.venderFicha(jogador.getNickname(), qtdVender)) {
+                    if (!gerenciadorJogo.venderFicha(jogador.getNickname(), qtdVender)) {
                         System.out.println("❌ Não foi possível vender as fichas.");
                     } else {
                         System.out.println("✅ Venda de " + qtdVender + " fichas realizada com sucesso!");
@@ -195,7 +198,7 @@ public class ImperioDasFichas {
                     menuCarteira(jogador);
                     break;
                 case 2:
-                    menuRoleta(jogador);
+                    menuJogos(jogador);
                     break;
                 case 3:
                     menuCacaNiquel(jogador);
@@ -218,10 +221,10 @@ public class ImperioDasFichas {
         System.out.print("Digite seu nickname: ");
         String nickname = scanner.nextLine();
 
-        Jogador jogador = gerenciador.buscarJogador(nickname);
+        Jogador jogador = gerenciadorJogador.buscarJogador(nickname);
 
         if (jogador == null) {
-            System.out.println("❌ Jogador não encontrado. Verifique o nickname ou cadastre-se primeiro.");
+            System.out.println("❌ Verifique o nickname ou cadastre-se primeiro.");
             return;
         }
 
@@ -229,42 +232,45 @@ public class ImperioDasFichas {
         menuOpcoesJogador(jogador);
     }
 
-    public static void menuRoleta(Jogador jogador) {
+    public static void menuJogos(Jogador jogador) {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("\n🎰 Escolha o tipo de Roleta:");
         System.out.println("1. Roleta Clássica (Par/Ímpar)");
         System.out.println("2. Roleta das Cores");
         System.out.print("\n🧭 Escolha uma opção: ");
-        int tipoRoleta = lerInteiro(scanner.nextLine());
+        int opcaoEscolhida = lerInteiro(scanner.nextLine());
+        Jogo jogoSelecionado = null;
 
-        Jogo roletaSelecionada = null;
-        if (tipoRoleta == 1) {
-            roletaSelecionada = gerenciador.buscarJogo("Roleta Clássica");
-        } else if (tipoRoleta == 2) {
-            roletaSelecionada = gerenciador.buscarJogo("Roleta das Cores");
-        } else {
-            System.out.println("❌ Opção inválida.");
-            return;
+        switch (opcaoEscolhida) {
+            case 1:
+                jogoSelecionado = gerenciadorJogo.buscarJogo("Roleta Clássica");
+                break;
+            case 2:
+                jogoSelecionado = gerenciadorJogo.buscarJogo("Roleta das Cores");
+                break;
+            default:
+                System.out.println("❌ Opção inválida.");
+                break;
         }
 
-        if (roletaSelecionada == null) {
+        if (jogoSelecionado == null) {
             System.out.println("❌ Roleta não está disponível no momento.");
             return;
         }
 
-        System.out.println("\n🎰 Bem-vindo à " + roletaSelecionada.getNomeJogo() + "!");
+        System.out.println("\n🎰 Bem-vindo à " + jogoSelecionado.getNomeJogo() + "!");
         System.out.println("\n==========================================================================================");
-        roletaSelecionada.exibirRegras();
+        jogoSelecionado.exibirRegras();
         System.out.println("==========================================================================================\n");
         System.out.printf("🎟️ Você tem %d fichas.\n", jogador.getCarteira().getFichas());
         System.out.print("Quantas fichas deseja apostar?\n");
         System.out.print("\nFICHAS APOSTADAS: ");
         int valorApostado = lerInteiro(scanner.nextLine());
 
-        if (valorApostado <= 0 || valorApostado < roletaSelecionada.getValorInicial()) {
+        if (valorApostado <= 0 || valorApostado < jogoSelecionado.getValorInicial()) {
             System.out.println("\n=======================================================");
-            System.out.printf("❌ Aposta inválida. Mínimo: %d fichas.\n", roletaSelecionada.getValorInicial());
+            System.out.printf("❌ Aposta inválida. Mínimo: %d fichas.\n", jogoSelecionado.getValorInicial());
             System.out.println("=======================================================");
             return;
         }
@@ -274,13 +280,15 @@ public class ImperioDasFichas {
         }
 
         int escolha = -1;
-        if (tipoRoleta == 1) {
+        // Da pra exibir as opções de aposta de acordo com o tipo de roleta. 
+        // Um metodo na classe Jogo poderia printar as opçoes.
+        if (opcaoEscolhida == 1) {
             System.out.println("\nEscolha sua aposta:");
             System.out.println("Digite '0' para escolher PAR");
             System.out.println("Digite '1' para escolher ÍMPAR");
             System.out.print("\nSUA ESCOLHA: ");
             escolha = lerInteiro(scanner.nextLine());
-        } else if (tipoRoleta == 2) {
+        } else if (opcaoEscolhida == 2) {
             System.out.println("\nEscolha sua cor:");
             System.out.println("Digite '0' para VERMELHO");
             System.out.println("Digite '1' para AZUL");
@@ -290,30 +298,18 @@ public class ImperioDasFichas {
             escolha = lerInteiro(scanner.nextLine());
         }
 
-        if (!roletaSelecionada.apostaValida(valorApostado, escolha)) {
+        if (!jogoSelecionado.apostaValida(valorApostado, escolha)) {
             System.out.println("❌ Aposta cancelada.");
             return;
         }
 
-        jogador.getCarteira().sacarFichas(valorApostado);
-
-        boolean ganhou = roletaSelecionada.jogar(valorApostado, escolha);
-
-        if (ganhou) {
-            int premio;
-            if (tipoRoleta == 1) {
-                premio = valorApostado * 2;
-            } else {
-                premio = valorApostado * 4;
-            }
-            jogador.getCarteira().depositarFichas(premio);
-        }
+        gerenciadorJogo.iniciarPartida(jogoSelecionado, jogador, escolha, opcaoEscolhida);    
     }
 
     private static void menuCacaNiquel(Jogador jogador) {
         Scanner scanner = new Scanner(System.in);
 
-        Jogo cacaNiquel = gerenciador.buscarJogo("Caça Níquel");
+        Jogo cacaNiquel = gerenciadorJogo.buscarJogo("Caça Níquel");
 
         System.out.println("\n🎰 Bem-vindo ao " + cacaNiquel.getNomeJogo() + "!");
         System.out.println("\n==========================================================================================");
@@ -343,15 +339,7 @@ public class ImperioDasFichas {
             return;
         }
 
-        jogador.getCarteira().sacarFichas(valorApostado);
-
-        boolean ganhou = cacaNiquel.jogar(valorApostado, 0);
-
-        if (ganhou) {
-            int premio = valorApostado * 2;
-
-            jogador.getCarteira().depositarFichas(premio);
-        }
+        gerenciadorJogo.iniciarPartida(cacaNiquel, jogador, valorApostado, 0);
     }
 
     private static int lerInteiro(String textoUsuario) {

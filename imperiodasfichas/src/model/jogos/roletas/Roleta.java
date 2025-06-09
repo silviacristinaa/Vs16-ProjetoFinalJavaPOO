@@ -1,5 +1,7 @@
 package model.jogos.roletas;
 
+import model.Jogador;
+import model.Partida;
 import model.jogos.Jogo;
 
 public class Roleta extends Jogo {
@@ -13,16 +15,16 @@ public class Roleta extends Jogo {
     }
 
     @Override
-    public boolean jogar(int valorApostado, int opcaoEscolhida) {
+    public Partida jogar(Jogador jogador,int valorApostado, int opcaoEscolhida) {
         if (!apostaValida(valorApostado, opcaoEscolhida)) {
-            return false;
+            return null;
         }
-
+        jogador.getCarteira().removerFichas(valorApostado);
         int resultadoRoleta = girarRoleta();
         boolean ganhou = verificarResultado(resultadoRoleta, opcaoEscolhida);
-
-        exibirResultado(ganhou, resultadoRoleta, valorApostado);
-        return ganhou;
+        Partida partida = new Partida(valorApostado, ganhou, this, jogador);
+        exibirResultado(partida ,resultadoRoleta);
+        return partida;
     }
 
     @Override
@@ -48,9 +50,10 @@ public class Roleta extends Jogo {
     }
 
     @Override
-    public void exibirResultado(boolean ganhou, int resultado, int valorApostado) {
-        if (ganhou) {
-            int premio = valorApostado * 2;
+    public void exibirResultado(Partida partida, int resultado) {
+        if (partida.isGanhou()) {
+            int premio = partida.getQuantidadeFichasApostado() * 2;
+            partida.getJogador().getCarteira().adicionarFichas(premio);
             System.out.printf("Parabéns! Você ganhou! \nResultado da Roleta: %d\nPrêmio: %d fichas\n", resultado, premio);
         } else {
             System.out.printf("Você perdeu. Resultado da roleta: %d\n", resultado);

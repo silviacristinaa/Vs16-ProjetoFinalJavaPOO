@@ -14,7 +14,7 @@ public class JogadorDao implements DaoGenerico<Jogador, String> {
     public Jogador adicionar(Jogador entidade) {
         if (buscar(entidade.getNickname()) == null) {
             dataBase.getJogadores().add(entidade);
-            return entidade; 
+            return entidade;
         } 
         return null;
     }

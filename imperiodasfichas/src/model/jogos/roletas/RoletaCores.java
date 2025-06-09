@@ -1,5 +1,7 @@
 package model.jogos.roletas;
 
+import model.Jogador;
+import model.Partida;
 import model.jogos.Jogo;
 
 public class RoletaCores extends Jogo {
@@ -14,16 +16,16 @@ public class RoletaCores extends Jogo {
     }
 
     @Override
-    public boolean jogar(int valorApostado, int opcaoEscolhida) {
+    public Partida jogar(Jogador jogador,int valorApostado, int opcaoEscolhida) {
         if (!apostaValida(valorApostado, opcaoEscolhida)) {
-            return false;
+            return null;
         }
-
+        jogador.getCarteira().removerFichas(valorApostado);
         int resultadoRoleta = girarRoleta();
         boolean ganhou = verificarResultado(resultadoRoleta, opcaoEscolhida);
-
-        exibirResultado(ganhou, resultadoRoleta, valorApostado);
-        return ganhou;
+        Partida partida = new Partida(valorApostado, ganhou, this, jogador);
+        exibirResultado(partida, resultadoRoleta);
+        return partida;
     }
 
     @Override
@@ -42,10 +44,11 @@ public class RoletaCores extends Jogo {
     }
 
     @Override
-    public void exibirResultado(boolean ganhou, int resultado, int valorApostado) {
+    public void exibirResultado(Partida partida, int resultado) {
         String corResultado = CoresDaRoleta.values()[resultado].name();
-        if (ganhou) {
-            int premio = valorApostado * 4;
+        if (partida.isGanhou()) {
+            int premio = partida.getQuantidadeFichasApostado() * 4;
+            partida.getJogador().getCarteira().adicionarFichas(premio);
             System.out.printf("Parabéns! Você ganhou! \nResultado da Roleta: %s\nPrêmio: %d fichas\n", corResultado, premio);
         } else {
             System.out.printf("Você perdeu. Resultado da roleta: %s\n", corResultado);

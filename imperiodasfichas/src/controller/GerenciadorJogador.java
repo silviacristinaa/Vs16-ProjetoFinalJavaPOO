@@ -24,8 +24,8 @@ public class GerenciadorJogador {
         Jogador novo = new Jogador(nome, idade, nickname);
         return jogadorDao.adicionar(novo);
     }
-    public Jogador adicionarJogador(String nome, int idade, String nickname, double saldoInicial) {
-        Carteira carteira = new Carteira(1000, saldoInicial);
+    public Jogador adicionarJogador(String nome, int idade, String nickname, int quantidadeFichas) {
+        Carteira carteira = new Carteira(quantidadeFichas, 0);
         Jogador novo = new Jogador(nome, idade, nickname, carteira);
         return jogadorDao.adicionar(novo);
     }

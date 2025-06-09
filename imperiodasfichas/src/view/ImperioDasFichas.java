@@ -63,7 +63,7 @@ public class ImperioDasFichas {
 
                     System.out.print("🎲 Nickname: ");
                     String nickname = scanner.nextLine();
-                    jogador = gerenciadorJogador.adicionarJogador(nome, idade, nickname);
+                    jogador = gerenciadorJogador.adicionarJogador(nome, idade, nickname, 1000);
 
                     if (jogador == null) {
                         System.out.println("⚠️ Este nickname já está cadastrado. Escolha outro para continuar.");

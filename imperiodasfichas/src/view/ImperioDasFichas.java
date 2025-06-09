@@ -3,6 +3,7 @@ package view;
 import controller.GerenciadorJogo;
 import model.Jogador;
 import model.jogos.Jogo;
+import model.jogos.cacaniquel.CacaNiquel;
 import model.jogos.roletas.Roleta;
 import model.jogos.roletas.RoletaCores;
 
@@ -21,8 +22,11 @@ public class ImperioDasFichas {
         // Adição dos jogos de roleta
         Jogo roleta = new Roleta("Roleta Clássica", "Aposte em PAR (0) ou ÍMPAR (1). Se acertar, você ganha o dobro!");
         Jogo roletaCores = new RoletaCores("Roleta das Cores", "Aposte em uma cor: VERMELHO (0), AZUL (1), AMARELO (2), VERDE (3). Se acertar, ganha 4x o valor apostado!");
+        Jogo cacaNiquel = new CacaNiquel("Caça Níquel", "Aperte a alavanca. Se acertar, ganhe o dobro do valor apostado!");
+
         gerenciador.adicionarJogo(roleta);
         gerenciador.adicionarJogo(roletaCores);
+        gerenciador.adicionarJogo(cacaNiquel);
 
         do {
             System.out.println("\n=======================================");
@@ -181,7 +185,8 @@ public class ImperioDasFichas {
             System.out.println("\n O QUE DESEJA FAZER?\n");
             System.out.println("💼 1. Acessar Carteira");
             System.out.println("🎰 2. Jogar Roleta");
-            System.out.println("🚪 3. Voltar ao Menu Inicial...");
+            System.out.println("🎰 3. Jogar Caça Níquel");
+            System.out.println("🚪 4. Voltar ao Menu Inicial...");
             System.out.print("\n🧭 Escolha uma opção: ");
             opcao = lerInteiro(scanner.nextLine());
 
@@ -193,13 +198,16 @@ public class ImperioDasFichas {
                     menuRoleta(jogador);
                     break;
                 case 3:
+                    menuCacaNiquel(jogador);
+                    break;
+                case 4:
                     System.out.println("\n👋 Retornando ao Menu Principal...");
                     break;
                 default:
                     System.out.println("\n⚠️  Opção inválida! Por favor, tente novamente.");
                     break;
             }
-        } while (opcao != 3);
+        } while (opcao != 4);
     }
 
     public static void controleLogin() {
@@ -298,6 +306,50 @@ public class ImperioDasFichas {
             } else {
                 premio = valorApostado * 4;
             }
+            jogador.getCarteira().depositarFichas(premio);
+        }
+    }
+
+    private static void menuCacaNiquel(Jogador jogador) {
+        Scanner scanner = new Scanner(System.in);
+
+        Jogo cacaNiquel = gerenciador.buscarJogo("Caça Níquel");
+
+        System.out.println("\n🎰 Bem-vindo ao " + cacaNiquel.getNomeJogo() + "!");
+        System.out.println("\n==========================================================================================");
+        cacaNiquel.exibirRegras();
+        System.out.println("==========================================================================================\n");
+        System.out.printf("🎟️ Você tem %d fichas.\n", jogador.getCarteira().getFichas());
+        System.out.print("Quantas fichas deseja apostar?\n");
+        System.out.print("\nFICHAS APOSTADAS: ");
+        int valorApostado = lerInteiro(scanner.nextLine());
+
+        if (valorApostado <= 0 || valorApostado < cacaNiquel.getValorInicial()) {
+            System.out.println("\n=======================================================");
+            System.out.printf("❌ Aposta inválida. Mínimo: %d fichas.\n", cacaNiquel.getValorInicial());
+            System.out.println("=======================================================");
+            return;
+        }
+        if (valorApostado > jogador.getCarteira().getFichas()) {
+            System.out.println("❌ Você não tem fichas suficientes para essa aposta.");
+            return;
+        }
+
+        System.out.println("\nPressione enter para apertar a alavanca:");
+        scanner.nextLine();
+
+        if (!cacaNiquel.apostaValida(valorApostado, 0)) {
+            System.out.println("❌ Aposta cancelada.");
+            return;
+        }
+
+        jogador.getCarteira().sacarFichas(valorApostado);
+
+        boolean ganhou = cacaNiquel.jogar(valorApostado, 0);
+
+        if (ganhou) {
+            int premio = valorApostado * 2;
+
             jogador.getCarteira().depositarFichas(premio);
         }
     }

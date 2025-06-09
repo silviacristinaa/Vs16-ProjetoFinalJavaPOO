@@ -189,7 +189,9 @@ public class ImperioDasFichas {
             System.out.println("💼 1. Acessar Carteira");
             System.out.println("🎰 2. Jogar Roleta");
             System.out.println("🎰 3. Jogar Caça Níquel");
-            System.out.println("🚪 4. Voltar ao Menu Inicial...");
+            System.out.println("✏️ 4. Editar Perfil");
+            System.out.println("🚪 5. Voltar ao Menu Inicial...");
+
             System.out.print("\n🧭 Escolha uma opção: ");
             opcao = lerInteiro(scanner.nextLine());
 
@@ -204,13 +206,17 @@ public class ImperioDasFichas {
                     menuCacaNiquel(jogador);
                     break;
                 case 4:
+                    menuEditarJogador(jogador);
+                    break;
+                case 5:
                     System.out.println("\n👋 Retornando ao Menu Principal...");
                     break;
                 default:
                     System.out.println("\n⚠️  Opção inválida! Por favor, tente novamente.");
                     break;
             }
-        } while (opcao != 4);
+
+        } while (opcao != 5);
     }
 
     public static void controleLogin() {
@@ -234,6 +240,8 @@ public class ImperioDasFichas {
 
     public static void menuJogos(Jogador jogador) {
         Scanner scanner = new Scanner(System.in);
+
+
 
         System.out.println("\n🎰 Escolha o tipo de Roleta:");
         System.out.println("1. Roleta Clássica (Par/Ímpar)");
@@ -342,6 +350,55 @@ public class ImperioDasFichas {
         gerenciadorJogo.iniciarPartida(cacaNiquel, jogador, valorApostado, 0);
     }
 
+    public static void menuEditarJogador(Jogador jogador) {
+        Scanner scanner = new Scanner(System.in);
+        int opcao;
+
+        do {
+
+            System.out.println("\n✏️ Menu de Edição do Jogador");
+            System.out.println(jogador + "\n");
+
+            System.out.println("1. Editar Nome");
+            System.out.println("2. Editar Idade");
+            System.out.println("3. Voltar");
+
+            System.out.print("\n🧭 Escolha uma opção: ");
+            opcao = lerInteiro(scanner.nextLine());
+
+            switch (opcao) {
+                case 1:
+                    System.out.print("Digite o novo nome: ");
+                    String novoNome = scanner.nextLine();
+                    jogador.setNome(novoNome);
+                    gerenciadorJogador.atualizarJogador(jogador, jogador.getNickname());
+                    System.out.println("✅ Nome atualizado com sucesso!");
+                    break;
+
+                case 2:
+                    System.out.print("Digite a nova idade: ");
+                    int novaIdade = lerInteiro(scanner.nextLine());
+                    if (novaIdade < 18) {
+                        System.out.println("❌ Idade inválida! Apenas maiores de 18 anos.");
+                        break;
+                    }
+                    jogador.setIdade(novaIdade);
+                    gerenciadorJogador.atualizarJogador(jogador, jogador.getNickname());
+                    System.out.println("✅ Idade atualizada com sucesso!");
+                    break;
+
+                case 3:
+                    System.out.println("🔙 Retornando...");
+                    break;
+
+                default:
+                    System.out.println("⚠️ Opção inválida!");
+                    break;
+            }
+
+        } while (opcao != 3);
+    }
+
     private static int lerInteiro(String textoUsuario) {
         if (ehInteiro(textoUsuario)) {
             return Integer.parseInt(textoUsuario);
@@ -363,4 +420,5 @@ public class ImperioDasFichas {
     private static boolean ehDouble(String texto) {
         return texto.matches("-?\\d+(\\.\\d+)?");
     }
+
 }

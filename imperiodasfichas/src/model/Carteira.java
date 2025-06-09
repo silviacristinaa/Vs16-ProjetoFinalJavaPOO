@@ -68,6 +68,6 @@ public class Carteira {
 
     @Override
     public String toString() {
-        return ">> Fichas atuais: " + fichas + "\n>> Dinheiro atual: " + dinheiro;
+        return ">> 🎟️ Fichas atuais: " + fichas + "\n>> 💵 Dinheiro disponível: R$ " + dinheiro;
     }
 }

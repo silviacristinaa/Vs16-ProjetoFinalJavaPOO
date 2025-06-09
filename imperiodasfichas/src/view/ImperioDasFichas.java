@@ -8,7 +8,6 @@ import model.jogos.cacaniquel.CacaNiquel;
 import model.jogos.roletas.Roleta;
 import model.jogos.roletas.RoletaCores;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ImperioDasFichas {
@@ -23,9 +22,9 @@ public class ImperioDasFichas {
         Jogador jogador = null;
 
         // Adição dos jogos de roleta
-        Jogo roleta = new Roleta("Roleta Clássica", "Aposte em PAR (0) ou ÍMPAR (1). Se acertar, você ganha o dobro!");
-        Jogo roletaCores = new RoletaCores("Roleta das Cores", "Aposte em uma cor: VERMELHO (0), AZUL (1), AMARELO (2), VERDE (3). Se acertar, ganha 4x o valor apostado!");
-        Jogo cacaNiquel = new CacaNiquel("Caça Níquel", "Aperte a alavanca. Se acertar, ganhe o dobro do valor apostado!");
+        Jogo roleta = new Roleta("Roleta Clássica", "Aposte em ⚪ PAR (0) ou ⚫ ÍMPAR (1). Se acertar, ganha o dobro do valor apostado! 💰");
+        Jogo roletaCores = new RoletaCores("Roleta das Cores","Aposte em uma cor: VERMELHO (0), AZUL (1), AMARELO (2), VERDE (3). 🍀 Acerte e ganhe 4x! 💰");
+        Jogo cacaNiquel = new CacaNiquel("Caça Níquel", "🎰 Aperte a alavanca da sorte. Se acertar, ganhe o dobro do valor apostado! 💰");
 
         gerenciadorJogo.adicionarJogo(roleta);
         gerenciadorJogo.adicionarJogo(roletaCores);
@@ -49,25 +48,25 @@ public class ImperioDasFichas {
             switch (opcao) {
 
                 case 1:
-                    System.out.println("Cadastrar jogador selecionado!");
+                    System.out.println("✅ Cadastro de jogador iniciado com sucesso!\n");
 
-                    System.out.print("Nome: ");
+                    System.out.print("👤 Nome: ");
                     String nome = scanner.nextLine();
 
-                    System.out.print("Idade: ");
+                    System.out.print("🗓️ Idade: ");
                     int idade = lerInteiro(scanner.nextLine());
 
                     if (idade < 18) {
-                        System.out.println("Não é permitido jogadores menor de idade. Somente maior de 18 anos.");
+                        System.out.println("⚠️ Entrada proibida: este cassino é reservado exclusivamente para maiores de 18 anos.");
                         break;
                     }
 
-                    System.out.print("Nickname: ");
+                    System.out.print("🎲 Nickname: ");
                     String nickname = scanner.nextLine();
                     jogador = gerenciadorJogador.adicionarJogador(nome, idade, nickname);
 
                     if (jogador == null) {
-                        System.out.println("Erro. Já existe um jogador com esse nickname.");
+                        System.out.println("⚠️ Este nickname já está cadastrado. Escolha outro para continuar.");
                         break;
                     }
 
@@ -78,11 +77,11 @@ public class ImperioDasFichas {
                     controleLogin();
                     break;
                 case 3:
-                    System.out.println("\n👋 Obrigado por jogar! Volte sempre!");
+                    System.out.println("\n👋 Obrigado(a) por jogar! Volte sempre!");
                     break;
 
                 default:
-                    System.out.println("\n⚠️  Opção inválida! Por favor, tente novamente.");
+                    System.out.println("\n⚠️ Opção inválida! Por favor, tente novamente.");
                     break;
             }
 
@@ -96,7 +95,7 @@ public class ImperioDasFichas {
         int opcao;
 
         do {
-            System.out.printf("\n💼 Carteira Virtual do Jogador %s\n", jogador.getNickname());
+            System.out.printf("\n💼 Carteira Virtual - Jogador(a) %s\n", jogador.getNickname());
 
             System.out.println(jogador.getCarteira() + "\n");
 
@@ -185,7 +184,7 @@ public class ImperioDasFichas {
         int opcao;
 
         do {
-            System.out.println("\n O QUE DESEJA FAZER?\n");
+            System.out.println("\n ✨ O QUE DESEJA FAZER? ✨\n");
             System.out.println("💼 1. Acessar Carteira");
             System.out.println("🎰 2. Jogar Roleta");
             System.out.println("🎰 3. Jogar Caça Níquel");
@@ -224,7 +223,7 @@ public class ImperioDasFichas {
 
         System.out.println("\n🔐 Império das Fichas - Sistema de Login");
 
-        System.out.print("Digite seu nickname: ");
+        System.out.print("🎲 Digite o seu nickname: ");
         String nickname = scanner.nextLine();
 
         Jogador jogador = gerenciadorJogador.buscarJogador(nickname);
@@ -244,8 +243,8 @@ public class ImperioDasFichas {
 
 
         System.out.println("\n🎰 Escolha o tipo de Roleta:");
-        System.out.println("1. Roleta Clássica (Par/Ímpar)");
-        System.out.println("2. Roleta das Cores");
+        System.out.println("1. Roleta Clássica (⚪ Par/⚫ Ímpar)");
+        System.out.println("2. Roleta das Cores 🌈");
         System.out.print("\n🧭 Escolha uma opção: ");
         int opcaoEscolhida = lerInteiro(scanner.nextLine());
         Jogo jogoSelecionado = null;

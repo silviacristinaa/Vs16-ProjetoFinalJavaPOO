@@ -3,11 +3,10 @@ package model.jogos.roletas;
 import model.Jogador;
 import model.Partida;
 import model.jogos.Jogo;
-import view.animacoes.AnimacaoRoletaParImpar;
 
-public class Roleta extends Jogo {
+public class RoletaParImpar extends Jogo {
 
-    public Roleta(String nomeJogo, String regras) {
+    public RoletaParImpar(String nomeJogo, String regras) {
         super(nomeJogo, regras, 5);
     }
 

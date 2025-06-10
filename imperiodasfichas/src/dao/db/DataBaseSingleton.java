@@ -36,10 +36,12 @@ public class DataBaseSingleton {
         return new ArrayList<>(jogos.values());
     }
     public Jogador addJogador(Jogador jogador) {
-        return jogadores.put(jogador.getNickname(), jogador);
+        jogadores.put(jogador.getNickname(), jogador);
+        return jogadores.get(jogador.getNickname());
     }
     public Jogo addJogo(Jogo jogo) {
-        return jogos.put(jogo.getNomeJogo(), jogo);
+        jogos.put(jogo.getNomeJogo(), jogo);
+        return jogos.get(jogo.getNomeJogo());
     }
     public Jogador getJogador(String nickname) {
         return jogadores.get(nickname);

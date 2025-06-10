@@ -127,23 +127,63 @@ A primeira versão do diagrama foca na base funcional do jogo:
 Na segunda parte, o sistema foi expandido com novos recursos e refatorado para melhor organização:
 
 - 🗂️ O pacote `model.jogos` foi subdividido:
-    - `roletas`: contém `Roleta`, `RoletaCores` e o enum `CoresDaRoleta`
-    - `cacaniquel`: contém `CacaNiquel`
+  - `roletas`: contém `Roleta`, `RoletaCores` e o enum `CoresDaRoleta`
+  - `cacaniquel`: contém `CacaNiquel`
 - 🧠 A classe abstrata `Jogo` continua sendo a base para os diferentes tipos de jogos.
 - 💾 Camada `dao` foi adicionada, com:
-    - Interfaces genéricas: `DaoGenerico`
-    - Classes concretas: `JogadorDao`, `JogoDao`
-    - Banco de dados simulado: `DataBaseSingleton`
+  - Interfaces genéricas: `DaoGenerico`
+  - Classes concretas: `JogadorDao`, `JogoDao`
+  - Banco de dados simulado: `DataBaseSingleton`
 - 🧭 Camada `controller` ampliada com `GerenciadorJogador` e `GerenciadorJogo`.
 - ✏️ `Jogador` agora permite edição de nome e idade.
 - 🕹️ Novos jogos implementados:
-    - Roleta das Cores
-    - Caça Níquel
-    - (em breve: Blackjack)
+  - Roleta das Cores
+  - Caça Níquel
+  - (em breve: Blackjack)
 - 🔁 Aplicação de conceitos como:
-    - Herança
-    - Composição e Agregação
-    - Override e Overloading
+  - Herança
+  - Composição e Agregação
+  - Override e Overloading
+
+---
+
+### 🔹 Parte III – Evolução do Sistema com Persistência e Arquitetura Mais Robusta
+
+A Parte III trouxe refinamentos significativos para o sistema, focando na persistência de dados e uma arquitetura mais robusta. Aqui estão os pontos principais:
+
+### **Classes de Jogo**
+A classe `Jogo` é a classe base para os diferentes tipos de jogos, como `Roleta`, `RoletaCores`, `CacaNiquel` e `BlackJack`, cada um com suas regras e lógica de jogo específicas.
+
+- **Roleta**: Contém o método `girarRoleta()` para gerar os resultados da roleta.
+- **RoletaCores**: Implementa uma roleta com cores específicas.
+- **CacaNiquel**: Jogo baseado em símbolos que são sorteados.
+- **BlackJack**: Jogo de cartas, onde o objetivo é se aproximar de 21 pontos sem ultrapassá-los.
+
+### **Persistência de Dados**
+A utilização do `DataBaseSingleton` melhora a persistência dos dados, permitindo o gerenciamento de entidades como `Jogador`, `Jogo` e `Partida` com um armazenamento centralizado, acessível por toda a aplicação.
+
+### **Gerenciamento de Jogadores e Jogos**
+- **GerenciadorJogador**: Agora possui métodos para manipulação CRUD de jogadores, incluindo adição, remoção, atualização e busca de jogadores.
+- **GerenciadorJogo**: Gerencia a criação e remoção de jogos, além de iniciar partidas baseadas nas apostas feitas pelos jogadores.
+
+### **Entidades do Jogo**
+- **Jogador**: Mantém informações sobre o jogador, como nome, idade, nickname, e a carteira associada com fichas e dinheiro.
+  - A classe `Carteira` gerencia a compra, venda e o saldo de fichas.
+- **Partida**: Registra o histórico de uma rodada, incluindo o jogo, a quantidade de fichas apostadas, e o resultado (vitória ou derrota).
+
+### **Classes de DAO**
+A implementação das interfaces de DAO (`DaoGenerico`) e classes específicas como `JogadorDao` e `JogoDao` facilitam o gerenciamento de entidades com operações de CRUD para persistência dos dados.
+
+### **Estrutura de Dados e Lógica Avançada**
+- **HashMap**: Usado para o armazenamento de jogos e jogadores, permitindo acesso rápido usando chaves, como o nickname do jogador ou o nome do jogo.
+- **ArrayList**: Utilizado para armazenar as partidas de cada jogador e a lista de jogos, garantindo a ordem das inserções.
+- **HashSet**: Usado para garantir a unicidade de entidades, como habilidades do jogador ou tipos de itens raros.
+
+---
+
+Essas alterações na arquitetura e nas implementações proporcionam um sistema mais robusto e eficiente, com uma melhor persistência de dados e uma estrutura de gerenciamento mais modularizada.
+
+
 
 ---
 
@@ -159,17 +199,17 @@ Na segunda parte, o sistema foi expandido com novos recursos e refatorado para m
 
 **Parte I:**
 <p align="center">
-  <img src="imperiodasfichas/src/images/diagrama.png" alt="Diagrama de Classes - Parte I" width="700"/>
+  <img src="/src/images/diagrama.png" alt="Diagrama de Classes - Parte I" width="700"/>
 </p>
 
 **Parte II:**
 <p align="center">
-  <img src="imperiodasfichas/src/images/diagrama2.png" alt="Diagrama de Classes - Parte II" width="700"/>
+  <img src="src/images/diagrama2.png" alt="Diagrama de Classes - Parte II" width="700"/>
 </p>
 
 **Parte III:**
 <p align="center">
-  <img src="imperiodasfichas/src/images/diagrama3.png" alt="Diagrama de Classes - Parte III" width="700"/>
+  <img src="/src/images/diagrama3.png" alt="Diagrama de Classes - Parte III" width="700"/>
 </p>
 
 ---
@@ -218,7 +258,7 @@ src/
 ├── app/
 │   └── ImperioDasFichas.java
 └── view/
-    └── ImperioDasFichas.java
+    └── ImperioDasFichas.java 
 ```
 
 ### 🛠️ Como Compilar
@@ -286,38 +326,142 @@ public class ImperioDasFichas {
 
 ---
 
+## 🧭 Guia do Usuário – Etapa III
 
-## 🧱 Etapa III – Novas Funcionalidades e Refinamentos
+A Etapa III trouxe grandes refinamentos de estrutura, persistência e modularização do sistema.
 
-A **Etapa III** está em andamento e traz as seguintes atualizações e melhorias:
+### ⚙️ Requisitos
 
-- **Implementação completa do padrão MVC** em todas as camadas do sistema.
-- **Refino da camada DAO** para simulação de persistência e manipulação de dados.
-- **Novos jogos integrados:** Caça Níquel e Blackjack.
-- **Edição de perfil do jogador:** agora é possível editar nome, idade e remover a conta.
-- **Novo menu de navegação** com experiência de usuário aprimorada.
-- Utilização do **Map<K,V>** na classe `DataBaseSingleton.java`. para persistir dados, o **Set<E>** foi na classe `Jogador.java` para armazenar partidas e o **List<E>** em várias classes do projeto.
-- **Enum no blackjack** para o baralho de cartas.
-- **Expansão da documentação** e inclusão de diagramas de classes atualizados.
-- **Animação de iniciação do script** Primeira animação ao executar a classe Main chamada de`ImperioDasFichas.java`.
-- **Animações ao iniciar um jogo** Animação criada para roleta das cores e roleta par/impar.
-- **Crud** Criação, leitura, atualização e remoção criadas e implementadas através da classe `GerenciadorJogador.java.
-- **Preparação para futuras integrações** e expansões do sistema.
+- ☕ Java 8 ou superior
+- 📦 Biblioteca externa: GSON (para persistência JSON)
+
+🔗 Baixar GSON: https://github.com/google/gson  
+Ou usar via Maven/Gradle
+
+```
+Vs16-ProjetoFinalJavaPOO
+├── .idea
+├── imperioDasFichas
+│   ├── src
+│   │   ├── controller
+│   │   │   ├── GerenciadorJogador.java
+│   │   │   ├── GerenciadorJogo.java
+│   │   ├── dao
+│   │   │   ├── db
+│   │   │   │   └── DataBaseSingleton.java
+│   │   │   ├── interfaces
+│   │   │   │   ├── DaoGenerico.java
+│   │   │   │   ├── JogadorDao.java
+│   │   │   │   ├── JogoDao.java
+│   │   ├── images
+│   │   │   ├── diagrama.png
+│   │   │   ├── diagrama2.png
+│   │   │   ├── diagrama3.png
+│   │   ├── model
+│   │   │   ├── jogos
+│   │   │   │   ├── Carteira.java
+│   │   │   │   ├── Jogador.java
+│   │   │   │   ├── Partida.java
+│   │   ├── view
+│   │   │   ├── animacoes
+│   │   │   │   ├── AnimacaoRoletaCores.java
+│   │   │   │   ├── AnimacaoRoletaParImpar.java
+│   │   │   ├── ImperioDasFichas.java
+├── .gitignore
+├── README.md
+└── Vs16-ProjetoFinalJavaPOO.iml
+
+```
+### 🛠️ Como Compilar
+
+```bash
+javac -d out src/model/*.java src/controller/*.java src/dao/*.java src/app/ImperioDasFichas.java
+```
+### ▶️ Como Executar
+
+```bash
+java -cp out app.ImperioDasFichas
+```
+
+## 🧪 Funcionalidades para Testar
+
+- **Cadastro de Jogadores**
+
+-  **Roleta Clássica** (Aposta em par ou ímpar)
+
+-  **Roleta das Cores** (Aposta em cores)
+
+- **Caça Níquel** (Aposte nos símbolos)
+
+- **Blackjack** (Chegue o mais próximo de 21)
+
+- **Compra e Venda de Fichas**
+
+- **Gerenciamento de Carteira**
+
+-  **Edição de Perfil de Jogador**
+
+- **Exclusão de Conta**
+
+### 📌 Classe Main Temporária
+
+```java
+package app;
+
+import controller.GerenciadorJogo;
+import model.Jogador;
+import model.jogos.roletas.Roleta;
+import model.jogos.roletas.RoletaCores;
+import model.jogos.cacaniquel.CacaNiquel;
+import model.jogos.blackjack.BlackJack;
+
+public class ImperioDasFichas {
+  public static void main(String[] args) {
+    Roleta roleta = new Roleta("Roleta Clássica", "Aposte em par ou ímpar");
+    RoletaCores roletaCores = new RoletaCores("Roleta das Cores", "Aposte em uma cor.");
+    CacaNiquel cacaNiquel = new CacaNiquel("Caça Níquel", "Aposte em símbolos.");
+    BlackJack blackJack = new BlackJack("BlackJack", "Chegue o mais próximo de 21");
+
+    GerenciadorJogo jogo = new GerenciadorJogo("Império das Fichas", 5.0);
+    jogo.adicionarJogo(roleta);
+    jogo.adicionarJogo(roletaCores);
+    jogo.adicionarJogo(cacaNiquel);
+    jogo.adicionarJogo(blackJack);
+
+    Jogador jogador = new Jogador("Ana", 21, "aninha21");
+    jogo.adicionarJogador(jogador);
+    jogo.comprarFicha("aninha21", 10);
+    jogo.iniciarPartida(roleta, jogador, 5, 1);
+  }
+}
+```
+
+---
+## 🛠️ Funcionalidades Implementadas
+
+### CRUD Completo de Jogadores e Jogos
+
+Agora, o sistema permite que o jogador realize operações CRUD sobre as entidades **Jogador** e **Jogo**, o que inclui:
+
+- **Create**: Criar novos jogadores com fichas iniciais, bem como adicionar jogos ao sistema.
+- **Read**: Listar todos os jogadores e jogos cadastrados.
+- **Update**: Atualizar o nome e idade do jogador, além de editar as informações de um jogo (como suas regras e valores).
+- **Delete**: Remover jogadores ou jogos do sistema.
+
+### Uso Estratégico de Java Collections
+
+Na Etapa III, foram aplicados os seguintes tipos de coleções:
+
+- **HashMap**: Para o armazenamento eficiente de jogadores e jogos, com acesso rápido por chave (nickname para jogadores, nome do jogo para jogos).
+- **ArrayList**: Para armazenar as partidas de cada jogador e as listas de jogos, garantindo a ordem das inserções.
+- **HashSet**: Usado para garantir a unicidade de entidades (como habilidades do jogador ou tipos de itens raros).
+
+### Persistência de Dados
+
+A utilização de **GSON** permite que os dados de jogadores, jogos e partidas sejam armazenados e recuperados em formato JSON, melhorando a persistência do sistema.
 
 ---
 
-## 🏗️ Arquitetura e Padrão MVC
-
-O projeto **Império das Fichas** foi totalmente refatorado para adotar o padrão arquitetural **MVC (Model-View-Controller)**, promovendo organização, modularidade e facilidade de manutenção.
-
-- **Model:** Contém as entidades e regras de negócio do jogo, como `Jogador`, `Carteira`, `Partida` e os diferentes jogos (ex: `model/jogos/roletas`, `model/jogos/cacaniquel`).
-- **View:** Responsável pela interação com o usuário, atualmente via terminal, localizada no pacote `view`.
-- **Controller:** Gerencia a lógica de controle, recebendo comandos da view, manipulando os models e atualizando a interface (ex: `controller/GerenciadorJogo`, `controller/GerenciadorJogador`).
-
-Essa separação permite evoluir o sistema de forma mais segura e colaborativa, facilitando a implementação de novas funcionalidades e a manutenção do código.
-
-
----
 
 ## 📌 Kanban do Projeto
 🔗 [Acompanhe o progresso no GitHub Projects](https://github.com/users/Gabssanjoss/projects/2/views/1)

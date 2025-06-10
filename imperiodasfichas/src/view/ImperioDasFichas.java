@@ -2,21 +2,26 @@ package view;
 
 import controller.GerenciadorJogador;
 import controller.GerenciadorJogo;
+import dao.JogadorDao;
+import dao.JogoDao;
 import model.Jogador;
 import model.jogos.Jogo;
 import model.jogos.cacaniquel.CacaNiquel;
 import model.jogos.roletas.Roleta;
 import model.jogos.roletas.RoletaCores;
 import model.jogos.blackjack.BlackJack;
+import view.animacoes.AnimacaoEntrada;
 
 import java.util.Scanner;
 
 public class ImperioDasFichas {
 
-    static final GerenciadorJogador gerenciadorJogador = new GerenciadorJogador();
-    static final GerenciadorJogo gerenciadorJogo = new GerenciadorJogo("Império das Fichas", 1.00, gerenciadorJogador);
+    static final GerenciadorJogador gerenciadorJogador = new GerenciadorJogador(new JogadorDao());
+    static final GerenciadorJogo gerenciadorJogo = new GerenciadorJogo("Império das Fichas", 1.00, gerenciadorJogador, new JogoDao());
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
+
+        AnimacaoEntrada.executar();
 
         // Adição dos jogos de roleta
         Jogo roleta = new Roleta("Roleta Clássica", "Aposte em ⚪ PAR (0) ou ⚫ ÍMPAR (1). Se acertar, ganha o dobro do valor apostado! 💰");

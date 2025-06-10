@@ -5,6 +5,8 @@ import model.Partida;
 import model.jogos.Jogo;
 import java.util.Random;
 
+import exceptions.ValorInvalido;
+
 public class CacaNiquel extends Jogo {
 
     private String[] simbolos = {"🍒", "⭐", "💎", "🔔"};
@@ -20,7 +22,6 @@ public class CacaNiquel extends Jogo {
         boolean ganhou = verificarResultado(resultadoCodificado, opcaoEscolhida);
         Partida partida = new Partida(valorApostado, ganhou, this, jogador);
         exibirResultado(partida, resultadoCodificado);
-
         return partida;
     }
 
@@ -39,13 +40,13 @@ public class CacaNiquel extends Jogo {
     }
 
     @Override
-    public boolean apostaValida(int valorApostado, int opcaoEscolhida) {
-        return validarValor(valorApostado);
+    public void apostaValida(int valorApostado, int opcaoEscolhida) throws ValorInvalido {
+        validarValor(valorApostado);
     }
 
     @Override
-    public boolean validarOpcao(int opcaoEscolhida) {
-        return true;
+    public void validarOpcao(int opcaoEscolhida) {
+        throw new UnsupportedOperationException("O caça-níquel não possui opções de aposta válidas.");
     }
 
     @Override

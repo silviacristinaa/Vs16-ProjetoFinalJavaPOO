@@ -1,5 +1,6 @@
 package model.jogos.roletas;
 
+import exceptions.ValorInvalido;
 import model.Jogador;
 import model.Partida;
 import model.jogos.Jogo;
@@ -12,10 +13,8 @@ public class RoletaParImpar extends Jogo {
 
 
     @Override
-    public Partida jogar(Jogador jogador,int valorApostado, int opcaoEscolhida) {
-        if (!apostaValida(valorApostado, opcaoEscolhida)) {
-            return null;
-        }
+    public Partida jogar(Jogador jogador,int valorApostado, int opcaoEscolhida) throws ValorInvalido {
+        apostaValida(valorApostado, opcaoEscolhida);
         jogador.getCarteira().removerFichas(valorApostado);
         int resultadoRoleta = girarRoleta();
         boolean ganhou = verificarResultado(resultadoRoleta, opcaoEscolhida);
@@ -25,17 +24,16 @@ public class RoletaParImpar extends Jogo {
     }
 
     @Override
-    public boolean apostaValida(int valorApostado, int opcaoEscolhida) {
-        return validarValor(valorApostado) && validarOpcao(opcaoEscolhida);
+    public void apostaValida(int valorApostado, int opcaoEscolhida) throws ValorInvalido {
+        validarValor(valorApostado);
+        validarOpcao(opcaoEscolhida);
     }
 
     @Override
-    public boolean validarOpcao(int opcaoEscolhida) {
-        if (opcaoEscolhida != 0 && opcaoEscolhida != 1) {
-            System.out.println("\nOpção inválida. Escolha 0 para PAR ou 1 para ÍMPAR.");
-            return false;
+    public void validarOpcao(int opcaoEscolhida) throws ValorInvalido {
+        if (opcaoEscolhida < 0 || opcaoEscolhida > 1) {
+            throw new ValorInvalido("Opção inválida. Escolha 0 para PAR ou 1 para ÍMPAR.");
         }
-        return true;
     }
 
     @Override

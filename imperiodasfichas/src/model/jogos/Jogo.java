@@ -2,6 +2,7 @@ package model.jogos;
 
 import java.util.Objects;
 
+import exceptions.ValorInvalido;
 import model.Jogador;
 import model.Partida;
 
@@ -20,23 +21,17 @@ public abstract class Jogo {
         System.out.println("Regras do jogo " + nomeJogo + ": " + regras);
     }
 
-    public abstract Partida jogar(Jogador jogador ,int valorApostado, int opcaoEscolhida);
+    public abstract Partida jogar(Jogador jogador ,int valorApostado, int opcaoEscolhida) throws ValorInvalido;
 
-    public abstract boolean apostaValida(int valorApostado, int opcaoEscolhida);
+    public abstract void apostaValida(int valorApostado, int opcaoEscolhida) throws ValorInvalido;
 
-    protected boolean validarValor(int valorApostado) {
-        if (valorApostado <= 0) {
-            System.out.println("Valor apostado deve ser maior que zero.");
-            return false;
-        }
+    protected void validarValor(int valorApostado) throws ValorInvalido {
         if (valorApostado < getValorInicial()) {
-            System.out.printf("Valor apostado deve ser maior ou igual ao valor inicial (%d).\n", getValorInicial());
-            return false;
+            throw new ValorInvalido("Valor apostado deve ser maior ou igual ao valor inicial.");
         }
-        return true;
     }
 
-    public abstract boolean validarOpcao(int opcaoEscolhida);
+    public abstract void validarOpcao(int opcaoEscolhida) throws ValorInvalido;
     public abstract boolean verificarResultado(int resultado, int opcaoEscolhida);
 
     public abstract void exibirResultado(Partida partida, int resultado);

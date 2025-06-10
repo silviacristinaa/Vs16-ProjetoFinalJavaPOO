@@ -37,17 +37,13 @@ public class Carteira {
         return false;
     }
 
-    public boolean depositarFichasCompradas(int quantidadeFicha, double valorFicha) {
-        if (quantidadeFicha < 0) {
-            return false;
-        }
+    public void depositarFichasCompradas(int quantidadeFicha, double valorFicha) {
         this.fichas += quantidadeFicha;
         this.dinheiro -= quantidadeFicha * valorFicha;
-        return true;
     }
 
     public boolean sacarFichasVendidas(int quantidadeFicha, double valorFicha) {
-        if (this.fichas >= quantidadeFicha && quantidadeFicha > 0) {
+        if (this.fichas >= quantidadeFicha) {
             this.fichas -= quantidadeFicha;
             this.dinheiro += quantidadeFicha * valorFicha;
             return true;

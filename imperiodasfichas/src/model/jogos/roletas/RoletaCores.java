@@ -1,5 +1,6 @@
 package model.jogos.roletas;
 
+import exceptions.ValorInvalido;
 import model.Jogador;
 import model.Partida;
 import model.jogos.Jogo;
@@ -16,10 +17,8 @@ public class RoletaCores extends Jogo {
     }
 
     @Override
-    public Partida jogar(Jogador jogador,int valorApostado, int opcaoEscolhida) {
-        if (!apostaValida(valorApostado, opcaoEscolhida)) {
-            return null;
-        }
+    public Partida jogar(Jogador jogador,int valorApostado, int opcaoEscolhida) throws ValorInvalido {
+        apostaValida(valorApostado, opcaoEscolhida);
         jogador.getCarteira().removerFichas(valorApostado);
         int resultadoRoleta = girarRoleta();
         boolean ganhou = verificarResultado(resultadoRoleta, opcaoEscolhida);
@@ -29,13 +28,16 @@ public class RoletaCores extends Jogo {
     }
 
     @Override
-    public boolean apostaValida(int valorApostado, int opcaoEscolhida) {
-        return validarValor(valorApostado) && validarOpcao(opcaoEscolhida);
+    public void apostaValida(int valorApostado, int opcaoEscolhida) throws ValorInvalido {
+        validarValor(valorApostado);
+        validarOpcao(opcaoEscolhida);
     }
 
     @Override
-    public boolean validarOpcao(int opcaoEscolhida) {
-        return opcaoEscolhida >= 0 && opcaoEscolhida < CoresDaRoleta.values().length;
+    public void validarOpcao(int opcaoEscolhida) throws ValorInvalido {
+        if (opcaoEscolhida < 0 || opcaoEscolhida >= CoresDaRoleta.values().length) {
+            throw new ValorInvalido("Opção inválida. Escolha um número entre 0 e " + (CoresDaRoleta.values().length - 1));
+        }
     }
 
     @Override

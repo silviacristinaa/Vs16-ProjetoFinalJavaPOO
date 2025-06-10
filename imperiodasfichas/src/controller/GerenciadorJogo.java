@@ -1,6 +1,9 @@
 package controller;
 
 import dao.interfaces.DaoGenerico;
+import exceptions.DadosDuplicados;
+import exceptions.NaoEncontradoException;
+import exceptions.ValorInvalido;
 import model.Jogador;
 import model.Partida;
 import model.jogos.Jogo;
@@ -18,53 +21,53 @@ public class GerenciadorJogo {
         this.valorFicha = valorFicha;
     }
 
-    public Partida iniciarPartida(Jogo jogo, Jogador jogador, int quantidadeFichaAposta, int opcaoEscolhida) {
+    public Partida iniciarPartida(Jogo jogo, Jogador jogador, int quantidadeFichaAposta, int opcaoEscolhida) throws Exception {
+        if (quantidadeFichaAposta <= 0) {
+            throw new ValorInvalido("Quantidade de fichas apostadas deve ser positiva: " + quantidadeFichaAposta);
+        }
+        if (jogador.getCarteira().getFichas() < quantidadeFichaAposta) {
+            throw new ValorInvalido("Jogador não possui fichas suficientes para apostar: " + quantidadeFichaAposta);
+        }
         Partida partida = jogo.jogar(jogador,quantidadeFichaAposta, opcaoEscolhida);
         jogador.getPartidas().add(partida);
         return partida;
     }
 
-    public Jogo adicionarJogo(Jogo jogo) {
-        if (buscarJogo(jogo.getNomeJogo()) != null) {
-            System.out.println("Jogo com o nome " + jogo.getNomeJogo() + " já existe.");
-            return null;
+    public Jogo adicionarJogo(Jogo jogo) throws DadosDuplicados {
+        if (jogoExiste(jogo.getNomeJogo())) {
+            throw new DadosDuplicados("Jogo com o nome " + jogo.getNomeJogo() + " já existe.");
         }
         return daoGenerico.adicionar(jogo);
     }
-    public boolean removerJogo(String nomeJogo) {
+    public boolean removerJogo(String nomeJogo) throws NaoEncontradoException {
         Jogo jogo = buscarJogo(nomeJogo);
-        if (jogo == null) {
-            System.out.println("Jogo não encontrado.");
-            return false;
-        }
         return daoGenerico.remover(jogo);
     }
 
-    public Jogo buscarJogo(String nomeJogo) {
-        return daoGenerico.buscar(nomeJogo);
+    public boolean jogoExiste(String nomeJogo) {
+        return daoGenerico.buscar(nomeJogo) != null;
     }
 
-    public boolean comprarFicha(String nicknameJogador, int quantidadeFicha) {
-        Jogador jogador = gerenciadorJogador.buscarJogador(nicknameJogador);
-        if (jogador != null) {
-            if(jogador.getCarteira().getDinheiro() < quantidadeFicha * valorFicha) {
-                System.out.println("❌ Dinheiro insuficiente para comprar as fichas!");
-                return false;
-            }
-            return jogador.getCarteira().depositarFichasCompradas(quantidadeFicha, getValorFicha());
+    public Jogo buscarJogo(String nomeJogo) throws NaoEncontradoException {
+        Jogo jogo = daoGenerico.buscar(nomeJogo);
+        if (jogo == null) {
+            throw new NaoEncontradoException("Jogo com o nome " + nomeJogo + " não encontrado.");
         }
-        return false;
+        return jogo;
     }
-    public boolean venderFicha(String nicknameJogador, int quantidadeFicha) {
+
+    public void comprarFicha(String nicknameJogador, int quantidadeFicha) throws Exception{
+        if (quantidadeFicha <= 0) throw new ValorInvalido("Quantidade de fichas deve ser positiva: " + quantidadeFicha);
         Jogador jogador = gerenciadorJogador.buscarJogador(nicknameJogador);
-        if (jogador != null) {
-            if(!jogador.getCarteira().sacarFichasVendidas(quantidadeFicha, getValorFicha())) {
-                System.out.println("Jogador só possui " + jogador.getCarteira().getFichas() + " fichas.");
-                return false;
-            }
-            return jogador.getCarteira().depositarDinheiro(quantidadeFicha * valorFicha);
+        if(jogador.getCarteira().getDinheiro() < quantidadeFicha * valorFicha) throw new ValorInvalido("Jogador não possui dinheiro suficiente para comprar fichas.");
+        jogador.getCarteira().depositarFichasCompradas(quantidadeFicha, getValorFicha());
+    }
+    public void venderFicha(String nicknameJogador, int quantidadeFicha) throws Exception {
+        if (quantidadeFicha <= 0) throw new ValorInvalido("Quantidade de fichas deve ser positiva: " + quantidadeFicha);
+        Jogador jogador = gerenciadorJogador.buscarJogador(nicknameJogador);
+        if(!jogador.getCarteira().sacarFichasVendidas(quantidadeFicha, getValorFicha())) {
+            throw new ValorInvalido("Jogador não possui "+ quantidadeFicha+ " fichas para vender.");
         }
-        return false;
     }
 
     public String getNome() {

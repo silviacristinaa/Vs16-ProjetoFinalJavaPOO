@@ -3,6 +3,7 @@ package model.jogos.roletas;
 import model.Jogador;
 import model.Partida;
 import model.jogos.Jogo;
+import view.animacoes.AnimacaoRoletaParImpar;
 
 public class Roleta extends Jogo {
 
@@ -58,8 +59,10 @@ public class Roleta extends Jogo {
     }
 
     private int girarRoleta() {
-        int resultado = (int) (Math.random() * 36); // 0 a 35
-        System.out.println("Girando a roleta...");
-        return resultado;
+        try {
+            return AnimacaoRoletaParImpar.executar();
+        } catch (InterruptedException e) {
+            return (int) (Math.random() * 36);
+        }
     }
 }

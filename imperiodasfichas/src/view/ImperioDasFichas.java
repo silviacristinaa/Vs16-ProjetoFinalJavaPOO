@@ -9,6 +9,7 @@ import model.jogos.Jogo;
 import model.jogos.cacaniquel.CacaNiquel;
 import model.jogos.roletas.Roleta;
 import model.jogos.roletas.RoletaCores;
+import view.animacoes.AnimacaoEntrada;
 
 import java.util.Scanner;
 
@@ -19,7 +20,7 @@ public class ImperioDasFichas {
 
     public static void main(String[] args) throws InterruptedException {
 
-        view.animacoes.AnimacaoEntrada.executar();
+        AnimacaoEntrada.executar();
 
         // Adição dos jogos de roleta
         Jogo roleta = new Roleta("Roleta Clássica", "Aposte em ⚪ PAR (0) ou ⚫ ÍMPAR (1). Se acertar, ganha o dobro do valor apostado! 💰");

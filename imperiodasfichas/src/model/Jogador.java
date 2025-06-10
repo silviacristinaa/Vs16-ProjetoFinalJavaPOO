@@ -1,6 +1,7 @@
 package model;
 
-import java.util.ArrayList;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class Jogador {
 
@@ -8,21 +9,21 @@ public class Jogador {
     private String nickname;
     private int idade;
     private Carteira carteira;
-    private ArrayList<Partida> partidas;
+    private Set<Partida> partidas;
 
     public Jogador(String nome, int idade, String nickname) {
         this.nome = nome;
         this.idade = idade;
         this.nickname = nickname;
         this.carteira = new Carteira();
-        this.partidas = new ArrayList<>();
+        this.partidas = new TreeSet<>();
     }
     public Jogador(String nome, int idade, String nickname, Carteira carteira) {
         this.nome = nome;
         this.idade = idade;
         this.nickname = nickname;
         this.carteira = carteira;
-        this.partidas = new ArrayList<>();
+        this.partidas = new TreeSet<>();
     }
 
     public String getNome() {
@@ -41,7 +42,7 @@ public class Jogador {
         return nickname;
     }
 
-    public ArrayList<Partida> getPartidas() {
+    public Set<Partida> getPartidas() {
         return partidas;
     }
 
@@ -61,8 +62,15 @@ public class Jogador {
         this.nickname = nickname;
     }
 
-    public void setPartidas(ArrayList<Partida> partidas) {
-        this.partidas = partidas;
+    public void adicionarPartida(Partida partida) {
+        if (partida != null) {
+            this.partidas.add(partida);
+        }
+    }
+    public void removerPartida(Partida partida) {
+        if (partida != null) {
+            this.partidas.remove(partida);
+        }
     }
 
     @Override

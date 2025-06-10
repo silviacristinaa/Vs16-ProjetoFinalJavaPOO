@@ -12,28 +12,17 @@ public class JogadorDao implements DaoGenerico<Jogador, String> {
 
     @Override
     public Jogador adicionar(Jogador entidade) {
-        if (buscar(entidade.getNickname()) == null) {
-            dataBase.getJogadores().add(entidade);
-            return entidade;
-        } 
-        return null;
+        return dataBase.addJogador(entidade);
     }
 
     @Override
     public boolean remover(Jogador jogador) {
-        return dataBase.getJogadores().remove(jogador);
+        return dataBase.removeJogador(jogador.getNickname());
     }
 
     @Override
     public Jogador buscar(String key) {
-        if (!dataBase.getJogadores().isEmpty()) {
-            for (Jogador jogador : dataBase.getJogadores()) {
-                if (jogador.getNickname().equals(key)) {
-                    return jogador;
-                }
-            }
-        }
-        return null;
+        return dataBase.getJogador(key);
     }
 
     @Override

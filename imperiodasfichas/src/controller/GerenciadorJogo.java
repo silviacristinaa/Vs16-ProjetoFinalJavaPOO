@@ -1,6 +1,6 @@
 package controller;
 
-import dao.JogoDao;
+import dao.interfaces.DaoGenerico;
 import model.Jogador;
 import model.Partida;
 import model.jogos.Jogo;
@@ -8,14 +8,14 @@ import model.jogos.Jogo;
 public class GerenciadorJogo {
     private String nome;
     private double valorFicha;
-    private final JogoDao jogoDao;
+    private final DaoGenerico<Jogo, String> daoGenerico;
     private final GerenciadorJogador gerenciadorJogador;
 
-    public GerenciadorJogo(String nome, double valorFicha, GerenciadorJogador gerenciadorJogador) {
+    public GerenciadorJogo(String nome, double valorFicha, GerenciadorJogador gerenciadorJogador, DaoGenerico<Jogo, String> daoGenerico) {
+        this.daoGenerico = daoGenerico;
         this.gerenciadorJogador = gerenciadorJogador;
         this.nome = nome;
         this.valorFicha = valorFicha;
-        this.jogoDao = new JogoDao();
     }
 
     public Partida iniciarPartida(Jogo jogo, Jogador jogador, int quantidadeFichaAposta, int opcaoEscolhida) {
@@ -25,7 +25,11 @@ public class GerenciadorJogo {
     }
 
     public Jogo adicionarJogo(Jogo jogo) {
-        return jogoDao.adicionar(jogo);
+        if (buscarJogo(jogo.getNomeJogo()) != null) {
+            System.out.println("Jogo com o nome " + jogo.getNomeJogo() + " já existe.");
+            return null;
+        }
+        return daoGenerico.adicionar(jogo);
     }
     public boolean removerJogo(String nomeJogo) {
         Jogo jogo = buscarJogo(nomeJogo);
@@ -33,11 +37,11 @@ public class GerenciadorJogo {
             System.out.println("Jogo não encontrado.");
             return false;
         }
-        return jogoDao.remover(jogo);
+        return daoGenerico.remover(jogo);
     }
 
     public Jogo buscarJogo(String nomeJogo) {
-        return jogoDao.buscar(nomeJogo);
+        return daoGenerico.buscar(nomeJogo);
     }
 
     public boolean comprarFicha(String nicknameJogador, int quantidadeFicha) {

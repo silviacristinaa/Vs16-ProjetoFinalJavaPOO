@@ -17,6 +17,13 @@ public class Jogador {
         this.carteira = new Carteira();
         this.partidas = new ArrayList<>();
     }
+    public Jogador(String nome, int idade, String nickname, Carteira carteira) {
+        this.nome = nome;
+        this.idade = idade;
+        this.nickname = nickname;
+        this.carteira = carteira;
+        this.partidas = new ArrayList<>();
+    }
 
     public String getNome() {
         return nome;

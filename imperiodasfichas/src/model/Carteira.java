@@ -5,8 +5,12 @@ public class Carteira {
     private double dinheiro;
 
     public Carteira() {
-        this.fichas = 1000;
+        this.fichas = 10;
         this.dinheiro = 0;
+    }
+    public Carteira(int fichas, double dinheiro) {
+        adicionarFichas(fichas);
+        depositarDinheiro(dinheiro);
     }
 
     public int getFichas() {

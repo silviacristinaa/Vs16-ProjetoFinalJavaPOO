@@ -1,4 +1,4 @@
-package view.animacoes;
+package model.jogos.roletas;
 
 import java.util.List;
 import java.util.Arrays;

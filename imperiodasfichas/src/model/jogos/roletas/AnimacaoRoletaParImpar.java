@@ -1,4 +1,4 @@
-package view.animacoes;
+package model.jogos.roletas;
 
 public class AnimacaoRoletaParImpar {
     public static int executar() throws InterruptedException {

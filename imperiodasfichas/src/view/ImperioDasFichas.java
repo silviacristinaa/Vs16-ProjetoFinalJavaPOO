@@ -7,7 +7,7 @@ import dao.JogoDao;
 import model.Jogador;
 import model.jogos.Jogo;
 import model.jogos.cacaniquel.CacaNiquel;
-import model.jogos.roletas.Roleta;
+import model.jogos.roletas.RoletaParImpar;
 import model.jogos.roletas.RoletaCores;
 import model.jogos.blackjack.BlackJack;
 import view.animacoes.AnimacaoEntrada;
@@ -24,7 +24,7 @@ public class ImperioDasFichas {
         AnimacaoEntrada.executar();
 
         // Adição dos jogos de roleta
-        Jogo roleta = new Roleta("Roleta Clássica", "Aposte em ⚪ PAR (0) ou ⚫ ÍMPAR (1). Se acertar, ganha o dobro do valor apostado! 💰");
+        Jogo roleta = new RoletaParImpar("Roleta Clássica", "Aposte em ⚪ PAR (0) ou ⚫ ÍMPAR (1). Se acertar, ganha o dobro do valor apostado! 💰");
         Jogo roletaCores = new RoletaCores("Roleta das Cores", "Aposte em uma cor: VERMELHO (0), AZUL (1), AMARELO (2), VERDE (3). 🍀 Acerte e ganhe 4x! 💰");
         Jogo cacaNiquel = new CacaNiquel("Caça Níquel", "🎰 Aperte a alavanca da sorte. Se acertar, ganhe o dobro do valor apostado! 💰");
         Jogo blackJack = new BlackJack("BlackJack", "🃏 Chegue o mais próximo de 21 sem ultrapassar. Se vencer, ganhe o triplo do valor apostado! 💰");

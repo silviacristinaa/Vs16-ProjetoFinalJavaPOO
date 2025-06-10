@@ -57,7 +57,7 @@ public class RoletaCores extends Jogo {
 
     private int girarRoleta() {
         try {
-            return view.animacoes.AnimacaoRoletaCores.executar();
+            return AnimacaoRoletaCores.executar();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             return (int) (Math.random() * 4);

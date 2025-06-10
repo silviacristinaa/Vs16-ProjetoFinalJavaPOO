@@ -17,7 +17,9 @@ public class ImperioDasFichas {
     static final GerenciadorJogador gerenciadorJogador = new GerenciadorJogador(new JogadorDao());
     static final GerenciadorJogo gerenciadorJogo = new GerenciadorJogo("Império das Fichas", 1.00, gerenciadorJogador, new JogoDao());
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
+
+        view.animacoes.AnimacaoEntrada.executar();
 
         // Adição dos jogos de roleta
         Jogo roleta = new Roleta("Roleta Clássica", "Aposte em ⚪ PAR (0) ou ⚫ ÍMPAR (1). Se acertar, ganha o dobro do valor apostado! 💰");

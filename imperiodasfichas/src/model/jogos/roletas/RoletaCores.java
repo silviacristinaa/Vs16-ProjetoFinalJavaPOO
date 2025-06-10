@@ -49,15 +49,18 @@ public class RoletaCores extends Jogo {
         if (partida.isGanhou()) {
             int premio = partida.getQuantidadeFichasApostado() * 4;
             partida.getJogador().getCarteira().adicionarFichas(premio);
-            System.out.printf("Parabéns! Você ganhou! \nResultado da Roleta: %s\nPrêmio: %d fichas\n", corResultado, premio);
+            System.out.printf("Parabéns! Você ganhou! \nPrêmio: %d fichas\n", premio);
         } else {
-            System.out.printf("Você perdeu. Resultado da roleta: %s\n", corResultado);
+            System.out.print("Você perdeu. :< - tente novamente!");
         }
     }
 
     private int girarRoleta() {
-        System.out.println("Girando a roleta...");
-        CoresDaRoleta[] cores = CoresDaRoleta.values();
-        return (int) (Math.random() * cores.length);
+        try {
+            return view.animacoes.AnimacaoRoletaCores.executar();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            return (int) (Math.random() * 4);
+        }
     }
 }

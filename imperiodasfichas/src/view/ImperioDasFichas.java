@@ -428,9 +428,12 @@ public class ImperioDasFichas {
                     System.out.print("Digite o seu nickname para confirmar a exclusão da conta: ");
                     String nickname = scanner.nextLine();
 
-                    if (!gerenciadorJogador.removerJogador(nickname)) {
+                    if (!jogador.getNickname().equals(nickname)) {
+                        System.out.println("❌ Verifique o nickname digitado e tente novamente.");
                         break;
                     }
+
+                    gerenciadorJogador.removerJogador(nickname);
 
                     System.out.println("✅ Sua conta foi removida com sucesso!");
                     return true;

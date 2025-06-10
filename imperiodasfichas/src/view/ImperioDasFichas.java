@@ -16,19 +16,25 @@ public class ImperioDasFichas {
     static final GerenciadorJogo gerenciadorJogo = new GerenciadorJogo("Império das Fichas", 1.00, gerenciadorJogador);
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-
-        int opcao;
-        Jogador jogador = null;
 
         // Adição dos jogos de roleta
         Jogo roleta = new Roleta("Roleta Clássica", "Aposte em ⚪ PAR (0) ou ⚫ ÍMPAR (1). Se acertar, ganha o dobro do valor apostado! 💰");
-        Jogo roletaCores = new RoletaCores("Roleta das Cores","Aposte em uma cor: VERMELHO (0), AZUL (1), AMARELO (2), VERDE (3). 🍀 Acerte e ganhe 4x! 💰");
+        Jogo roletaCores = new RoletaCores("Roleta das Cores", "Aposte em uma cor: VERMELHO (0), AZUL (1), AMARELO (2), VERDE (3). 🍀 Acerte e ganhe 4x! 💰");
         Jogo cacaNiquel = new CacaNiquel("Caça Níquel", "🎰 Aperte a alavanca da sorte. Se acertar, ganhe o dobro do valor apostado! 💰");
 
         gerenciadorJogo.adicionarJogo(roleta);
         gerenciadorJogo.adicionarJogo(roletaCores);
         gerenciadorJogo.adicionarJogo(cacaNiquel);
+
+        menuInicial();
+    }
+
+    public static void menuInicial() {
+
+        Scanner scanner = new Scanner(System.in);
+
+        int opcao;
+        Jogador jogador = null;
 
         do {
             System.out.println("\n=======================================");
@@ -57,7 +63,7 @@ public class ImperioDasFichas {
                     int idade = lerInteiro(scanner.nextLine());
 
                     if (idade < 18) {
-                        System.out.println("⚠️ Entrada proibida: este cassino é reservado exclusivamente para maiores de 18 anos.");
+                        System.out.println("⚠️ Entrada proibida: apenas maiores de 18 anos podem jogar no Império das Fichas.");
                         break;
                     }
 
@@ -87,7 +93,6 @@ public class ImperioDasFichas {
 
         } while (opcao != 3);
 
-        scanner.close();
     }
 
     public static void menuCarteira(Jogador jogador) {
@@ -189,7 +194,8 @@ public class ImperioDasFichas {
             System.out.println("🎰 2. Jogar Roleta");
             System.out.println("🎰 3. Jogar Caça Níquel");
             System.out.println("✏️ 4. Editar Perfil");
-            System.out.println("🚪 5. Voltar ao Menu Inicial...");
+            System.out.println("🗑️ 5. Excluir Conta");
+            System.out.println("🚪 6. Voltar ao Menu Inicial...");
 
             System.out.print("\n🧭 Escolha uma opção: ");
             opcao = lerInteiro(scanner.nextLine());
@@ -208,6 +214,13 @@ public class ImperioDasFichas {
                     menuEditarJogador(jogador);
                     break;
                 case 5:
+                    boolean deletou = menuDeletarJogador(jogador);
+
+                    if (deletou) {
+                        opcao = 6;
+                    }
+                    break;
+                case 6:
                     System.out.println("\n👋 Retornando ao Menu Principal...");
                     break;
                 default:
@@ -215,7 +228,7 @@ public class ImperioDasFichas {
                     break;
             }
 
-        } while (opcao != 5);
+        } while (opcao != 6);
     }
 
     public static void controleLogin() {
@@ -239,7 +252,6 @@ public class ImperioDasFichas {
 
     public static void menuJogos(Jogador jogador) {
         Scanner scanner = new Scanner(System.in);
-
 
 
         System.out.println("\n🎰 Escolha o tipo de Roleta:");
@@ -396,6 +408,44 @@ public class ImperioDasFichas {
             }
 
         } while (opcao != 3);
+    }
+
+    public static boolean menuDeletarJogador(Jogador jogador) {
+        Scanner scanner = new Scanner(System.in);
+        int opcao;
+
+        do {
+            System.out.println("\n🗑️️ Menu de Deletar Jogador(a)");
+
+            System.out.println("1. Remover Conta");
+            System.out.println("2. Voltar");
+
+            System.out.print("\n🧭 Escolha uma opção: ");
+            opcao = lerInteiro(scanner.nextLine());
+
+            switch (opcao) {
+                case 1:
+                    System.out.print("Digite o seu nickname para confirmar a exclusão da conta: ");
+                    String nickname = scanner.nextLine();
+
+                    if (!gerenciadorJogador.removerJogador(nickname)) {
+                        break;
+                    }
+
+                    System.out.println("✅ Sua conta foi removida com sucesso!");
+                    return true;
+                case 2:
+                    System.out.println("🔙 Retornando...");
+                    break;
+
+                default:
+                    System.out.println("⚠️ Opção inválida!");
+                    break;
+            }
+
+        } while (opcao != 2);
+
+        return false;
     }
 
     private static int lerInteiro(String textoUsuario) {

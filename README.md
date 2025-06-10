@@ -199,17 +199,17 @@ Essas alterações na arquitetura e nas implementações proporcionam um sistema
 
 **Parte I:**
 <p align="center">
-  <img src="/src/images/diagrama.png" alt="Diagrama de Classes - Parte I" width="700"/>
+  <img src="imperiodasfichas/src/images/diagrama.png" alt="Diagrama de Classes - Parte I" width="700"/>
 </p>
 
 **Parte II:**
 <p align="center">
-  <img src="src/images/diagrama2.png" alt="Diagrama de Classes - Parte II" width="700"/>
+  <img src="imperiodasfichas/src/images/diagrama2.png" alt="Diagrama de Classes - Parte II" width="700"/>
 </p>
 
 **Parte III:**
 <p align="center">
-  <img src="/src/images/diagrama3.png" alt="Diagrama de Classes - Parte III" width="700"/>
+  <img src="imperiodasfichas/src/images/diagrama3.png" alt="Diagrama de Classes - Parte III" width="700"/>
 </p>
 
 ---

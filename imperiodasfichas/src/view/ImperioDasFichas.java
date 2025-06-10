@@ -9,6 +9,7 @@ import model.jogos.Jogo;
 import model.jogos.cacaniquel.CacaNiquel;
 import model.jogos.roletas.Roleta;
 import model.jogos.roletas.RoletaCores;
+import model.jogos.blackjack.BlackJack;
 import view.animacoes.AnimacaoEntrada;
 
 import java.util.Scanner;
@@ -26,10 +27,12 @@ public class ImperioDasFichas {
         Jogo roleta = new Roleta("Roleta Clássica", "Aposte em ⚪ PAR (0) ou ⚫ ÍMPAR (1). Se acertar, ganha o dobro do valor apostado! 💰");
         Jogo roletaCores = new RoletaCores("Roleta das Cores", "Aposte em uma cor: VERMELHO (0), AZUL (1), AMARELO (2), VERDE (3). 🍀 Acerte e ganhe 4x! 💰");
         Jogo cacaNiquel = new CacaNiquel("Caça Níquel", "🎰 Aperte a alavanca da sorte. Se acertar, ganhe o dobro do valor apostado! 💰");
+        Jogo blackJack = new BlackJack("BlackJack", "🃏 Chegue o mais próximo de 21 sem ultrapassar. Se vencer, ganhe o triplo do valor apostado! 💰");
 
         gerenciadorJogo.adicionarJogo(roleta);
         gerenciadorJogo.adicionarJogo(roletaCores);
         gerenciadorJogo.adicionarJogo(cacaNiquel);
+        gerenciadorJogo.adicionarJogo(blackJack);
 
         menuInicial();
     }
@@ -198,9 +201,10 @@ public class ImperioDasFichas {
             System.out.println("💼 1. Acessar Carteira");
             System.out.println("🎰 2. Jogar Roleta");
             System.out.println("🎰 3. Jogar Caça Níquel");
-            System.out.println("✏️ 4. Editar Perfil");
-            System.out.println("🗑️ 5. Excluir Conta");
-            System.out.println("🚪 6. Voltar ao Menu Inicial...");
+            System.out.println("🃏 4. Jogar BlackJack");
+            System.out.println("✏️ 5. Editar Perfil");
+            System.out.println("🗑️ 6. Excluir Conta");
+            System.out.println("🚪 7. Voltar ao Menu Inicial...");
 
             System.out.print("\n🧭 Escolha uma opção: ");
             opcao = lerInteiro(scanner.nextLine());
@@ -216,16 +220,19 @@ public class ImperioDasFichas {
                     menuCacaNiquel(jogador);
                     break;
                 case 4:
-                    menuEditarJogador(jogador);
+                    menuBlackJack(jogador);
                     break;
                 case 5:
+                    menuEditarJogador(jogador);
+                    break;
+                case 6:
                     boolean deletou = menuDeletarJogador(jogador);
 
                     if (deletou) {
-                        opcao = 6;
+                        opcao = 7;
                     }
                     break;
-                case 6:
+                case 7:
                     System.out.println("\n👋 Retornando ao Menu Principal...");
                     break;
                 default:
@@ -233,7 +240,7 @@ public class ImperioDasFichas {
                     break;
             }
 
-        } while (opcao != 6);
+        } while (opcao != 7);
     }
 
     public static void controleLogin() {
@@ -364,6 +371,35 @@ public class ImperioDasFichas {
         }
 
         gerenciadorJogo.iniciarPartida(cacaNiquel, jogador, valorApostado, 0);
+    }
+
+    public static void menuBlackJack(Jogador jogador) {
+        Scanner scanner = new Scanner(System.in);
+
+        Jogo blackJack = gerenciadorJogo.buscarJogo("BlackJack");
+
+        if (blackJack == null) {
+            System.out.println("❌ Jogo BlackJack não está disponível no momento.");
+            return;
+        }
+
+        System.out.println("\n🃏 Bem-vindo ao " + blackJack.getNomeJogo() + "!");
+        blackJack.exibirRegras();
+        System.out.printf("🎟️ Você tem %d fichas.\n", jogador.getCarteira().getFichas());
+        System.out.print("Quantas fichas deseja apostar?\n");
+        System.out.print("\nFICHAS APOSTADAS: ");
+        int valorApostado = lerInteiro(scanner.nextLine());
+
+        if (valorApostado <= 0 || valorApostado < blackJack.getValorInicial()) {
+            System.out.printf("❌ Aposta inválida. Mínimo: %d fichas.\n", blackJack.getValorInicial());
+            return;
+        }
+        if (valorApostado > jogador.getCarteira().getFichas()) {
+            System.out.println("❌ Você não tem fichas suficientes para essa aposta.");
+            return;
+        }
+
+        gerenciadorJogo.iniciarPartida(blackJack, jogador, valorApostado, 0);
     }
 
     public static void menuEditarJogador(Jogador jogador) {

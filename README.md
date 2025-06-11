@@ -147,37 +147,18 @@ Na segunda parte, o sistema foi expandido com novos recursos e refatorado para m
 
 ---
 
-### 🔹 Parte III – Evolução do Sistema com Persistência e Arquitetura Mais Robusta
+### 🔹 Parte III – Evolução do Sistema: Persistência e Arquitetura Robusta
 
-A Parte III trouxe refinamentos significativos para o sistema, focando na persistência de dados e uma arquitetura mais robusta. Aqui estão os pontos principais:
+Com o amadurecimento do projeto, novas camadas foram inseridas para trazer escalabilidade, organização e persistência:
 
-### **Classes de Jogo**
-A classe `Jogo` é a classe base para os diferentes tipos de jogos, como `Roleta`, `RoletaCores`, `CacaNiquel` e `BlackJack`, cada um com suas regras e lógica de jogo específicas.
 
-- **Roleta**: Contém o método `girarRoleta()` para gerar os resultados da roleta.
-- **RoletaCores**: Implementa uma roleta com cores específicas.
-- **CacaNiquel**: Jogo baseado em símbolos que são sorteados.
-- **BlackJack**: Jogo de cartas, onde o objetivo é se aproximar de 21 pontos sem ultrapassá-los.
-
-### **Persistência de Dados**
-A utilização do `DataBaseSingleton` melhora a persistência dos dados, permitindo o gerenciamento de entidades como `Jogador`, `Jogo` e `Partida` com um armazenamento centralizado, acessível por toda a aplicação.
-
-### **Gerenciamento de Jogadores e Jogos**
-- **GerenciadorJogador**: Agora possui métodos para manipulação CRUD de jogadores, incluindo adição, remoção, atualização e busca de jogadores.
-- **GerenciadorJogo**: Gerencia a criação e remoção de jogos, além de iniciar partidas baseadas nas apostas feitas pelos jogadores.
-
-### **Entidades do Jogo**
-- **Jogador**: Mantém informações sobre o jogador, como nome, idade, nickname, e a carteira associada com fichas e dinheiro.
-  - A classe `Carteira` gerencia a compra, venda e o saldo de fichas.
-- **Partida**: Registra o histórico de uma rodada, incluindo o jogo, a quantidade de fichas apostadas, e o resultado (vitória ou derrota).
-
-### **Classes de DAO**
-A implementação das interfaces de DAO (`DaoGenerico`) e classes específicas como `JogadorDao` e `JogoDao` facilitam o gerenciamento de entidades com operações de CRUD para persistência dos dados.
-
-### **Estrutura de Dados e Lógica Avançada**
-- **HashMap**: Usado para o armazenamento de jogos e jogadores, permitindo acesso rápido usando chaves, como o nickname do jogador ou o nome do jogo.
-- **ArrayList**: Utilizado para armazenar as partidas de cada jogador e a lista de jogos, garantindo a ordem das inserções.
-- **HashSet**: Usado para garantir a unicidade de entidades, como habilidades do jogador ou tipos de itens raros.
+- 📁 **Camada `dao/`**: concentra a lógica de persistência dos objetos com uso do padrão Singleton.
+- ⚙️ **Camada `service/`**: cuida da lógica de negócio da persistência e relatórios de apostas.
+- 🧩 **Camada `util/`**: contém classes utilitárias para entrada de dados e manipulação de moedas.
+- 🧠 **Camada `model/` aprimorada**: novos jogos adicionados (`BlackJack`), além de suporte a histórico, apostas, carteira etc.
+- 👁 **Camada `view/`**: ponto de interação com o usuário continua sendo `ImperioDasFichas.java`.
+- 🖼 **Pasta `images/`**: agora armazena todos os diagramas utilizados nas etapas do projeto.
+- 🚀 **Ponto de entrada `app/`**: mantém a inicialização da aplicação separada da interface.
 
 ---
 

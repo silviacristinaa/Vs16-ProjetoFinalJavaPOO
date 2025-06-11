@@ -50,7 +50,7 @@ public class MenuInicial {
                     String nickname = scanner.nextLine();
 
                     try {
-                        jogador = gerenciadorJogador.adicionarJogador(nome, idade, nickname, 1000);
+                        jogador = gerenciadorJogador.adicionarJogador(nome, idade, nickname);
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                         break;

@@ -543,7 +543,7 @@ Após executar o programa, o usuário pode escolher entre as seguintes opções:
 
 ## 🌟 Slide 1: Logo e Introdução
 <p align="center">
-  <img src="imperiodasfichas/src/images/slide1.png.png" alt="Slide 1" width="700"/>
+  <img src="imperiodasfichas/src/images/slide1.png" alt="Slide 1" width="700"/>
 </p>
 
 **Millennium Falcon Devs**  
@@ -554,7 +554,7 @@ Após executar o programa, o usuário pode escolher entre as seguintes opções:
 
 ## 🌟 Slide 2: Introdução ao Jogo
 <p align="center">
-  <img src="imperiodasfichas/src/images/slide2.png.png" alt="Slide 2" width="700"/>
+  <img src="imperiodasfichas/src/images/slide2.png" alt="Slide 2" width="700"/>
 </p>
 
 **Império das Fichas**  
@@ -564,7 +564,7 @@ Em uma cidade onde as luzes nunca se apagam, a sorte é a única lei. O Império
 
 ## 🌟 Slide 3: Jogos Disponíveis
 <p align="center">
-  <img src="imperiodasfichas/src/images/slide3.png-final.png" alt="Slide 3" width="700"/>
+  <img src="imperiodasfichas/src/images/slide3.png" alt="Slide 3" width="700"/>
 </p>
 
 **1. Roleta Clássica**  
@@ -576,7 +576,7 @@ Em uma cidade onde as luzes nunca se apagam, a sorte é a única lei. O Império
 
 ## 🌟 Slide 4: Funcionalidades de Gerenciamento
 <p align="center">
-  <img src="imperiodasfichas/src/images/slide4.png-final.png" alt="Slide 4" width="700"/>
+  <img src="imperiodasfichas/src/images/slide4.png" alt="Slide 4" width="700"/>
 </p>
 
 - Adicionar jogador (cadastro do jogador)
@@ -593,7 +593,7 @@ Em uma cidade onde as luzes nunca se apagam, a sorte é a única lei. O Império
 
 ## 🌟 Slide 5: Dificuldades e Facilidades
 <p align="center">
-  <img src="imperiodasfichas/src/images/slide5.png-final.png" alt="Slide 5" width="700"/>
+  <img src="imperiodasfichas/src/images/slide5.png" alt="Slide 5" width="700"/>
 </p>
 
 **Dificuldades e Facilidades**  
@@ -603,7 +603,7 @@ Esse projeto foi recompensador por ter a oportunidade de aprender um com o outro
 
 ## 🌟 Slide 6: Logo Final
 <p align="center">
-  <img src="imperiodasfichas/src/images/slide6.png.png" alt="Slide 6" width="700"/>
+  <img src="imperiodasfichas/src/images/slide6.png" alt="Slide 6" width="700"/>
 </p>
 
 **Let's Tech Up Together!**

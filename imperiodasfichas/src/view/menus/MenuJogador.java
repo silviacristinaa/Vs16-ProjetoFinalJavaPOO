@@ -71,6 +71,7 @@ public class MenuJogador {
 
                 case 3:
                     System.out.println(AnsiColors.PURPLE + "🔙 Retornando..." + AnsiColors.RESET);
+                    LimparTerminal.executar();
                     break;
 
                 default:

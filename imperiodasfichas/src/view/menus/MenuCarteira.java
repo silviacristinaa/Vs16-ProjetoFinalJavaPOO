@@ -101,6 +101,7 @@ public class MenuCarteira {
 
                 case 5:
                     System.out.println("\n" + AnsiColors.PURPLE + "👋 Voltando ao Menu de Opções do Jogador..." + AnsiColors.RESET);
+                    LimparTerminal.executar();
                     break;
 
                 default:

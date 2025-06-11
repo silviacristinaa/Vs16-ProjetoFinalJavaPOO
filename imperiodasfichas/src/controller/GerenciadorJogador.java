@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.List;
 import dao.interfaces.DaoGenerico;
 import exceptions.DadosDuplicadosException;
 import exceptions.NaoEncontradoException;
@@ -76,6 +77,15 @@ public class GerenciadorJogador {
                 System.out.println(partida);
             }
         }
+    }
+
+    public List<Jogador> listarJogadoresPorVitorias() {
+        List<Jogador> jogadores = daoGenerico.listar();
+        return jogadores.stream().filter(j -> !j.getPartidas().isEmpty())
+                .sorted((j1, j2) -> Integer.compare(
+                    j2.getPartidas().stream().mapToInt(p -> p.isGanhou() ? 1 : 0).sum(),
+                    j1.getPartidas().stream().mapToInt(p -> p.isGanhou() ? 1 : 0).sum()))
+                .toList();
     }
 
 }

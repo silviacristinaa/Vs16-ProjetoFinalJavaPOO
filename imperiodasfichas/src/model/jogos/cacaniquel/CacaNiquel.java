@@ -5,7 +5,6 @@ import model.Partida;
 import model.jogos.Jogo;
 import java.util.Random;
 
-import exceptions.ValorInvalido;
 
 public class CacaNiquel extends Jogo {
 
@@ -40,7 +39,7 @@ public class CacaNiquel extends Jogo {
     }
 
     @Override
-    public void apostaValida(int valorApostado, int opcaoEscolhida) throws ValorInvalido {
+    public void apostaValida(int valorApostado, int opcaoEscolhida) throws IllegalArgumentException {
         validarValor(valorApostado);
     }
 

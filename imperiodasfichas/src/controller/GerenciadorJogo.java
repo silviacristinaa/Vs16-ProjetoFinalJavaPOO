@@ -1,9 +1,8 @@
 package controller;
 
 import dao.interfaces.DaoGenerico;
-import exceptions.DadosDuplicados;
+import exceptions.DadosDuplicadosException;
 import exceptions.NaoEncontradoException;
-import exceptions.ValorInvalido;
 import model.Jogador;
 import model.Partida;
 import model.jogos.Jogo;
@@ -23,19 +22,19 @@ public class GerenciadorJogo {
 
     public Partida iniciarPartida(Jogo jogo, Jogador jogador, int quantidadeFichaAposta, int opcaoEscolhida) throws Exception {
         if (quantidadeFichaAposta <= 0) {
-            throw new ValorInvalido("Quantidade de fichas apostadas deve ser positiva: " + quantidadeFichaAposta);
+            throw new IllegalArgumentException("Quantidade de fichas apostadas deve ser positiva: " + quantidadeFichaAposta);
         }
         if (jogador.getCarteira().getFichas() < quantidadeFichaAposta) {
-            throw new ValorInvalido("Jogador não possui fichas suficientes para apostar: " + quantidadeFichaAposta);
+            throw new IllegalArgumentException("Jogador não possui fichas suficientes para apostar: " + quantidadeFichaAposta);
         }
         Partida partida = jogo.jogar(jogador,quantidadeFichaAposta, opcaoEscolhida);
         jogador.getPartidas().add(partida);
         return partida;
     }
 
-    public Jogo adicionarJogo(Jogo jogo) throws DadosDuplicados {
+    public Jogo adicionarJogo(Jogo jogo) throws DadosDuplicadosException {
         if (jogoExiste(jogo.getNomeJogo())) {
-            throw new DadosDuplicados("Jogo com o nome " + jogo.getNomeJogo() + " já existe.");
+            throw new DadosDuplicadosException("Jogo com o nome " + jogo.getNomeJogo() + " já existe.");
         }
         return daoGenerico.adicionar(jogo);
     }
@@ -57,16 +56,16 @@ public class GerenciadorJogo {
     }
 
     public void comprarFicha(String nicknameJogador, int quantidadeFicha) throws Exception{
-        if (quantidadeFicha <= 0) throw new ValorInvalido("Quantidade de fichas deve ser positiva: " + quantidadeFicha);
+        if (quantidadeFicha <= 0) throw new IllegalArgumentException("Quantidade de fichas deve ser positiva: " + quantidadeFicha);
         Jogador jogador = gerenciadorJogador.buscarJogador(nicknameJogador);
-        if(jogador.getCarteira().getDinheiro() < quantidadeFicha * valorFicha) throw new ValorInvalido("Jogador não possui dinheiro suficiente para comprar fichas.");
+        if(jogador.getCarteira().getDinheiro() < quantidadeFicha * valorFicha) throw new IllegalArgumentException("Jogador não possui dinheiro suficiente para comprar fichas.");
         jogador.getCarteira().depositarFichasCompradas(quantidadeFicha, getValorFicha());
     }
     public void venderFicha(String nicknameJogador, int quantidadeFicha) throws Exception {
-        if (quantidadeFicha <= 0) throw new ValorInvalido("Quantidade de fichas deve ser positiva: " + quantidadeFicha);
+        if (quantidadeFicha <= 0) throw new IllegalArgumentException("Quantidade de fichas deve ser positiva: " + quantidadeFicha);
         Jogador jogador = gerenciadorJogador.buscarJogador(nicknameJogador);
         if(!jogador.getCarteira().sacarFichasVendidas(quantidadeFicha, getValorFicha())) {
-            throw new ValorInvalido("Jogador não possui "+ quantidadeFicha+ " fichas para vender.");
+            throw new IllegalArgumentException("Jogador não possui "+ quantidadeFicha+ " fichas para vender.");
         }
     }
 

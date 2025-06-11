@@ -32,11 +32,13 @@ public class MenuCarteira {
                     System.out.print("\n💰 Digite o valor do depósito: R$ ");
                     double deposito = ImperioDasFichas.lerDouble(scanner.nextLine());
 
-                    if (!gerenciadorJogador.fazerDeposito(jogador.getNickname(), deposito)) {
-                        System.out.println("❌ Valor inválido. Somente valores positivos.");
-                    } else {
+                    try {
+                        gerenciadorJogador.fazerDeposito(jogador.getNickname(), deposito);
                         System.out.println("✅ Valor de R$ " + deposito + " depositado com sucesso!");
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
                     }
+
                     break;
 
                 case 2:
@@ -48,11 +50,13 @@ public class MenuCarteira {
                         break;
                     }
 
-                    if (!gerenciadorJogador.fazerSaque(jogador.getNickname(), saque)) {
-                        System.out.println("❌ Valor inválido. Saldo insuficiente.");
-                    } else {
+                    try {
+                        gerenciadorJogador.fazerSaque(jogador.getNickname(), saque);
                         System.out.println("✅ Valor de R$ " + saque + " sacado com sucesso!");
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
                     }
+
                     break;
 
                 case 3:
@@ -64,11 +68,13 @@ public class MenuCarteira {
                         break;
                     }
 
-                    if (!gerenciadorJogo.comprarFicha(jogador.getNickname(), qtdComprar)) {
-                        System.out.println("❌ Dinheiro insuficiente para comprar as fichas!");
-                    } else {
+                    try {
+                        gerenciadorJogo.comprarFicha(jogador.getNickname(), qtdComprar);
                         System.out.println("✅ Compra de " + qtdComprar + " fichas realizada com sucesso!");
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
                     }
+
                     break;
 
                 case 4:
@@ -80,11 +86,13 @@ public class MenuCarteira {
                         break;
                     }
 
-                    if (!gerenciadorJogo.venderFicha(jogador.getNickname(), qtdVender)) {
-                        System.out.println("❌ Não foi possível vender as fichas.");
-                    } else {
+                    try {
+                        gerenciadorJogo.venderFicha(jogador.getNickname(), qtdVender);
                         System.out.println("✅ Venda de " + qtdVender + " fichas realizada com sucesso!");
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
                     }
+
                     break;
 
                 case 5:

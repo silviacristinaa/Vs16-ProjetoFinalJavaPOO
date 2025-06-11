@@ -27,34 +27,31 @@ public class ImperioDasFichas {
         Jogo cacaNiquel = new CacaNiquel("Caça Níquel", "🎰 Aperte a alavanca da sorte. Se acertar, ganhe o dobro do valor apostado! 💰");
         Jogo blackJack = new BlackJack("BlackJack", "🃏 Chegue o mais próximo de 21 sem ultrapassar. Se vencer, ganhe o triplo do valor apostado! 💰");
 
-        gerenciadorJogo.adicionarJogo(roleta);
-        gerenciadorJogo.adicionarJogo(roletaCores);
-        gerenciadorJogo.adicionarJogo(cacaNiquel);
-        gerenciadorJogo.adicionarJogo(blackJack);
+        try {
+            gerenciadorJogo.adicionarJogo(roleta);
+            gerenciadorJogo.adicionarJogo(roletaCores);
+            gerenciadorJogo.adicionarJogo(cacaNiquel);
+            gerenciadorJogo.adicionarJogo(blackJack);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
         MenuInicial.executarMenu(gerenciadorJogador, gerenciadorJogo);
     }
 
     public static int lerInteiro(String textoUsuario) {
-        if (ehInteiro(textoUsuario)) {
+        try {
             return Integer.parseInt(textoUsuario);
+        } catch (Exception e) {
+            return -1;
         }
-        return -1;
     }
 
     public static Double lerDouble(String textoUsuario) {
-        if (ehDouble(textoUsuario)) {
+        try {
             return Double.parseDouble(textoUsuario);
+        } catch (Exception e) {
+           return -1.0;
         }
-        return -1.0;
     }
-
-    private static boolean ehInteiro(String texto) {
-        return texto.matches("-?\\d+");
-    }
-
-    private static boolean ehDouble(String texto) {
-        return texto.matches("-?\\d+(\\.\\d+)?");
-    }
-
 }

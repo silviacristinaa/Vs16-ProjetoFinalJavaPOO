@@ -7,8 +7,6 @@ import view.ImperioDasFichas;
 
 import java.util.Scanner;
 
-import static view.menus.MenuJogador.controleLogin;
-
 public class MenuInicial {
 
     public static void executarMenu(GerenciadorJogador gerenciadorJogador, GerenciadorJogo gerenciadorJogo) {
@@ -50,10 +48,11 @@ public class MenuInicial {
 
                     System.out.print("🎲 Nickname: ");
                     String nickname = scanner.nextLine();
-                    jogador = gerenciadorJogador.adicionarJogador(nome, idade, nickname, 1000);
 
-                    if (jogador == null) {
-                        System.out.println("⚠️ Este nickname já está cadastrado. Escolha outro para continuar.");
+                    try {
+                        jogador = gerenciadorJogador.adicionarJogador(nome, idade, nickname, 1000);
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
                         break;
                     }
 
@@ -61,7 +60,7 @@ public class MenuInicial {
 
                     break;
                 case 2:
-                    controleLogin(gerenciadorJogador, gerenciadorJogo);
+                    MenuJogador.controleLogin(gerenciadorJogador, gerenciadorJogo);
                     break;
                 case 3:
                     System.out.println("\n👋 Obrigado(a) por jogar! Volte sempre!");

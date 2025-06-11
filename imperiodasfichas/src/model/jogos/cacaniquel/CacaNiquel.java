@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class CacaNiquel extends Jogo {
 
-    private String[] simbolos = {"🍒", "⭐", "💎", "🔔"};
+    public static final String[] simbolos = {"🍒", "⭐", "💎", "🔔"};
 
     public CacaNiquel(String nomeJogo, String regras) {
         super(nomeJogo, regras, 10);
@@ -59,14 +59,20 @@ public class CacaNiquel extends Jogo {
     public void exibirResultado(Partida partida, int resultado) {
         int[] arrayResultado = pegarResultadoDescodificado(resultado);
 
+        try {
+            AnimacaoCacaNiquel.executar(arrayResultado);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
         String resultadoEmoji = simbolos[arrayResultado[0]] + " | " + simbolos[arrayResultado[1]] + " | " + simbolos[arrayResultado[2]];
 
         if (partida.isGanhou()) {
             int premio = partida.getQuantidadeFichasApostado() * 2;
             partida.getJogador().getCarteira().adicionarFichas(premio);
-            System.out.printf("Parabéns! Você ganhou! \nResultado do Caça Níquel: %s\nPrêmio: %d fichas\n", resultadoEmoji, premio);
+            System.out.printf("\nParabéns! Você ganhou! \nPrêmio: %d fichas\n", premio);
         } else {
-            System.out.printf("Você perdeu. Resultado do Caça Níquel: %s\n", resultadoEmoji);
+            System.out.print("\nVocê perdeu, é uma pena. Tente novamente! \n");
         }
     }
 
@@ -78,5 +84,9 @@ public class CacaNiquel extends Jogo {
         int[] arrayResultado = {r1, r2, r3};
 
         return arrayResultado;
+    }
+
+    public static String[] getSimbolos() {
+        return simbolos;
     }
 }

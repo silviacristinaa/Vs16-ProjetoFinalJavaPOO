@@ -630,7 +630,7 @@ Esse projeto foi recompensador por ter a oportunidade de aprender um com o outro
 👩‍💼 **Tech Lead:** Gabriela Anjos
 
 👨‍💻 **Desenvolvedores:**
-- Lucas Freitas
+- Lucas Feitosa
 - William Augusto
 - Robson Batista
 - Silvia Cristina

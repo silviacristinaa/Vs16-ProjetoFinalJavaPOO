@@ -29,9 +29,7 @@ public class BlackJack extends Jogo {
     public Partida jogar(Jogador jogador, int valorApostado, int opcaoEscolhida) {
         Scanner scanner = new Scanner(System.in);
 
-        if (!apostaValida(valorApostado, opcaoEscolhida)) {
-            return null;
-        }
+        apostaValida(valorApostado, opcaoEscolhida);
 
         jogador.getCarteira().removerFichas(valorApostado);
 
@@ -165,13 +163,13 @@ public class BlackJack extends Jogo {
     }
 
     @Override
-    public boolean apostaValida(int valorApostado, int opcaoEscolhida) {
-        return validarValor(valorApostado);
+    public void apostaValida(int valorApostado, int opcaoEscolhida) throws IllegalArgumentException {
+        validarValor(valorApostado);
     }
 
     @Override
-    public boolean validarOpcao(int opcaoEscolhida) {
-        return true;
+    public void validarOpcao(int opcaoEscolhida) {
+        throw new UnsupportedOperationException("O BlackJack não possui opções de aposta válidas.");
     }
 
     @Override
@@ -181,7 +179,7 @@ public class BlackJack extends Jogo {
 
     @Override
     public void exibirResultado(Partida partida, int resultado) {
-        // Não usei
+        throw new UnsupportedOperationException("O método exibirResultado não é suportado no BlackJack.");
     }
 
 }

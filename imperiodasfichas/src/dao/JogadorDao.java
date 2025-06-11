@@ -31,9 +31,8 @@ public class JogadorDao implements DaoGenerico<Jogador, String> {
         if (jogadorExistente != null) {
             jogadorExistente.setNome(entidade.getNome());
             jogadorExistente.setIdade(entidade.getIdade());
-            return jogadorExistente;
         }
-        return null;
+        return jogadorExistente;
     }
 
     @Override

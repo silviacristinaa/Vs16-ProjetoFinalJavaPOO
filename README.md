@@ -161,6 +161,33 @@ Com o amadurecimento do projeto, novas camadas foram inseridas para trazer escal
 - 🚀 **Ponto de entrada `app/`**: mantém a inicialização da aplicação separada da interface.
 
 ---
+### 🔸 Parte IV – Refinamento e Expansão Final
+
+Na Parte IV, o sistema foi refinado e expandido com o objetivo de consolidar a arquitetura e aprimorar a interação do usuário:
+
+- 👤 **Jogador**: A classe `Jogador` foi ampliada para incluir a lógica de gerenciamento das partidas, com a adição de um conjunto de partidas e o gerenciamento da carteira de fichas e dinheiro.
+
+- 💼 **Carteira**: A `Carteira` agora se conecta de forma mais robusta com o `Jogador`, permitindo operações de depósito, saque e compra/venda de fichas.
+
+- 🎮 **Jogo**: A classe `Jogo` continuou sua evolução para suportar diferentes tipos de jogos com regras específicas e lógicas distintas, agora com uma implementação mais clara de interfaces e enumerações (como `BaralhoDeCartas` e `CoresDaRoleta`).
+
+- 🎲 **Partida**: A classe `Partida` foi mantida para registrar o histórico das jogadas, com detalhes sobre as fichas apostadas, o resultado da partida, e a referência ao `Jogador` e ao `Jogo`.
+
+- 🎮 **GerenciadorJogador**: O controlador responsável pela lógica de gerenciamento dos jogadores foi refinado, permitindo a edição e remoção de jogadores, além de integrar o gerenciamento das carteiras de forma eficiente.
+
+- 🎰 **GerenciadorJogo**: O controlador de jogos foi aprimorado para lidar com a inicialização das partidas e a lógica dos diferentes jogos, coordenando as apostas e as interações com os jogadores de maneira eficiente.
+
+- 🗄️ **Banco de Dados Simulado**: A estrutura de persistência foi centralizada através do `DataBaseSingleton`, mantendo as operações de adição, remoção e recuperação de dados em um único ponto.
+
+- 🆕 **Novos Jogos**:
+  - 🃏 **Blackjack**: Um novo jogo foi adicionado, com regras próprias baseadas no famoso jogo de cartas.
+  - 🎰 **Roleta das Cores** e **Roleta Clássica**: Aprimoramento na implementação das roletas, com novos tipos de apostas.
+
+- 🧑‍💻 **Refinamento de Código**:
+  - A utilização de **Streams API** e o tratamento de **Exceções** foram integrados ao sistema, promovendo a robustez e a clareza do código.
+  - Melhorias na **interatividade** do sistema, com menus otimizados e uma navegação mais fluida.
+
+---
 
 Essas alterações na arquitetura e nas implementações proporcionam um sistema mais robusto e eficiente, com uma melhor persistência de dados e uma estrutura de gerenciamento mais modularizada.
 
@@ -192,6 +219,12 @@ Essas alterações na arquitetura e nas implementações proporcionam um sistema
 <p align="center">
   <img src="imperiodasfichas/src/images/diagrama3.png" alt="Diagrama de Classes - Parte III" width="700"/>
 </p>
+
+**Parte IIII (FINAL)**
+<p align="center">
+  <img src="imperiodasfichas/src/images/diagrama4-final.png" alt="Diagrama de Classes - Parte III" width="700"/>
+</p>
+
 
 ---
 
@@ -442,9 +475,139 @@ Na Etapa III, foram aplicados os seguintes tipos de coleções:
 A utilização de **GSON** permite que os dados de jogadores, jogos e partidas sejam armazenados e recuperados em formato JSON, melhorando a persistência do sistema.
 
 ---
-## 🧭 Guia do Usuário – Etapa IV
+# 🎰 Império das Fichas - Parte IV (Final)
 
-A etapa IV será detalhada assim que as funcionalidades estiverem completas e todas as melhorias forem implementadas no sistema.
+## 📅 Entrega Final
+Esta etapa foca na evolução do projeto do jogo, com ênfase na implementação de estruturas de dados, na melhoria da interatividade do usuário e no refinamento da documentação e do design do projeto.
+
+## 🛠️ Funcionalidades Implementadas
+- **Melhorias na Interatividade do Usuário:**
+  - Interfaces mais intuitivas para o gerenciamento de jogador, carteiras e jogos.
+  - Uso de animações e efeitos visuais para melhorar a experiência de jogo.
+
+- **Estruturas de Dados:**
+  - **Streams API:** Utilização de pipeline de Streams para melhorar o fluxo de dados e a manipulação de coleções.
+  - **Arquitetura MVC (Model-View-Controller):** A aplicação foi refatorada para usar a arquitetura MVC, melhorando a organização do código e sua manutenção.
+    - **Model:** Gerencia os dados e a lógica de negócios.
+    - **View:** Responsável pela interface do usuário.
+    - **Controller:** Atua como intermediário entre a View e o Model.
+
+- **Refinamento do Código e Tratamentos de Exceções:**
+  - O código foi refatorado para ser mais limpo, modular e de fácil manutenção.
+  - Implementação de tratamentos de exceções para evitar falhas durante a execução do programa.
+
+## 🎮 Funcionalidades para Testar
+- **Cadastro de Jogadores:** Cadastrar jogadores e gerenciar perfis.
+- **Roleta Clássica (⚪ Par/⚫ Ímpar):** Apostas em par ou ímpar.
+- **Roleta das Cores (🌈):** Aposte em uma das quatro cores.
+- **Caça Níquel (🎰):** Jogo de caça-níquel com animação.
+- **Blackjack (🃏):** Tente se aproximar de 21 sem ultrapassar.
+- **Gestão de Fichas:** Depósitos, saques, compra e venda de fichas.
+- **Edição de Perfil:** Alteração de nome e idade.
+- **Exclusão de Conta:** Remoção do jogador e seus dados.
+- **Ranking de Vitoriosos:** Veja os jogadores com mais vitórias.
+
+## 🧑‍💻 Arquitetura do Projeto
+
+O projeto segue o padrão MVC, separando a lógica de negócios (Model), a interação com o usuário (View) e o controle de fluxo (Controller).
+
+### Model
+- **Jogador:** Representa os jogadores do jogo, com informações como nome, idade, nickname e carteiras.
+- **Partida:** Representa uma partida de jogo, com detalhes sobre o valor apostado e o resultado.
+- **Carteira:** Gerencia as fichas e o dinheiro do jogador.
+- **Jogos:** Inclui as classes para cada jogo, como Roleta, Caça Níquel e Blackjack, com suas regras e lógicas de aposta.
+
+### View
+- **Menus:** Interfaces de interação com o usuário para cadastro, login, escolha de jogos e opções de edição de perfil.
+- **Animações:** Efeitos visuais para jogos como a roleta e caça-níquel.
+
+### Controller
+- **GerenciadorJogador:** Gerencia as ações relacionadas aos jogadores, como adicionar, remover e atualizar jogadores.
+- **GerenciadorJogo:** Gerencia os jogos, realizando a validação de apostas e início de partidas.
+
+## 💻 Como Funciona
+
+Após executar o programa, o usuário pode escolher entre as seguintes opções:
+1. **Cadastrar um novo jogador** ou **fazer login**.
+2. Jogar em uma **roleta clássica** ou **roleta das cores**.
+3. Participar de uma **partida de Caça Níquel** ou **Blackjack**.
+4. **Gerenciar sua carteira**, incluindo depósitos, saques e compra/venda de fichas.
+5. **Visualizar o ranking de jogadores** e suas vitórias.
+
+
+
+
+
+---
+# Apresentação do Projeto: Império das Fichas 🎰
+
+## 🌟 Slide 1: Logo e Introdução
+<p align="center">
+  <img src="imperiodasfichas/src/images/slide1.png.png" alt="Diagrama de Classes - Parte III" width="700"/>
+</p>
+
+**Millennium Falcon Devs**  
+*Digital Business Company*  
+*Tech Up Together*
+
+---
+
+## 🌟 Slide 2: Introdução ao Jogo
+<p align="center">
+  <img src="imperiodasfichas/src/images/slide2.png.png" alt="Diagrama de Classes - Parte III" width="700"/>
+</p>
+
+**Império das Fichas**  
+Em uma cidade onde as luzes nunca se apagam, a sorte é a única lei. O Império das Fichas é um cassino onde jogadores de todo o mundo buscam fama e fortuna com a roleta e outros jogos.
+
+---
+
+## 🌟 Slide 3: Jogos Disponíveis
+<p align="center">
+  <img src="imperiodasfichas/src/images/slide3.png-final.png" alt="Diagrama de Classes - Parte III" width="700"/>
+</p>
+
+**1. Roleta Clássica**  
+**2. Roleta das Cores**  
+**3. Caça-Níquel**  
+**4. Blackjack**
+
+---
+
+## 🌟 Slide 4: Funcionalidades de Gerenciamento
+<p align="center">
+  <img src="imperiodasfichas/src/images/slide4.png-final.png" alt="Diagrama de Classes - Parte III" width="700"/>
+</p>
+
+- Adicionar jogador (cadastro do jogador)
+- Fazer login (apenas com o nickname)
+- Editar dados da conta (nome, idade)
+- Apagar conta
+- Depositar dinheiro real
+- Sacar dinheiro real
+- Comprar fichas com dinheiro
+- Vender fichas para obter dinheiro
+- Ranking de jogadores
+
+---
+
+## 🌟 Slide 5: Dificuldades e Facilidades
+<p align="center">
+  <img src="imperiodasfichas/src/images/slide5.png-final.png" alt="Diagrama de Classes - Parte III" width="700"/>
+</p>
+
+**Dificuldades e Facilidades**  
+Esse projeto foi recompensador por ter a oportunidade de aprender um com o outro, compartilhando experiências e materializando em código uma ideia que antes existia apenas em nossa mente.
+
+---
+
+## 🌟 Slide 6: Logo Final
+<p align="center">
+  <img src="imperiodasfichas/src/images/slide6.png.png" alt="Diagrama de Classes - Parte III" width="700"/>
+</p>
+
+**Let's Tech Up Together!**
+
 
 ---
 
@@ -456,6 +619,9 @@ A etapa IV será detalhada assim que as funcionalidades estiverem completas e to
 - 📗 [Documentação Parte II](https://docs.google.com/document/d/1XGEqtFKpWVb0Fm37gq6mGFiUD9ws1VnzB9-PYKBoT90/edit?tab=t.0)
 - 📙 [Documentação Parte III](https://docs.google.com/document/d/1hVkk-CDQ6Z0ZrZRETjihxU5VxTsr5PL9WpjzE6Ry_Xc/edit?tab=t.0#heading=h.xsv6duk44xm3)
 - 📕 [Documentação Parte IV - Final](https://docs.google.com/document/d/1TKRO3fOsQNEC_bfpgl6S8MU_eCEhfd6Kv9hO2v24h0s/edit?usp=classroom_web&authuser=0)
+
+[📊 Visualizar os Slides de Apresentação](https://dbccompany-my.sharepoint.com/:p:/g/personal/gabriela_chaves_dbccompany_com_br/EYhN04d2PplHvxy5UD03hnUBLqqKLZo1_2MsbVsmTu-1Dw?e=UcAaWW&nav=eyJzSWQiOjI3OCwiY0lkIjozNjQ0MzE1MzcyfQ)
+
 
 ---
 

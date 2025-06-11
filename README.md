@@ -62,13 +62,13 @@ src/
 ### 🛠️ Como Compilar
 
 ```bash
-javac -d out src/model/*.java src/controller/*.java src/app/ImperioDasFichas.java
+javac src/model/*.java src/model/jogos/*.java src/model/jogos/blackjack/*.java src/model/jogos/cacaniquel/*.java src/model/jogos/roletas/*.java src/dao/*.java src/dao/db/*.java src/dao/interfaces/*.java src/exceptions/*.java src/controller/*.java src/view/*.java src/view/animacoes/*.java src/view/menus/*.java 
 ```
 
 ### ▶️ Como Executar
 
 ```bash
-java -cp out app.ImperioDasFichas
+java -cp src view.ImperioDasFichas
 ```
 
 ### 🧪 Funcionalidades para Testar
@@ -278,13 +278,13 @@ src/
 ### 🛠️ Como Compilar
 
 ```bash
-javac -d out src/model/*.java src/controller/*.java src/app/ImperioDasFichas.java
+javac src/model/*.java src/model/jogos/*.java src/model/jogos/blackjack/*.java src/model/jogos/cacaniquel/*.java src/model/jogos/roletas/*.java src/dao/*.java src/dao/db/*.java src/dao/interfaces/*.java src/exceptions/*.java src/controller/*.java src/view/*.java src/view/animacoes/*.java src/view/menus/*.java 
 ```
 
 ### ▶️ Como Executar
 
 ```bash
-java -cp out app.ImperioDasFichas
+java -cp src view.ImperioDasFichas
 ```
 
 ### 🧪 Funcionalidades para Testar
@@ -389,12 +389,12 @@ Vs16-ProjetoFinalJavaPOO
 ### 🛠️ Como Compilar
 
 ```bash
-javac -d out src/model/*.java src/controller/*.java src/dao/*.java src/app/ImperioDasFichas.java
+javac src/model/*.java src/model/jogos/*.java src/model/jogos/blackjack/*.java src/model/jogos/cacaniquel/*.java src/model/jogos/roletas/*.java src/dao/*.java src/dao/db/*.java src/dao/interfaces/*.java src/exceptions/*.java src/controller/*.java src/view/*.java src/view/animacoes/*.java src/view/menus/*.java 
 ```
 ### ▶️ Como Executar
 
 ```bash
-java -cp out app.ImperioDasFichas
+java -cp src view.ImperioDasFichas
 ```
 
 ## 🧪 Funcionalidades para Testar

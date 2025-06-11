@@ -4,7 +4,8 @@ import controller.GerenciadorJogador;
 import controller.GerenciadorJogo;
 import model.Jogador;
 import view.ImperioDasFichas;
-
+import view.utils.LimparTerminal;
+import view.utils.AnsiColors;
 import java.util.Scanner;
 
 public class MenuInicial {
@@ -16,24 +17,29 @@ public class MenuInicial {
         Jogador jogador = null;
 
         do {
-            System.out.println("\n=======================================");
-            System.out.println("🎰  BEM-VINDO AO IMPÉRIO DAS FICHAS!  🎰");
-            System.out.println("=======================================\n");
+            LimparTerminal.executar();
 
-            System.out.println("‍🎮  Menu Inicial\n");
+            System.out.println("\n" + AnsiColors.YELLOW + "========================================" + AnsiColors.RESET);
+            System.out.println(AnsiColors.PURPLE + "🎰  BEM-VINDO AO IMPÉRIO DAS FICHAS!  🎰" + AnsiColors.RESET);
+            System.out.println(AnsiColors.YELLOW + "========================================" + AnsiColors.RESET + "\n");
 
-            System.out.println("🆕  1. Cadastrar novo jogador");
-            System.out.println("🔐  2. Realizar login");
-            System.out.println("🚪  3. Desistir de tentar a sorte");
+            System.out.println(AnsiColors.CYAN + "╭───────────────────────────────╮" + AnsiColors.RESET);
+            System.out.println(AnsiColors.CYAN + "       ‍🎮  MENU INICIAL 🎮         " + AnsiColors.RESET);
+            System.out.println(AnsiColors.CYAN + "╰───────────────────────────────╯\n" + AnsiColors.RESET);
 
-            System.out.print("\n🧭 Escolha uma opção: ");
+            System.out.println(AnsiColors.GREEN + "  🆕  1. Cadastrar novo jogador" + AnsiColors.RESET);
+            System.out.println(AnsiColors.GREEN + "  🔐  2. Realizar login" + AnsiColors.RESET);
+            System.out.println(AnsiColors.RED + "  🚪  3. Desistir de tentar a sorte" + AnsiColors.RESET);
+
+            System.out.print("\n" + AnsiColors.YELLOW + "🧭 Escolha uma opção: " + AnsiColors.RESET);
 
             opcao = ImperioDasFichas.lerInteiro(scanner.nextLine());
 
             switch (opcao) {
-
                 case 1:
-                    System.out.println("✅ Cadastro de jogador iniciado com sucesso!\n");
+                    System.out.println("\n" + AnsiColors.GREEN + "╔══════════════════════════════════════╗" + AnsiColors.RESET);
+                    System.out.println(AnsiColors.GREEN + "   ✅ Cadastro de jogador iniciado!   " + AnsiColors.RESET);
+                    System.out.println(AnsiColors.GREEN + "╚══════════════════════════════════════╝\n" + AnsiColors.RESET);
 
                     System.out.print("👤 Nome: ");
                     String nome = scanner.nextLine();
@@ -42,7 +48,7 @@ public class MenuInicial {
                     int idade = ImperioDasFichas.lerInteiro(scanner.nextLine());
 
                     if (idade < 18) {
-                        System.out.println("⚠️ Entrada proibida: apenas maiores de 18 anos podem jogar no Império das Fichas.");
+                        System.out.println("\n" + AnsiColors.RED + "⚠️  Entrada proibida: apenas maiores de 18 anos podem jogar no Império das Fichas." + AnsiColors.RESET);
                         break;
                     }
 
@@ -50,28 +56,29 @@ public class MenuInicial {
                     String nickname = scanner.nextLine();
 
                     try {
-                        jogador = gerenciadorJogador.adicionarJogador(nome, idade, nickname, 1000);
+                        jogador = gerenciadorJogador.adicionarJogador(nome, idade, nickname);
                     } catch (Exception e) {
-                        System.out.println(e.getMessage());
+                        System.out.println("\n" + AnsiColors.RED + "❌ " + e.getMessage() + AnsiColors.RESET);
                         break;
                     }
 
+                    LimparTerminal.executar();
                     MenuOpcoes.executarMenu(jogador, gerenciadorJogador, gerenciadorJogo);
-
                     break;
+
                 case 2:
                     MenuJogador.controleLogin(gerenciadorJogador, gerenciadorJogo);
                     break;
+
                 case 3:
-                    System.out.println("\n👋 Obrigado(a) por jogar! Volte sempre!");
+                    System.out.println("\n" + AnsiColors.PURPLE + "👋 Obrigado(a) por jogar! Volte sempre!" + AnsiColors.RESET);
                     break;
 
                 default:
-                    System.out.println("\n⚠️ Opção inválida! Por favor, tente novamente.");
+                    System.out.println("\n" + AnsiColors.RED + "⚠️  Opção inválida! Por favor, tente novamente." + AnsiColors.RESET);
                     break;
             }
 
         } while (opcao != 3);
-
     }
 }

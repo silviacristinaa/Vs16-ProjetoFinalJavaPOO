@@ -220,7 +220,7 @@ Essas alterações na arquitetura e nas implementações proporcionam um sistema
   <img src="imperiodasfichas/src/images/diagrama3.png" alt="Diagrama de Classes - Parte III" width="700"/>
 </p>
 
-**Parte IIII (FINAL)**
+**Parte IV (FINAL)**
 <p align="center">
   <img src="imperiodasfichas/src/images/diagrama4-final.png" alt="Diagrama de Classes - Parte III" width="700"/>
 </p>

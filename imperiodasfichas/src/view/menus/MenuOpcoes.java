@@ -19,9 +19,10 @@ public class MenuOpcoes {
             System.out.println("🎰 2. Jogar Roleta");
             System.out.println("🎰 3. Jogar Caça Níquel");
             System.out.println("🃏 4. Jogar BlackJack");
-            System.out.println("✏️ 5. Editar Perfil");
-            System.out.println("🗑️ 6. Excluir Conta");
-            System.out.println("🚪 7. Voltar ao Menu Inicial...");
+            System.out.println("🏆 5. Ranking");
+            System.out.println("✏️ 6. Editar Perfil");
+            System.out.println("🗑️ 7. Excluir Conta");
+            System.out.println("🚪 8. Voltar ao Menu Inicial...");
 
             System.out.print("\n🧭 Escolha uma opção: ");
             opcao = ImperioDasFichas.lerInteiro(scanner.nextLine());
@@ -40,16 +41,19 @@ public class MenuOpcoes {
                     MenuJogos.menuBlackJack(jogador, gerenciadorJogo);
                     break;
                 case 5:
-                    MenuJogador.menuEditarJogador(jogador, gerenciadorJogador);
+                    MenuRanking.executarMenu(gerenciadorJogador);
                     break;
                 case 6:
+                    MenuJogador.menuEditarJogador(jogador, gerenciadorJogador);
+                    break;
+                case 7:
                     boolean deletou = MenuJogador.menuDeletarJogador(jogador, gerenciadorJogador);
 
                     if (deletou) {
-                        opcao = 7;
+                        opcao = 8;
                     }
                     break;
-                case 7:
+                case 8:
                     System.out.println("\n👋 Retornando ao Menu Principal...");
                     break;
                 default:
@@ -57,6 +61,6 @@ public class MenuOpcoes {
                     break;
             }
 
-        } while (opcao != 7);
+        } while (opcao != 8);
     }
 }

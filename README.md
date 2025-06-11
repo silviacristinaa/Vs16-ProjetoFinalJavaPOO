@@ -73,10 +73,10 @@ java -cp out app.ImperioDasFichas
 
 ### 🧪 Funcionalidades para Testar
 
-- 👤 Cadastro de jogadores
-- 🎰 Jogo de roleta (par ou ímpar)
-- 💰 Compra e venda de fichas
-- 👜 Gerenciamento de saldo em fichas e dinheiro
+- Cadastro de jogadores
+- Jogo de roleta (par ou ímpar)
+- Compra e venda de fichas
+- Gerenciamento de saldo em fichas e dinheiro
 
 ### 📌 Testando com Classe Main Temporária
 
@@ -442,7 +442,11 @@ Na Etapa III, foram aplicados os seguintes tipos de coleções:
 A utilização de **GSON** permite que os dados de jogadores, jogos e partidas sejam armazenados e recuperados em formato JSON, melhorando a persistência do sistema.
 
 ---
+## 🧭 Guia do Usuário – Etapa IV
 
+A etapa IV será detalhada assim que as funcionalidades estiverem completas e todas as melhorias forem implementadas no sistema.
+
+---
 
 ## 📌 Kanban do Projeto
 🔗 [Acompanhe o progresso no GitHub Projects](https://github.com/users/Gabssanjoss/projects/2/views/1)
@@ -451,6 +455,7 @@ A utilização de **GSON** permite que os dados de jogadores, jogos e partidas s
 - 📘 [Documentação Parte I](https://docs.google.com/document/d/1SkGvNKpYJEhrUCNLDj0wGpJakQ-BM0v1d6-iYQ-4VUU/edit?tab=t.0)
 - 📗 [Documentação Parte II](https://docs.google.com/document/d/1XGEqtFKpWVb0Fm37gq6mGFiUD9ws1VnzB9-PYKBoT90/edit?tab=t.0)
 - 📙 [Documentação Parte III](https://docs.google.com/document/d/1hVkk-CDQ6Z0ZrZRETjihxU5VxTsr5PL9WpjzE6Ry_Xc/edit?tab=t.0#heading=h.xsv6duk44xm3)
+- 📕 [Documentação Parte IV - Final](https://docs.google.com/document/d/1TKRO3fOsQNEC_bfpgl6S8MU_eCEhfd6Kv9hO2v24h0s/edit?usp=classroom_web&authuser=0)
 
 ---
 

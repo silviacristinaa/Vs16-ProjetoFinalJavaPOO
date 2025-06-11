@@ -17,10 +17,11 @@ public class MenuJogador {
         System.out.print("🎲 Digite o seu nickname: ");
         String nickname = scanner.nextLine();
 
-        Jogador jogador = gerenciadorJogador.buscarJogador(nickname);
-
-        if (jogador == null) {
-            System.out.println("❌ Verifique o nickname ou cadastre-se primeiro.");
+        Jogador jogador = null;
+        try {
+            jogador = gerenciadorJogador.buscarJogador(nickname);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
             return;
         }
 
@@ -100,10 +101,15 @@ public class MenuJogador {
                         break;
                     }
 
-                    gerenciadorJogador.removerJogador(nickname);
+                    try {
+                        gerenciadorJogador.removerJogador(nickname);
+                        System.out.println("✅ Sua conta foi removida com sucesso!");
+                        return true;
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                        break;
+                    }
 
-                    System.out.println("✅ Sua conta foi removida com sucesso!");
-                    return true;
                 case 2:
                     System.out.println("🔙 Retornando...");
                     break;

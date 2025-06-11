@@ -21,10 +21,20 @@ public class MenuJogos {
 
         switch (opcaoEscolhida) {
             case 1:
-                jogoSelecionado = gerenciadorJogo.buscarJogo("Roleta Clássica");
+                try {
+                    jogoSelecionado = gerenciadorJogo.buscarJogo("Roleta Clássica");
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    return;
+                }
                 break;
             case 2:
-                jogoSelecionado = gerenciadorJogo.buscarJogo("Roleta das Cores");
+                try {
+                    jogoSelecionado = gerenciadorJogo.buscarJogo("Roleta das Cores");
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    return;
+                }
                 break;
             default:
                 System.out.println("❌ Opção inválida.");
@@ -75,18 +85,30 @@ public class MenuJogos {
             escolha = ImperioDasFichas.lerInteiro(scanner.nextLine());
         }
 
-        if (!jogoSelecionado.apostaValida(valorApostado, escolha)) {
+        try {
+            jogoSelecionado.apostaValida(valorApostado, escolha);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
             System.out.println("❌ Aposta cancelada.");
             return;
         }
 
-        gerenciadorJogo.iniciarPartida(jogoSelecionado, jogador, valorApostado, escolha);
+        try {
+            gerenciadorJogo.iniciarPartida(jogoSelecionado, jogador, valorApostado, escolha);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public static void menuCacaNiquel(Jogador jogador, GerenciadorJogo gerenciadorJogo) {
         Scanner scanner = new Scanner(System.in);
 
-        Jogo cacaNiquel = gerenciadorJogo.buscarJogo("Caça Níquel");
+        Jogo cacaNiquel = null;
+        try {
+            cacaNiquel = gerenciadorJogo.buscarJogo("Caça Níquel");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
         System.out.println("\n🎰 Bem-vindo ao " + cacaNiquel.getNomeJogo() + "!");
         System.out.println("\n==========================================================================================");
@@ -111,21 +133,29 @@ public class MenuJogos {
         System.out.println("\nPressione enter para apertar a alavanca:");
         scanner.nextLine();
 
-        if (!cacaNiquel.apostaValida(valorApostado, 0)) {
+        try {
+            cacaNiquel.apostaValida(valorApostado, 0);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
             System.out.println("❌ Aposta cancelada.");
             return;
         }
 
-        gerenciadorJogo.iniciarPartida(cacaNiquel, jogador, valorApostado, 0);
+        try {
+            gerenciadorJogo.iniciarPartida(cacaNiquel, jogador, valorApostado, 0);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public static void menuBlackJack(Jogador jogador, GerenciadorJogo gerenciadorJogo) {
         Scanner scanner = new Scanner(System.in);
 
-        Jogo blackJack = gerenciadorJogo.buscarJogo("BlackJack");
-
-        if (blackJack == null) {
-            System.out.println("❌ Jogo BlackJack não está disponível no momento.");
+        Jogo blackJack = null;
+        try {
+            blackJack = gerenciadorJogo.buscarJogo("BlackJack");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
             return;
         }
 
@@ -145,6 +175,10 @@ public class MenuJogos {
             return;
         }
 
-        gerenciadorJogo.iniciarPartida(blackJack, jogador, valorApostado, 0);
+        try {
+            gerenciadorJogo.iniciarPartida(blackJack, jogador, valorApostado, 0);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

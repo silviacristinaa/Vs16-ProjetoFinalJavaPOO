@@ -17,7 +17,7 @@ public class GerenciadorJogador {
     public Jogador buscarJogador(String nickname) throws NaoEncontradoException {
         Jogador jogador = daoGenerico.buscar(nickname);
         if (jogador == null) {
-            throw new NaoEncontradoException("Jogador com o nickname " + nickname + " não encontrado.");
+            throw new NaoEncontradoException("❌ Verifique o nickname ou cadastre-se primeiro.");
         }
         return jogador;
     }
@@ -31,7 +31,7 @@ public class GerenciadorJogador {
     }
     public Jogador adicionarJogador(String nome, int idade, String nickname, int quantidadeFichas) throws DadosDuplicadosException {
         if (jogadorExiste(nickname)) {
-            throw new DadosDuplicadosException("Jogador com o nickname " + nickname + " já existe.");
+            throw new DadosDuplicadosException("⚠️ Jogador com o nickname " + nickname + " já existe. Escolha outro para continuar.");
         }
         Carteira carteira = new Carteira(quantidadeFichas, 0);
         Jogador novo = new Jogador(nome, idade, nickname, carteira);
@@ -54,16 +54,16 @@ public class GerenciadorJogador {
     public void fazerDeposito(String nicknameJogador, double valor) throws NaoEncontradoException, IllegalArgumentException {
         Jogador jogador = buscarJogador(nicknameJogador);
         if (!jogador.getCarteira().depositarDinheiro(valor)) {
-            throw new IllegalArgumentException("Valor de depósito inválido: " + valor);
+            throw new IllegalArgumentException("❌ Valor de depósito inválido: " + valor);
         }
     }
     public void fazerSaque(String nicknameJogador, double valor) throws NaoEncontradoException, IllegalArgumentException {
         if (valor <= 0) {
-            throw new IllegalArgumentException("Valor de saque deve ser positivo: " + valor);
+            throw new IllegalArgumentException("⚠️ Valor de saque deve ser positivo: " + valor);
         }
         Jogador jogador = buscarJogador(nicknameJogador);
         if (!jogador.getCarteira().sacarDinheiro(valor)) {
-            throw new IllegalArgumentException("Saldo insuficiente para saque: " + valor);
+            throw new IllegalArgumentException("⚠️ Saldo insuficiente para saque: " + valor);
         }
     }
 

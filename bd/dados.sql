@@ -54,3 +54,26 @@ INSERT INTO Carteira (ID, fichas, dinheiro, id_jogador)
 VALUES (SEQ_CARTEIRA.NEXTVAL, 16, 75.00, 9);
 INSERT INTO Carteira (ID, fichas, dinheiro, id_jogador)
 VALUES (SEQ_CARTEIRA.NEXTVAL, 14, 55.00, 10);
+
+-- Inserção de dados na tabela "Partida"
+
+INSERT INTO Partida (id_partida, data_hora, fichas_apostadas, ganhou, id_jogador, id_jogo)
+VALUES (SEQ_PARTIDA.NEXTVAL, TO_DATE('17/06/2025 14:00:00', 'DD/MM/YYYY HH24:MI:SS'), 10,  'S', 1, 1);
+INSERT INTO Partida (id_partida, data_hora, fichas_apostadas, ganhou, id_jogador, id_jogo)
+VALUES (SEQ_PARTIDA.NEXTVAL, TO_DATE('17/06/2025 14:30:00', 'DD/MM/YYYY HH24:MI:SS'), 15, 'N', 2, 2);
+INSERT INTO Partida (id_partida, data_hora, fichas_apostadas, ganhou, id_jogador, id_jogo)
+VALUES (SEQ_PARTIDA.NEXTVAL, TO_DATE('17/06/2025 15:00:00', 'DD/MM/YYYY HH24:MI:SS'), 20, 'S', 3, 3);
+INSERT INTO Partida (id_partida, data_hora, fichas_apostadas, ganhou, id_jogador, id_jogo)
+VALUES (SEQ_PARTIDA.NEXTVAL, TO_DATE('17/06/2025 15:30:00', 'DD/MM/YYYY HH24:MI:SS'), 30, 'S', 4, 1);
+INSERT INTO Partida (id_partida, data_hora, fichas_apostadas, ganhou, id_jogador, id_jogo)
+VALUES (SEQ_PARTIDA.NEXTVAL, TO_DATE('17/06/2025 16:00:00', 'DD/MM/YYYY HH24:MI:SS'), 10, 'N', 5, 4);
+INSERT INTO Partida (id_partida, data_hora, fichas_apostadas, ganhou, id_jogador, id_jogo)
+VALUES (SEQ_PARTIDA.NEXTVAL, TO_DATE('17/06/2025 16:30:00', 'DD/MM/YYYY HH24:MI:SS'), 20,  'S', 6, 2);
+INSERT INTO Partida (id_partida, data_hora, fichas_apostadas, ganhou, id_jogador, id_jogo)
+VALUES (SEQ_PARTIDA.NEXTVAL, TO_DATE('17/06/2025 17:00:00', 'DD/MM/YYYY HH24:MI:SS'), 15, 'N', 7, 3);
+INSERT INTO Partida (id_partida, data_hora, fichas_apostadas, ganhou, id_jogador, id_jogo)
+VALUES (SEQ_PARTIDA.NEXTVAL, TO_DATE('17/06/2025 17:30:00', 'DD/MM/YYYY HH24:MI:SS'), 25,  'S', 8, 4);
+INSERT INTO Partida (id_partida, data_hora, fichas_apostadas, ganhou, id_jogador, id_jogo)
+VALUES (SEQ_PARTIDA.NEXTVAL, TO_DATE('17/06/2025 18:00:00', 'DD/MM/YYYY HH24:MI:SS'), 15,  'N', 9, 1);
+INSERT INTO Partida (id_partida, data_hora, fichas_apostadas, ganhou, id_jogador, id_jogo)
+VALUES (SEQ_PARTIDA.NEXTVAL, TO_DATE('17/06/2025 18:30:00', 'DD/MM/YYYY HH24:MI:SS'), 20, 'S', 10, 2);

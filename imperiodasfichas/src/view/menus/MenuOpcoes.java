@@ -36,13 +36,13 @@ public class MenuOpcoes {
                     MenuCarteira.executarMenu(jogador, gerenciadorJogador, gerenciadorJogo);
                     break;
                 case 2:
-                    MenuJogos.executarMenu(jogador, gerenciadorJogo);
+                    MenuJogos.executarMenu(jogador, gerenciadorJogador, gerenciadorJogo);
                     break;
                 case 3:
-                    MenuJogos.menuCacaNiquel(jogador, gerenciadorJogo);
+                    MenuJogos.menuCacaNiquel(jogador, gerenciadorJogador, gerenciadorJogo);
                     break;
                 case 4:
-                    MenuJogos.menuBlackJack(jogador, gerenciadorJogo);
+                    MenuJogos.menuBlackJack(jogador, gerenciadorJogador, gerenciadorJogo);
                     break;
                 case 5:
                     MenuRanking.executarMenu(gerenciadorJogador);

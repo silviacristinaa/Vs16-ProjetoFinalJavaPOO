@@ -1,5 +1,6 @@
 package view.menus;
 
+import controller.GerenciadorJogador;
 import controller.GerenciadorJogo;
 import model.Jogador;
 import model.jogos.Jogo;
@@ -11,8 +12,16 @@ import java.util.Scanner;
 
 public class MenuJogos {
 
-    public static void executarMenu(Jogador jogador, GerenciadorJogo gerenciadorJogo) {
+    public static void executarMenu(Jogador jogador, GerenciadorJogador gerenciadorJogador, GerenciadorJogo gerenciadorJogo) {
         Scanner scanner = new Scanner(System.in);
+
+        // Recarrega o jogador do banco para garantir dados atualizados
+        try {
+            jogador = gerenciadorJogador.buscarJogador(jogador.getNickname());
+        } catch (Exception e) {
+            System.out.println(AnsiColors.RED + "Erro ao carregar dados do jogador: " + e.getMessage() + AnsiColors.RESET);
+            return;
+        }
 
         System.out.println("\n" + AnsiColors.PURPLE + "🎰 Escolha o tipo de Roleta:" + AnsiColors.RESET);
         System.out.println(AnsiColors.GREEN + "1. Roleta Clássica (⚪ Par/⚫ Ímpar)" + AnsiColors.RESET);
@@ -100,9 +109,17 @@ public class MenuJogos {
         }
     }
 
-    public static void menuCacaNiquel(Jogador jogador, GerenciadorJogo gerenciadorJogo) {
+    public static void menuCacaNiquel(Jogador jogador, GerenciadorJogador gerenciadorJogador, GerenciadorJogo gerenciadorJogo) {
         LimparTerminal.executar();
         Scanner scanner = new Scanner(System.in);
+
+        // Recarrega o jogador do banco para garantir dados atualizados
+        try {
+            jogador = gerenciadorJogador.buscarJogador(jogador.getNickname());
+        } catch (Exception e) {
+            System.out.println(AnsiColors.RED + "Erro ao carregar dados do jogador: " + e.getMessage() + AnsiColors.RESET);
+            return;
+        }
 
         Jogo cacaNiquel = null;
         try {
@@ -149,9 +166,17 @@ public class MenuJogos {
         }
     }
 
-    public static void menuBlackJack(Jogador jogador, GerenciadorJogo gerenciadorJogo) {
+    public static void menuBlackJack(Jogador jogador, GerenciadorJogador gerenciadorJogador, GerenciadorJogo gerenciadorJogo) {
         LimparTerminal.executar();
         Scanner scanner = new Scanner(System.in);
+
+        // Recarrega o jogador do banco para garantir dados atualizados
+        try {
+            jogador = gerenciadorJogador.buscarJogador(jogador.getNickname());
+        } catch (Exception e) {
+            System.out.println(AnsiColors.RED + "Erro ao carregar dados do jogador: " + e.getMessage() + AnsiColors.RESET);
+            return;
+        }
 
         Jogo blackJack = null;
         try {

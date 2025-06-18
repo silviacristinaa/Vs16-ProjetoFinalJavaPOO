@@ -33,9 +33,9 @@ public class GerenciadorJogo {
         return partida;
     }
 
-    public Jogo adicionarJogo(Jogo jogo) throws DadosDuplicadosException, RegraDeNegocioException {
+    public Jogo adicionarJogo(Jogo jogo) throws RegraDeNegocioException {
         if (jogoExiste(jogo.getNomeJogo())) {
-            throw new DadosDuplicadosException("Jogo com o nome " + jogo.getNomeJogo() + " já existe.");
+            return daoGenerico.buscar(jogo.getNomeJogo());
         }
         return daoGenerico.adicionar(jogo);
     }

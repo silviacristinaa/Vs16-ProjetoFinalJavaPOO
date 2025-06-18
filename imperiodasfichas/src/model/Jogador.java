@@ -1,5 +1,6 @@
 package model;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -21,6 +22,7 @@ public class Jogador {
     }
 
     public Jogador() {
+        this.partidas = new HashSet<>();
     }
 
     public Jogador(String nome, int idade, String nickname) {
@@ -28,14 +30,14 @@ public class Jogador {
         this.idade = idade;
         this.nickname = nickname;
         this.carteira = new Carteira();
-        this.partidas = new TreeSet<>();
+        this.partidas = new HashSet<>();
     }
     public Jogador(String nome, int idade, String nickname, Carteira carteira) {
         this.nome = nome;
         this.idade = idade;
         this.nickname = nickname;
         this.carteira = carteira;
-        this.partidas = new TreeSet<>();
+        this.partidas = new HashSet<>();
     }
 
     public String getNome() {

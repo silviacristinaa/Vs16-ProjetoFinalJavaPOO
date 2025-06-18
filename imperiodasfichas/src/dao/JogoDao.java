@@ -4,6 +4,12 @@ import dao.db.DataBaseSingleton;
 import dao.interfaces.DaoGenerico;
 import exceptions.RegraDeNegocioException;
 import model.jogos.Jogo;
+import model.Partida;
+import model.Jogador;
+import model.jogos.roletas.RoletaParImpar;
+import model.jogos.roletas.RoletaCores;
+import model.jogos.cacaniquel.CacaNiquel;
+import model.jogos.blackjack.BlackJack;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -27,17 +33,17 @@ public class JogoDao implements DaoGenerico<Jogo, String> {
         Connection con = null;
         try {
             con = DataBaseSingleton.getConnection();
+            if (buscar(jogo.getNomeJogo()) != null) {
+                return jogo;
+            }
             Integer proximoId = this.getProximoId(con);
-
             String sql = "INSERT INTO JOGO (ID, NOME_JOGO, REGRAS, VALOR_INICIAL) VALUES (?, ?, ?, ?)";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, proximoId);
             stmt.setString(2, jogo.getNomeJogo());
             stmt.setString(3, jogo.getRegras());
             stmt.setInt(4, jogo.getValorInicial());
-
-            int res = stmt.executeUpdate();
-            System.out.println("adicionarJogo.res=" + res);
+            stmt.executeUpdate();
             return jogo;
         } catch (SQLException e) {
             throw new RegraDeNegocioException(e.getCause());
@@ -59,7 +65,6 @@ public class JogoDao implements DaoGenerico<Jogo, String> {
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setString(1, jogo.getNomeJogo());
             int res = stmt.executeUpdate();
-            System.out.println("removerJogo.res=" + res);
             return res > 0;
         } catch (SQLException e) {
             throw new RegraDeNegocioException(e.getCause());
@@ -69,6 +74,31 @@ public class JogoDao implements DaoGenerico<Jogo, String> {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private Jogo instanciarJogo(String nome, String regras, int valorInicial) {
+        if (nome.equalsIgnoreCase("Roleta Clássica")) {
+            return new RoletaParImpar(nome, regras);
+        } else if (nome.equalsIgnoreCase("Roleta das Cores")) {
+            return new RoletaCores(nome, regras);
+        } else if (nome.equalsIgnoreCase("Caça Níquel")) {
+            return new CacaNiquel(nome, regras);
+        } else if (nome.equalsIgnoreCase("BlackJack")) {
+            return new BlackJack(nome, regras);
+        } else {
+            return new Jogo(nome, regras, valorInicial) {
+                @Override
+                public Partida jogar(Jogador jogador, int valorApostado, int opcaoEscolhida) { return null; }
+                @Override
+                public void apostaValida(int valorApostado, int opcaoEscolhida) {}
+                @Override
+                public void validarOpcao(int opcaoEscolhida) {}
+                @Override
+                public boolean verificarResultado(int resultado, int opcaoEscolhida) { return false; }
+                @Override
+                public void exibirResultado(Partida partida, int resultado) {}
+            };
         }
     }
 
@@ -83,18 +113,11 @@ public class JogoDao implements DaoGenerico<Jogo, String> {
             stmt.setString(1, nomeDoJogo);
             ResultSet res = stmt.executeQuery();
             if (res.next()) {
-                jogo = new Jogo(res.getString("nome_jogo"), res.getString("regras"), res.getInt("valor_inicial")) {
-                    @Override
-                    public model.Partida jogar(model.Jogador jogador, int valorApostado, int opcaoEscolhida) { return null; }
-                    @Override
-                    public void apostaValida(int valorApostado, int opcaoEscolhida) {}
-                    @Override
-                    public void validarOpcao(int opcaoEscolhida) {}
-                    @Override
-                    public boolean verificarResultado(int resultado, int opcaoEscolhida) { return false; }
-                    @Override
-                    public void exibirResultado(model.Partida partida, int resultado) {}
-                };
+                jogo = instanciarJogo(
+                        res.getString("nome_jogo"),
+                        res.getString("regras"),
+                        res.getInt("valor_inicial")
+                );
             }
         } catch (SQLException e) {
             throw new RegraDeNegocioException(e.getCause());
@@ -120,8 +143,7 @@ public class JogoDao implements DaoGenerico<Jogo, String> {
                 stmt.setString(1, jogo.getRegras());
                 stmt.setInt(2, jogo.getValorInicial());
                 stmt.setString(3, nomeDoJogo);
-                int res = stmt.executeUpdate();
-                System.out.println("atualizarJogo.res=" + res);
+                stmt.executeUpdate();
                 return buscar(nomeDoJogo);
             } catch (SQLException e) {
                 throw new RegraDeNegocioException(e.getCause());
@@ -146,18 +168,11 @@ public class JogoDao implements DaoGenerico<Jogo, String> {
             Statement stmt = con.createStatement();
             ResultSet res = stmt.executeQuery(sql);
             while (res.next()) {
-                Jogo jogo = new Jogo(res.getString("nome_jogo"), res.getString("regras"), res.getInt("valor_inicial")) {
-                    @Override
-                    public model.Partida jogar(model.Jogador jogador, int valorApostado, int opcaoEscolhida) { return null; }
-                    @Override
-                    public void apostaValida(int valorApostado, int opcaoEscolhida) {}
-                    @Override
-                    public void validarOpcao(int opcaoEscolhida) {}
-                    @Override
-                    public boolean verificarResultado(int resultado, int opcaoEscolhida) { return false; }
-                    @Override
-                    public void exibirResultado(model.Partida partida, int resultado) {}
-                };
+                Jogo jogo = instanciarJogo(
+                        res.getString("nome_jogo"),
+                        res.getString("regras"),
+                        res.getInt("valor_inicial")
+                );
                 jogos.add(jogo);
             }
         } catch (SQLException e) {

@@ -6,6 +6,7 @@ import java.util.List;
 
 import dao.JogadorDao;
 import dao.PartidaDao;
+import dao.db.DataBaseSingleton;
 import dao.interfaces.DaoGenerico;
 import exceptions.DadosDuplicadosException;
 import exceptions.NaoEncontradoException;
@@ -20,9 +21,12 @@ public class GerenciadorJogador {
 
     public GerenciadorJogador(JogadorDao jogadorDao) {
         this.daoGenerico = jogadorDao;
+        this.daoGenericoPartida = null;
+    }
+
     public GerenciadorJogador(JogadorDao jogadorDao, PartidaDao partidaDao) {
-          this.daoGenerico = jogadorDao;
-          this.daoGenericoPartida = partidaDao;
+        this.daoGenerico = jogadorDao;
+        this.daoGenericoPartida = partidaDao;
     }
 
     public Jogador buscarJogador(String nickname) throws NaoEncontradoException, RegraDeNegocioException {
@@ -59,10 +63,13 @@ public class GerenciadorJogador {
     public boolean removerJogador(String nicknameJogador) throws NaoEncontradoException, RegraDeNegocioException {
         Jogador jogador = buscarJogador(nicknameJogador);
 
-        Partida partida = daoGenericoPartida.buscar(jogador.getIdJogador().toString());
-        partida.setJogador(jogador);
-
-        daoGenericoPartida.remover(partida);
+        if (daoGenericoPartida != null) {
+            Partida partida = daoGenericoPartida.buscar(jogador.getIdJogador().toString());
+            if (partida != null) {
+                partida.setJogador(jogador);
+                daoGenericoPartida.remover(partida);
+            }
+        }
         return daoGenerico.remover(jogador);
     }
 
@@ -71,11 +78,11 @@ public class GerenciadorJogador {
     }
 
     public void fazerDeposito(String nicknameJogador, double valor) throws NaoEncontradoException, IllegalArgumentException, RegraDeNegocioException {
-        Jogador jogador = buscarJogador(nicknameJogador); // Busca o jogador (e sua carteira) do banco
+        Jogador jogador = buscarJogador(nicknameJogador);
         if (!jogador.getCarteira().depositarDinheiro(valor)) {
             throw new IllegalArgumentException("❌ Valor de depósito inválido: " + valor);
         }
-       
+
         Connection con = null;
         try {
             con = DataBaseSingleton.getConnection();
@@ -91,9 +98,6 @@ public class GerenciadorJogador {
                 e.printStackTrace();
             }
         }
- 
-        Jogador jogadorAtualizado = buscarJogador(nicknameJogador);
-
     }
 
     public void fazerSaque(String nicknameJogador, double valor) throws NaoEncontradoException, IllegalArgumentException, RegraDeNegocioException {
@@ -104,7 +108,7 @@ public class GerenciadorJogador {
         if (!jogador.getCarteira().sacarDinheiro(valor)) {
             throw new IllegalArgumentException("⚠️ Saldo insuficiente para saque: " + valor);
         }
-   
+
         Connection con = null;
         try {
             con = DataBaseSingleton.getConnection();
@@ -120,8 +124,6 @@ public class GerenciadorJogador {
                 e.printStackTrace();
             }
         }
-
-        Jogador jogadorAtualizado = buscarJogador(nicknameJogador);
     }
 
     public void exibirPartidasJogadas(String nicknameJogador) throws NaoEncontradoException, RegraDeNegocioException {

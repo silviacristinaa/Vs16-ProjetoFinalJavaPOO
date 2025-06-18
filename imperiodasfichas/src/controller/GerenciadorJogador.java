@@ -1,5 +1,7 @@
 package controller;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 import dao.JogadorDao;
@@ -16,6 +18,8 @@ public class GerenciadorJogador {
     private final DaoGenerico<Jogador, String> daoGenerico;
     private final DaoGenerico<Partida, String> daoGenericoPartida;
 
+    public GerenciadorJogador(JogadorDao jogadorDao) {
+        this.daoGenerico = jogadorDao;
     public GerenciadorJogador(JogadorDao jogadorDao, PartidaDao partidaDao) {
           this.daoGenerico = jogadorDao;
           this.daoGenericoPartida = partidaDao;
@@ -33,6 +37,7 @@ public class GerenciadorJogador {
         if (jogadorExiste(nickname)) {
             throw new DadosDuplicadosException("Jogador com o nickname " + nickname + " já existe.");
         }
+
         Jogador novo = new Jogador(nome, idade, nickname);
         return daoGenerico.adicionar(novo);
     }
@@ -41,6 +46,7 @@ public class GerenciadorJogador {
         if (jogadorExiste(nickname)) {
             throw new DadosDuplicadosException("⚠️ Jogador com o nickname " + nickname + " já existe. Escolha outro para continuar.");
         }
+
         Carteira carteira = new Carteira(quantidadeFichas, 0);
         Jogador novo = new Jogador(nome, idade, nickname, carteira);
         return daoGenerico.adicionar(novo);
@@ -48,7 +54,7 @@ public class GerenciadorJogador {
 
     public boolean jogadorExiste(String nicknameJogador) throws RegraDeNegocioException {
         return daoGenerico.buscar(nicknameJogador) != null;
-    }    
+    }
 
     public boolean removerJogador(String nicknameJogador) throws NaoEncontradoException, RegraDeNegocioException {
         Jogador jogador = buscarJogador(nicknameJogador);
@@ -65,11 +71,31 @@ public class GerenciadorJogador {
     }
 
     public void fazerDeposito(String nicknameJogador, double valor) throws NaoEncontradoException, IllegalArgumentException, RegraDeNegocioException {
-        Jogador jogador = buscarJogador(nicknameJogador);
+        Jogador jogador = buscarJogador(nicknameJogador); // Busca o jogador (e sua carteira) do banco
         if (!jogador.getCarteira().depositarDinheiro(valor)) {
             throw new IllegalArgumentException("❌ Valor de depósito inválido: " + valor);
         }
+       
+        Connection con = null;
+        try {
+            con = DataBaseSingleton.getConnection();
+            jogador.getCarteira().atualizarCarteiraNoBanco(con);
+        } catch (SQLException e) {
+            throw new RegraDeNegocioException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+ 
+        Jogador jogadorAtualizado = buscarJogador(nicknameJogador);
+
     }
+
     public void fazerSaque(String nicknameJogador, double valor) throws NaoEncontradoException, IllegalArgumentException, RegraDeNegocioException {
         if (valor <= 0) {
             throw new IllegalArgumentException("⚠️ Valor de saque deve ser positivo: " + valor);
@@ -78,6 +104,24 @@ public class GerenciadorJogador {
         if (!jogador.getCarteira().sacarDinheiro(valor)) {
             throw new IllegalArgumentException("⚠️ Saldo insuficiente para saque: " + valor);
         }
+   
+        Connection con = null;
+        try {
+            con = DataBaseSingleton.getConnection();
+            jogador.getCarteira().atualizarCarteiraNoBanco(con);
+        } catch (SQLException e) {
+            throw new RegraDeNegocioException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Jogador jogadorAtualizado = buscarJogador(nicknameJogador);
     }
 
     public void exibirPartidasJogadas(String nicknameJogador) throws NaoEncontradoException, RegraDeNegocioException {
@@ -97,8 +141,8 @@ public class GerenciadorJogador {
 
         return jogadores.stream().filter(j -> !j.getPartidas().isEmpty())
                 .sorted((j1, j2) -> Integer.compare(
-                    j2.getPartidas().stream().mapToInt(p -> p.isGanhou() ? 1 : 0).sum(),
-                    j1.getPartidas().stream().mapToInt(p -> p.isGanhou() ? 1 : 0).sum()))
+                        j2.getPartidas().stream().mapToInt(p -> p.isGanhou() ? 1 : 0).sum(),
+                        j1.getPartidas().stream().mapToInt(p -> p.isGanhou() ? 1 : 0).sum()))
                 .toList();
     }
 }

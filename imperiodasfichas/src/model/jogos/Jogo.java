@@ -1,16 +1,26 @@
 package model.jogos;
 
-import java.util.Objects;
-
 import model.Jogador;
 import model.Partida;
 
+import java.util.Objects;
+
 public abstract class Jogo {
+    private Integer idJogo;
     private String nomeJogo;
     private String regras;
     private int valorInicial;
 
-    protected Jogo(String nomeJogo, String regras, int valorInicial) {
+    public Integer getIdJogo() {
+        return idJogo;
+    }
+
+    public void setIdJogo(Integer idJogo) {
+        this.idJogo = idJogo;
+    }
+
+    protected Jogo(Integer idJogo, String nomeJogo, String regras, int valorInicial) {
+        this.idJogo = idJogo;
         this.nomeJogo = nomeJogo;
         this.regras = regras;
         this.valorInicial = valorInicial;

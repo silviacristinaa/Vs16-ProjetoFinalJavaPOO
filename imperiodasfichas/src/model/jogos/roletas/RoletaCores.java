@@ -6,8 +6,8 @@ import model.jogos.Jogo;
 
 public class RoletaCores extends Jogo {
 
-    public RoletaCores(String nomeJogo, String regras) {
-        super(nomeJogo, regras, 10);
+    public RoletaCores(Integer idJogo, String nomeJogo, String regras) {
+        super(idJogo, nomeJogo, regras, 10);
     }
 
     @Override

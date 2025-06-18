@@ -43,7 +43,7 @@ public class PartidaDao implements DaoGenerico<Partida, String> {
             stmt.setInt(3, partida.getQuantidadeFichasApostado());
             stmt.setString(4, partida.isGanhou() ? "S" : "N");
             stmt.setInt(5, partida.getJogador().getIdJogador());
-            stmt.setInt(6, 3);
+            stmt.setInt(6, partida.getJogo().getIdJogo());
 
             int res = stmt.executeUpdate();
             System.out.println("adicionarPartida.res=" + res);

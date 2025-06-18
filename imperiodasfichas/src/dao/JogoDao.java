@@ -37,9 +37,10 @@ public class JogoDao implements DaoGenerico<Jogo, String> {
                 return jogo;
             }
             Integer proximoId = this.getProximoId(con);
+            jogo.setIdJogo(proximoId);
             String sql = "INSERT INTO JOGO (ID, NOME_JOGO, REGRAS, VALOR_INICIAL) VALUES (?, ?, ?, ?)";
             PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setInt(1, proximoId);
+            stmt.setInt(1, jogo.getIdJogo());
             stmt.setString(2, jogo.getNomeJogo());
             stmt.setString(3, jogo.getRegras());
             stmt.setInt(4, jogo.getValorInicial());
@@ -77,17 +78,17 @@ public class JogoDao implements DaoGenerico<Jogo, String> {
         }
     }
 
-    private Jogo instanciarJogo(String nome, String regras, int valorInicial) {
+    private Jogo instanciarJogo(Integer idJogo, String nome, String regras, int valorInicial) {
         if (nome.equalsIgnoreCase("Roleta Clássica")) {
-            return new RoletaParImpar(nome, regras);
+            return new RoletaParImpar(idJogo, nome, regras);
         } else if (nome.equalsIgnoreCase("Roleta das Cores")) {
-            return new RoletaCores(nome, regras);
+            return new RoletaCores(idJogo, nome, regras);
         } else if (nome.equalsIgnoreCase("Caça Níquel")) {
-            return new CacaNiquel(nome, regras);
+            return new CacaNiquel(idJogo, nome, regras);
         } else if (nome.equalsIgnoreCase("BlackJack")) {
-            return new BlackJack(nome, regras);
+            return new BlackJack(idJogo, nome, regras);
         } else {
-            return new Jogo(nome, regras, valorInicial) {
+            return new Jogo(idJogo, nome, regras, valorInicial) {
                 @Override
                 public Partida jogar(Jogador jogador, int valorApostado, int opcaoEscolhida) { return null; }
                 @Override
@@ -114,6 +115,7 @@ public class JogoDao implements DaoGenerico<Jogo, String> {
             ResultSet res = stmt.executeQuery();
             if (res.next()) {
                 jogo = instanciarJogo(
+                        res.getInt("id"),
                         res.getString("nome_jogo"),
                         res.getString("regras"),
                         res.getInt("valor_inicial")
@@ -169,6 +171,7 @@ public class JogoDao implements DaoGenerico<Jogo, String> {
             ResultSet res = stmt.executeQuery(sql);
             while (res.next()) {
                 Jogo jogo = instanciarJogo(
+                        res.getInt("id"),
                         res.getString("nome_jogo"),
                         res.getString("regras"),
                         res.getInt("valor_inicial")

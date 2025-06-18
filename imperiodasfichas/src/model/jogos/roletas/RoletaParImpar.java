@@ -6,8 +6,8 @@ import model.jogos.Jogo;
 
 public class RoletaParImpar extends Jogo {
 
-    public RoletaParImpar(String nomeJogo, String regras) {
-        super(nomeJogo, regras, 5);
+    public RoletaParImpar(Integer idJogo, String nomeJogo, String regras) {
+        super(idJogo, nomeJogo, regras, 5);
     }
 
 

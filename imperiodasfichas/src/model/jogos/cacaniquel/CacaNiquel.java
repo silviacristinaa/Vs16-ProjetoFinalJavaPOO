@@ -10,8 +10,8 @@ public class CacaNiquel extends Jogo {
 
     public static final String[] simbolos = {"🍒", "⭐", "💎", "🔔"};
 
-    public CacaNiquel(String nomeJogo, String regras) {
-        super(nomeJogo, regras, 10);
+    public CacaNiquel(Integer idJogo, String nomeJogo, String regras) {
+        super(idJogo, nomeJogo, regras, 10);
     }
 
     @Override

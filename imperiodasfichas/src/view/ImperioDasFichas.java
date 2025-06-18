@@ -24,10 +24,10 @@ public class ImperioDasFichas {
         AnimacaoEntrada.executar();
 
         // Adição dos jogos de roleta
-        Jogo roleta = new RoletaParImpar("Roleta Clássica", "Aposte em ⚪ PAR (0) ou ⚫ ÍMPAR (1). Se acertar, ganha o dobro do valor apostado! 💰");
-        Jogo roletaCores = new RoletaCores("Roleta das Cores", "Aposte em uma cor: VERMELHO (0), AZUL (1), AMARELO (2), VERDE (3). 🍀 Acerte e ganhe 4x! 💰");
-        Jogo cacaNiquel = new CacaNiquel("Caça Níquel", "🎰 Aperte a alavanca da sorte. Se acertar, ganhe o dobro do valor apostado! 💰");
-        Jogo blackJack = new BlackJack("BlackJack", "🃏 Chegue o mais próximo de 21 sem ultrapassar. Se vencer, ganhe o triplo do valor apostado! 💰");
+        Jogo roleta = new RoletaParImpar(1, "Roleta Clássica", "Aposte em ⚪ PAR (0) ou ⚫ ÍMPAR (1). Se acertar, ganha o dobro do valor apostado! 💰");
+        Jogo roletaCores = new RoletaCores(2, "Roleta das Cores", "Aposte em uma cor: VERMELHO (0), AZUL (1), AMARELO (2), VERDE (3). 🍀 Acerte e ganhe 4x! 💰");
+        Jogo cacaNiquel = new CacaNiquel(3, "Caça Níquel", "🎰 Aperte a alavanca da sorte. Se acertar, ganhe o dobro do valor apostado! 💰");
+        Jogo blackJack = new BlackJack(4, "BlackJack", "🃏 Chegue o mais próximo de 21 sem ultrapassar. Se vencer, ganhe o triplo do valor apostado! 💰");
 
         try {
             gerenciadorJogo.adicionarJogo(roleta);

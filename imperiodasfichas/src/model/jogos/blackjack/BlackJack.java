@@ -10,8 +10,8 @@ import java.util.Scanner;
 
 public class BlackJack extends Jogo {
 
-    public BlackJack(String nomeJogo, String regras) {
-        super(nomeJogo, regras, 10);
+    public BlackJack(Integer idJogo, String nomeJogo, String regras) {
+        super(idJogo, nomeJogo, regras, 10);
     }
 
     @Override

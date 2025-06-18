@@ -5,11 +5,23 @@ import model.jogos.Jogo;
 import java.time.LocalDateTime;
 
 public class Partida implements Comparable<Partida> {
+    private Integer idPartida;
     private LocalDateTime dataHora;
     private int quantidadeFichasApostado;
     private boolean ganhou;
     private Jogo jogo;
     private Jogador jogador;
+
+    public Integer getIdPartida() {
+        return idPartida;
+    }
+
+    public void setIdPartida(Integer idPartida) {
+        this.idPartida = idPartida;
+    }
+
+    public Partida() {
+    }
 
     public Partida(int quantidadeFichasApostado, boolean ganhou, Jogo jogo, Jogador jogador) {
         this.dataHora = LocalDateTime.now();

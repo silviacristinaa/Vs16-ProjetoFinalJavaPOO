@@ -5,19 +5,24 @@ import java.sql.SQLException;
 import java.util.List;
 
 import dao.JogadorDao;
-import dao.db.DataBaseSingleton;
+import dao.PartidaDao;
 import dao.interfaces.DaoGenerico;
 import exceptions.DadosDuplicadosException;
 import exceptions.NaoEncontradoException;
 import exceptions.RegraDeNegocioException;
 import model.Carteira;
 import model.Jogador;
+import model.Partida;
 
 public class GerenciadorJogador {
     private final DaoGenerico<Jogador, String> daoGenerico;
+    private final DaoGenerico<Partida, String> daoGenericoPartida;
 
     public GerenciadorJogador(JogadorDao jogadorDao) {
         this.daoGenerico = jogadorDao;
+    public GerenciadorJogador(JogadorDao jogadorDao, PartidaDao partidaDao) {
+          this.daoGenerico = jogadorDao;
+          this.daoGenericoPartida = partidaDao;
     }
 
     public Jogador buscarJogador(String nickname) throws NaoEncontradoException, RegraDeNegocioException {
@@ -32,7 +37,7 @@ public class GerenciadorJogador {
         if (jogadorExiste(nickname)) {
             throw new DadosDuplicadosException("Jogador com o nickname " + nickname + " já existe.");
         }
-        // Ao adicionar um jogador, a carteira padrão já é criada e persistida no JogadorDao
+
         Jogador novo = new Jogador(nome, idade, nickname);
         return daoGenerico.adicionar(novo);
     }
@@ -41,7 +46,7 @@ public class GerenciadorJogador {
         if (jogadorExiste(nickname)) {
             throw new DadosDuplicadosException("⚠️ Jogador com o nickname " + nickname + " já existe. Escolha outro para continuar.");
         }
-        // Ao adicionar um jogador com fichas, a carteira é criada e persistida no JogadorDao
+
         Carteira carteira = new Carteira(quantidadeFichas, 0);
         Jogador novo = new Jogador(nome, idade, nickname, carteira);
         return daoGenerico.adicionar(novo);
@@ -53,6 +58,11 @@ public class GerenciadorJogador {
 
     public boolean removerJogador(String nicknameJogador) throws NaoEncontradoException, RegraDeNegocioException {
         Jogador jogador = buscarJogador(nicknameJogador);
+
+        Partida partida = daoGenericoPartida.buscar(jogador.getIdJogador().toString());
+        partida.setJogador(jogador);
+
+        daoGenericoPartida.remover(partida);
         return daoGenerico.remover(jogador);
     }
 
@@ -65,7 +75,7 @@ public class GerenciadorJogador {
         if (!jogador.getCarteira().depositarDinheiro(valor)) {
             throw new IllegalArgumentException("❌ Valor de depósito inválido: " + valor);
         }
-        // Persistir a alteração no banco de dados
+       
         Connection con = null;
         try {
             con = DataBaseSingleton.getConnection();
@@ -81,22 +91,20 @@ public class GerenciadorJogador {
                 e.printStackTrace();
             }
         }
-        // Recarregar o jogador para atualizar a interface (carteira em memória)
+ 
         Jogador jogadorAtualizado = buscarJogador(nicknameJogador);
-        // Atualiza a referência do jogador original ou informa o jogador atualizado para a UI
-        // Para este cenário, podemos simplesmente atualizar o objeto passado para a UI, se for uma referência direta
-        // Ou o MenuCarteira pode chamar buscarJogador novamente para exibir o saldo atualizado
+
     }
 
     public void fazerSaque(String nicknameJogador, double valor) throws NaoEncontradoException, IllegalArgumentException, RegraDeNegocioException {
         if (valor <= 0) {
             throw new IllegalArgumentException("⚠️ Valor de saque deve ser positivo: " + valor);
         }
-        Jogador jogador = buscarJogador(nicknameJogador); // Busca o jogador (e sua carteira) do banco
+        Jogador jogador = buscarJogador(nicknameJogador);
         if (!jogador.getCarteira().sacarDinheiro(valor)) {
             throw new IllegalArgumentException("⚠️ Saldo insuficiente para saque: " + valor);
         }
-        // Persistir a alteração no banco de dados
+   
         Connection con = null;
         try {
             con = DataBaseSingleton.getConnection();
@@ -112,9 +120,8 @@ public class GerenciadorJogador {
                 e.printStackTrace();
             }
         }
-        // Recarregar o jogador para atualizar a interface (carteira em memória)
+
         Jogador jogadorAtualizado = buscarJogador(nicknameJogador);
-        // Atualiza a referência do jogador original ou informa o jogador atualizado para a UI
     }
 
     public void exibirPartidasJogadas(String nicknameJogador) throws NaoEncontradoException, RegraDeNegocioException {

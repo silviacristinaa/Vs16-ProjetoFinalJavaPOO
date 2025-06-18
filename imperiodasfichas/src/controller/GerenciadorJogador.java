@@ -1,20 +1,23 @@
 package controller;
 
 import java.util.List;
+
+import dao.JogadorDao;
 import dao.interfaces.DaoGenerico;
 import exceptions.DadosDuplicadosException;
 import exceptions.NaoEncontradoException;
+import exceptions.RegraDeNegocioException;
 import model.Carteira;
 import model.Jogador;
 
 public class GerenciadorJogador {
     private final DaoGenerico<Jogador, String> daoGenerico;
 
-    public GerenciadorJogador(DaoGenerico<Jogador, String> daoGenerico) {
-        this.daoGenerico = daoGenerico;
+    public GerenciadorJogador(JogadorDao jogadorDao) {
+          this.daoGenerico = jogadorDao;
     }
 
-    public Jogador buscarJogador(String nickname) throws NaoEncontradoException {
+    public Jogador buscarJogador(String nickname) throws NaoEncontradoException, RegraDeNegocioException {
         Jogador jogador = daoGenerico.buscar(nickname);
         if (jogador == null) {
             throw new NaoEncontradoException("❌ Verifique o nickname ou cadastre-se primeiro.");
@@ -22,14 +25,15 @@ public class GerenciadorJogador {
         return jogador;
     }
 
-    public Jogador adicionarJogador(String nome, int idade, String nickname) throws DadosDuplicadosException {
+    public Jogador adicionarJogador(String nome, int idade, String nickname) throws DadosDuplicadosException, RegraDeNegocioException {
         if (jogadorExiste(nickname)) {
             throw new DadosDuplicadosException("Jogador com o nickname " + nickname + " já existe.");
         }
         Jogador novo = new Jogador(nome, idade, nickname);
         return daoGenerico.adicionar(novo);
     }
-    public Jogador adicionarJogador(String nome, int idade, String nickname, int quantidadeFichas) throws DadosDuplicadosException {
+
+    public Jogador adicionarJogador(String nome, int idade, String nickname, int quantidadeFichas) throws DadosDuplicadosException, RegraDeNegocioException {
         if (jogadorExiste(nickname)) {
             throw new DadosDuplicadosException("⚠️ Jogador com o nickname " + nickname + " já existe. Escolha outro para continuar.");
         }
@@ -38,26 +42,26 @@ public class GerenciadorJogador {
         return daoGenerico.adicionar(novo);
     }
 
-    public boolean jogadorExiste(String nicknameJogador) {
+    public boolean jogadorExiste(String nicknameJogador) throws RegraDeNegocioException {
         return daoGenerico.buscar(nicknameJogador) != null;
     }    
 
-    public boolean removerJogador(String nicknameJogador) throws NaoEncontradoException {
+    public boolean removerJogador(String nicknameJogador) throws NaoEncontradoException, RegraDeNegocioException {
         Jogador jogador = buscarJogador(nicknameJogador);
         return daoGenerico.remover(jogador);
     }
 
-    public Jogador atualizarJogador(Jogador jogador, String nickname) {
+    public Jogador atualizarJogador(Jogador jogador, String nickname) throws RegraDeNegocioException {
         return daoGenerico.atualizar(jogador, nickname);
     }
 
-    public void fazerDeposito(String nicknameJogador, double valor) throws NaoEncontradoException, IllegalArgumentException {
+    public void fazerDeposito(String nicknameJogador, double valor) throws NaoEncontradoException, IllegalArgumentException, RegraDeNegocioException {
         Jogador jogador = buscarJogador(nicknameJogador);
         if (!jogador.getCarteira().depositarDinheiro(valor)) {
             throw new IllegalArgumentException("❌ Valor de depósito inválido: " + valor);
         }
     }
-    public void fazerSaque(String nicknameJogador, double valor) throws NaoEncontradoException, IllegalArgumentException {
+    public void fazerSaque(String nicknameJogador, double valor) throws NaoEncontradoException, IllegalArgumentException, RegraDeNegocioException {
         if (valor <= 0) {
             throw new IllegalArgumentException("⚠️ Valor de saque deve ser positivo: " + valor);
         }
@@ -67,7 +71,7 @@ public class GerenciadorJogador {
         }
     }
 
-    public void exibirPartidasJogadas(String nicknameJogador) throws NaoEncontradoException {
+    public void exibirPartidasJogadas(String nicknameJogador) throws NaoEncontradoException, RegraDeNegocioException {
         Jogador jogador = buscarJogador(nicknameJogador);
         if (jogador.getPartidas().isEmpty()) {
             System.out.println("Nenhuma partida jogada.");
@@ -79,13 +83,13 @@ public class GerenciadorJogador {
         }
     }
 
-    public List<Jogador> listarJogadoresPorVitorias() {
+    public List<Jogador> listarJogadoresPorVitorias() throws RegraDeNegocioException {
         List<Jogador> jogadores = daoGenerico.listar();
+
         return jogadores.stream().filter(j -> !j.getPartidas().isEmpty())
                 .sorted((j1, j2) -> Integer.compare(
                     j2.getPartidas().stream().mapToInt(p -> p.isGanhou() ? 1 : 0).sum(),
                     j1.getPartidas().stream().mapToInt(p -> p.isGanhou() ? 1 : 0).sum()))
                 .toList();
     }
-
 }

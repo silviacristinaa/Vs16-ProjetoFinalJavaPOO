@@ -2,6 +2,7 @@ package view.menus;
 
 import controller.GerenciadorJogador;
 import controller.GerenciadorJogo;
+import exceptions.RegraDeNegocioException;
 import model.Jogador;
 import view.ImperioDasFichas;
 import view.utils.LimparTerminal;
@@ -11,7 +12,7 @@ import java.util.Scanner;
 
 public class MenuOpcoes {
 
-    public static void executarMenu(Jogador jogador, GerenciadorJogador gerenciadorJogador, GerenciadorJogo gerenciadorJogo) {
+    public static void executarMenu(Jogador jogador, GerenciadorJogador gerenciadorJogador, GerenciadorJogo gerenciadorJogo) throws RegraDeNegocioException {
 
         Scanner scanner = new Scanner(System.in);
         int opcao;

@@ -2,6 +2,7 @@ package view.menus;
 
 import controller.GerenciadorJogador;
 import controller.GerenciadorJogo;
+import exceptions.RegraDeNegocioException;
 import model.Jogador;
 import view.ImperioDasFichas;
 import view.utils.LimparTerminal;
@@ -11,7 +12,7 @@ import java.util.Scanner;
 
 public class MenuJogador {
 
-    public static void controleLogin(GerenciadorJogador gerenciadorJogador, GerenciadorJogo gerenciadorJogo) {
+    public static void controleLogin(GerenciadorJogador gerenciadorJogador, GerenciadorJogo gerenciadorJogo) throws RegraDeNegocioException {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("\n" + AnsiColors.PURPLE + "🔐 Império das Fichas - Sistema de Login" + AnsiColors.RESET);
@@ -32,7 +33,7 @@ public class MenuJogador {
         MenuOpcoes.executarMenu(jogador, gerenciadorJogador, gerenciadorJogo);
     }
 
-    public static void menuEditarJogador(Jogador jogador, GerenciadorJogador gerenciadorJogador) {
+    public static void menuEditarJogador(Jogador jogador, GerenciadorJogador gerenciadorJogador) throws RegraDeNegocioException {
         LimparTerminal.executar();
         Scanner scanner = new Scanner(System.in);
         int opcao;

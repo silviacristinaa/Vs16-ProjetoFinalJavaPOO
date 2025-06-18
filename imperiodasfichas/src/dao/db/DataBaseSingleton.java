@@ -1,5 +1,8 @@
 package dao.db;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,14 +12,37 @@ import model.Jogador;
 import model.jogos.Jogo;
 
 public class DataBaseSingleton {
+
     private static volatile DataBaseSingleton instance;
+
+    private static volatile Connection connection;
     private final Map<String, Jogador> jogadores;
     private final Map<String, Jogo> jogos;
+
+    private static final String SERVER = "localhost";
+    private static final String PORT = "1521";
+    private static final String DATABASE = "xe";
+
+    private static final String USER = "system";
+    private static final String PASS = "oracle";
+    private static final String SCHEMA = "JOGO";
+
+    public static Connection getConnection() throws SQLException {
+        String url = "jdbc:oracle:thin:@" + SERVER + ":" + PORT + ":" + DATABASE;
+
+        // Abre-se a conexão com o Banco de Dados
+        Connection con = DriverManager.getConnection(url, USER, PASS);
+
+        con.createStatement().execute("alter session set current_schema=" + SCHEMA);
+
+        return con;
+    }
 
     private DataBaseSingleton() {
         this.jogadores = new HashMap<>();
         this.jogos = new HashMap<>();
     }
+
 
     public static DataBaseSingleton getInstance() {
         if (instance == null) {

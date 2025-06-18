@@ -4,6 +4,7 @@ import controller.GerenciadorJogador;
 import controller.GerenciadorJogo;
 import dao.JogadorDao;
 import dao.JogoDao;
+import exceptions.RegraDeNegocioException;
 import model.jogos.Jogo;
 import model.jogos.blackjack.BlackJack;
 import model.jogos.cacaniquel.CacaNiquel;
@@ -17,7 +18,7 @@ public class ImperioDasFichas {
     static final GerenciadorJogador gerenciadorJogador = new GerenciadorJogador(new JogadorDao());
     static final GerenciadorJogo gerenciadorJogo = new GerenciadorJogo("Império das Fichas", 1.00, gerenciadorJogador, new JogoDao());
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, RegraDeNegocioException {
 
         AnimacaoEntrada.executar();
 

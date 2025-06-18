@@ -4,6 +4,7 @@ import dao.db.DataBaseSingleton;
 import dao.interfaces.DaoGenerico;
 import exceptions.RegraDeNegocioException;
 import model.Jogador;
+import model.Carteira;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -61,7 +62,6 @@ public class JogadorDao implements DaoGenerico<Jogador, String> {
 
             stmt.setString(1, jogador.getNickname());
 
-            // Executa-se a consulta
             int res = stmt.executeUpdate();
             System.out.println("removerJogadorPorNickname.res=" + res);
 
@@ -91,7 +91,6 @@ public class JogadorDao implements DaoGenerico<Jogador, String> {
 
             stmt.setString(1, nicknameJogador);
 
-            // Executa-se a consulta
             ResultSet res = stmt.executeQuery();
 
             while (res.next()) {
@@ -100,6 +99,7 @@ public class JogadorDao implements DaoGenerico<Jogador, String> {
                 jogador.setNome(res.getString("nome"));
                 jogador.setNickname(res.getString("nickname"));
                 jogador.setIdade(res.getInt("idade"));
+                jogador.setCarteira(new Carteira()); // Instancia a carteira para evitar NullPointerException
             }
         } catch (SQLException e) {
             throw new RegraDeNegocioException(e.getCause());
@@ -136,7 +136,6 @@ public class JogadorDao implements DaoGenerico<Jogador, String> {
                 stmt.setInt(2, jogador.getIdade());
                 stmt.setString(3, nicknameJogador);
 
-                // Executa-se a consulta
                 int res = stmt.executeUpdate();
                 System.out.println("editarJogador.res=" + res);
 
@@ -159,8 +158,6 @@ public class JogadorDao implements DaoGenerico<Jogador, String> {
 
     @Override
     public List<Jogador> listar() throws RegraDeNegocioException {
-
-        //return dataBase.getJogadores();
         List<Jogador> jogadores = new ArrayList<>();
         Connection con = null;
         try {
@@ -169,7 +166,6 @@ public class JogadorDao implements DaoGenerico<Jogador, String> {
 
             String sql = "SELECT * FROM JOGADOR";
 
-            // Executa-se a consulta
             ResultSet res = stmt.executeQuery(sql);
 
             while (res.next()) {
@@ -178,6 +174,7 @@ public class JogadorDao implements DaoGenerico<Jogador, String> {
                 jogador.setNome(res.getString("nome"));
                 jogador.setNickname(res.getString("nickname"));
                 jogador.setIdade(res.getInt("idade"));
+                jogador.setCarteira(new Carteira()); // Instancia a carteira para cada jogador listado
                 jogadores.add(jogador);
             }
         } catch (SQLException e) {
@@ -192,7 +189,6 @@ public class JogadorDao implements DaoGenerico<Jogador, String> {
             }
         }
         return jogadores;
-
     }
 
     @Override
@@ -204,7 +200,6 @@ public class JogadorDao implements DaoGenerico<Jogador, String> {
 
         if (res.next()) {
             return res.getInt("mysequence");
-
         }
         return null;
     }

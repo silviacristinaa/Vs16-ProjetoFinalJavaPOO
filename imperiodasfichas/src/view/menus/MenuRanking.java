@@ -1,6 +1,7 @@
 package view.menus;
 
 import controller.GerenciadorJogador;
+import exceptions.RegraDeNegocioException;
 import model.Jogador;
 import view.utils.LimparTerminal;
 import view.utils.AnsiColors;
@@ -10,7 +11,7 @@ import java.util.Scanner;
 
 public class MenuRanking {
 
-    public static void executarMenu(GerenciadorJogador gerenciadorJogador) {
+    public static void executarMenu(GerenciadorJogador gerenciadorJogador) throws RegraDeNegocioException {
         LimparTerminal.executar();
         Scanner scanner = new Scanner(System.in);
 

@@ -3,6 +3,7 @@ package controller;
 import dao.interfaces.DaoGenerico;
 import exceptions.DadosDuplicadosException;
 import exceptions.NaoEncontradoException;
+import exceptions.RegraDeNegocioException;
 import model.Jogador;
 import model.Partida;
 import model.jogos.Jogo;
@@ -32,22 +33,22 @@ public class GerenciadorJogo {
         return partida;
     }
 
-    public Jogo adicionarJogo(Jogo jogo) throws DadosDuplicadosException {
+    public Jogo adicionarJogo(Jogo jogo) throws DadosDuplicadosException, RegraDeNegocioException {
         if (jogoExiste(jogo.getNomeJogo())) {
             throw new DadosDuplicadosException("Jogo com o nome " + jogo.getNomeJogo() + " já existe.");
         }
         return daoGenerico.adicionar(jogo);
     }
-    public boolean removerJogo(String nomeJogo) throws NaoEncontradoException {
+    public boolean removerJogo(String nomeJogo) throws NaoEncontradoException, RegraDeNegocioException {
         Jogo jogo = buscarJogo(nomeJogo);
         return daoGenerico.remover(jogo);
     }
 
-    public boolean jogoExiste(String nomeJogo) {
+    public boolean jogoExiste(String nomeJogo) throws RegraDeNegocioException {
         return daoGenerico.buscar(nomeJogo) != null;
     }
 
-    public Jogo buscarJogo(String nomeJogo) throws NaoEncontradoException {
+    public Jogo buscarJogo(String nomeJogo) throws NaoEncontradoException, RegraDeNegocioException {
         Jogo jogo = daoGenerico.buscar(nomeJogo);
         if (jogo == null) {
             throw new NaoEncontradoException("Jogo com o nome " + nomeJogo + " não encontrado.");

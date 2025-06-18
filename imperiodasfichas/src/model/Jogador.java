@@ -5,11 +5,23 @@ import java.util.TreeSet;
 
 public class Jogador {
 
+    private Integer idJogador;
     private String nome;
     private String nickname;
     private int idade;
     private Carteira carteira;
     private Set<Partida> partidas;
+
+    public Integer getIdJogador() {
+        return idJogador;
+    }
+
+    public void setIdJogador(Integer idJogador) {
+        this.idJogador = idJogador;
+    }
+
+    public Jogador() {
+    }
 
     public Jogador(String nome, int idade, String nickname) {
         this.nome = nome;

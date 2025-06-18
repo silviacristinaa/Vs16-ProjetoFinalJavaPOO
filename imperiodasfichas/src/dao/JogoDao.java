@@ -1,5 +1,7 @@
 package dao;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 import dao.db.DataBaseSingleton;
@@ -9,6 +11,11 @@ import model.jogos.Jogo;
 public class JogoDao implements DaoGenerico<Jogo, String> {
 
     private final DataBaseSingleton dataBase = DataBaseSingleton.getInstance();
+
+    @Override
+    public Integer getProximoId(Connection connection) throws SQLException {
+        return 0;
+    }
 
     @Override
     public Jogo adicionar(Jogo entidade) {

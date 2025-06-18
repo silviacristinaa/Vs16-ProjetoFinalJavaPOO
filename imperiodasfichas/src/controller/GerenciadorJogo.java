@@ -1,7 +1,7 @@
 package controller;
 
+import dao.PartidaDao;
 import dao.interfaces.DaoGenerico;
-import exceptions.DadosDuplicadosException;
 import exceptions.NaoEncontradoException;
 import exceptions.RegraDeNegocioException;
 import model.Jogador;
@@ -11,11 +11,14 @@ import model.jogos.Jogo;
 public class GerenciadorJogo {
     private String nome;
     private double valorFicha;
-    private final DaoGenerico<Jogo, String> daoGenerico;
+    private final DaoGenerico<Jogo, String> daoJogoGenerico;
+    private final DaoGenerico<Partida, String> daoPartidaGenerico;
     private final GerenciadorJogador gerenciadorJogador;
 
-    public GerenciadorJogo(String nome, double valorFicha, GerenciadorJogador gerenciadorJogador, DaoGenerico<Jogo, String> daoGenerico) {
-        this.daoGenerico = daoGenerico;
+    public GerenciadorJogo(String nome, double valorFicha, GerenciadorJogador gerenciadorJogador, DaoGenerico<Jogo, String> daoGenerico,
+                           PartidaDao partidaDao) {
+        this.daoJogoGenerico = daoGenerico;
+        this.daoPartidaGenerico = partidaDao;
         this.gerenciadorJogador = gerenciadorJogador;
         this.nome = nome;
         this.valorFicha = valorFicha;
@@ -29,27 +32,28 @@ public class GerenciadorJogo {
             throw new IllegalArgumentException("Jogador não possui fichas suficientes para apostar: " + quantidadeFichaAposta);
         }
         Partida partida = jogo.jogar(jogador,quantidadeFichaAposta, opcaoEscolhida);
-        jogador.getPartidas().add(partida);
+        //jogador.getPartidas().add(partida);
+        daoPartidaGenerico.adicionar(partida);
         return partida;
     }
 
     public Jogo adicionarJogo(Jogo jogo) throws RegraDeNegocioException {
         if (jogoExiste(jogo.getNomeJogo())) {
-            return daoGenerico.buscar(jogo.getNomeJogo());
+            return daoJogoGenerico.buscar(jogo.getNomeJogo());
         }
-        return daoGenerico.adicionar(jogo);
+        return daoJogoGenerico.adicionar(jogo);
     }
     public boolean removerJogo(String nomeJogo) throws NaoEncontradoException, RegraDeNegocioException {
         Jogo jogo = buscarJogo(nomeJogo);
-        return daoGenerico.remover(jogo);
+        return daoJogoGenerico.remover(jogo);
     }
 
     public boolean jogoExiste(String nomeJogo) throws RegraDeNegocioException {
-        return daoGenerico.buscar(nomeJogo) != null;
+        return daoJogoGenerico.buscar(nomeJogo) != null;
     }
 
     public Jogo buscarJogo(String nomeJogo) throws NaoEncontradoException, RegraDeNegocioException {
-        Jogo jogo = daoGenerico.buscar(nomeJogo);
+        Jogo jogo = daoJogoGenerico.buscar(nomeJogo);
         if (jogo == null) {
             throw new NaoEncontradoException("Jogo com o nome " + nomeJogo + " não encontrado.");
         }

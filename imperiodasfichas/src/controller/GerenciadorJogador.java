@@ -3,18 +3,22 @@ package controller;
 import java.util.List;
 
 import dao.JogadorDao;
+import dao.PartidaDao;
 import dao.interfaces.DaoGenerico;
 import exceptions.DadosDuplicadosException;
 import exceptions.NaoEncontradoException;
 import exceptions.RegraDeNegocioException;
 import model.Carteira;
 import model.Jogador;
+import model.Partida;
 
 public class GerenciadorJogador {
     private final DaoGenerico<Jogador, String> daoGenerico;
+    private final DaoGenerico<Partida, String> daoGenericoPartida;
 
-    public GerenciadorJogador(JogadorDao jogadorDao) {
+    public GerenciadorJogador(JogadorDao jogadorDao, PartidaDao partidaDao) {
           this.daoGenerico = jogadorDao;
+          this.daoGenericoPartida = partidaDao;
     }
 
     public Jogador buscarJogador(String nickname) throws NaoEncontradoException, RegraDeNegocioException {
@@ -48,6 +52,11 @@ public class GerenciadorJogador {
 
     public boolean removerJogador(String nicknameJogador) throws NaoEncontradoException, RegraDeNegocioException {
         Jogador jogador = buscarJogador(nicknameJogador);
+
+        Partida partida = daoGenericoPartida.buscar(jogador.getIdJogador().toString());
+        partida.setJogador(jogador);
+
+        daoGenericoPartida.remover(partida);
         return daoGenerico.remover(jogador);
     }
 

@@ -16,6 +16,9 @@ public abstract class Jogo {
         this.valorInicial = valorInicial;
     }
 
+    public Jogo() {
+    }
+
     public void exibirRegras() {
         System.out.println("Regras do jogo " + nomeJogo + ": " + regras);
     }

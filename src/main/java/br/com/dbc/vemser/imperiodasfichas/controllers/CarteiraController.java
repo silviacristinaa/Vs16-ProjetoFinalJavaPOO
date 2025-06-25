@@ -33,4 +33,12 @@ public class CarteiraController {
     public ResponseEntity<CarteiraEntity> buscarPorIdJogador(@PathVariable("idJogador") Integer idJogador) throws RegraDeNegocioException {
         return new ResponseEntity<>(carteiraService.buscarCarteiraPorIdJogador(idJogador), HttpStatus.OK);
     }
+
+    @PutMapping("/{idCarteira}")
+    public ResponseEntity<CarteiraEntity> atualizar(@PathVariable("idCarteira") Integer id,
+                                                    @RequestBody CarteiraEntity carteiraAtualizar) throws RegraDeNegocioException {
+        return new ResponseEntity<>(carteiraService.atualizarCarteira(id, carteiraAtualizar), HttpStatus.OK);
+    }
+
+
 }

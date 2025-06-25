@@ -31,4 +31,9 @@ public class CarteiraService {
     public CarteiraEntity buscarCarteiraPorIdJogador(Integer idJogador) throws RegraDeNegocioException {
         return carteiraRepository.buscarCarteiraPorIdJogador(idJogador);
     }
+
+    public CarteiraEntity atualizarCarteira(Integer id, CarteiraEntity carteiraAtualizar) throws RegraDeNegocioException {
+        buscarCarteiraPorId(id);
+        return carteiraRepository.editar(id, carteiraAtualizar);
+    }
 }

@@ -36,8 +36,16 @@ public class CarteiraEntity {
         return fichas;
     }
 
+    public void setFichas(int fichas) {
+        this.fichas = fichas;
+    }
+
     public double getDinheiro() {
         return dinheiro;
+    }
+
+    public void setDinheiro(double dinheiro) {
+        this.dinheiro = dinheiro;
     }
 
     public Integer getIdJogador() {

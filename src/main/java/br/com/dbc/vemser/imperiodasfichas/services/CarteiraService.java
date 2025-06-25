@@ -36,4 +36,9 @@ public class CarteiraService {
         buscarCarteiraPorId(id);
         return carteiraRepository.editar(id, carteiraAtualizar);
     }
+
+    public void removerCarteira(Integer idCarteira) throws RegraDeNegocioException {
+        buscarCarteiraPorId(idCarteira);
+        carteiraRepository.remover(idCarteira);
+    }
 }

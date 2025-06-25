@@ -40,9 +40,21 @@ public class CarteiraService {
     public CarteiraEntity depositarDinheiro(Integer idCarteira, double valor) throws RegraDeNegocioException {
         CarteiraEntity carteira = buscarCarteiraPorId(idCarteira);
         if (valor <= 0) {
-            throw new RegraDeNegocioException("Valor de depósito inválido: " + valor);
+            throw new RegraDeNegocioException("Valor de depósito inválido: R$ " + valor);
         }
         carteira.setDinheiro(carteira.getDinheiro() + valor);
+        return carteiraRepository.editar(idCarteira, carteira);
+    }
+
+    public CarteiraEntity sacarDinheiro(Integer idCarteira, double valor) throws RegraDeNegocioException {
+        CarteiraEntity carteira = buscarCarteiraPorId(idCarteira);
+        if (valor <= 0) {
+            throw new RegraDeNegocioException("Valor de saque inválido: R$ " + valor);
+        }
+        if (carteira.getDinheiro() < valor) {
+            throw new RegraDeNegocioException("Saldo insuficiente para sacar R$ " + valor + "reais");
+        }
+        carteira.setDinheiro(carteira.getDinheiro() - valor);
         return carteiraRepository.editar(idCarteira, carteira);
     }
 }

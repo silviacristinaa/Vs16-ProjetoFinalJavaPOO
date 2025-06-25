@@ -40,5 +40,9 @@ public class CarteiraController {
         return new ResponseEntity<>(carteiraService.atualizarCarteira(id, carteiraAtualizar), HttpStatus.OK);
     }
 
-
+    @PutMapping("/{idCarteira}/depositar") // /carteira/1/depositar?valor=50
+    public ResponseEntity<CarteiraEntity> depositarDinheiro(@PathVariable("idCarteira") Integer id,
+                                            @RequestParam double valor) throws RegraDeNegocioException {
+        return new ResponseEntity<>(carteiraService.depositarDinheiro(id, valor), HttpStatus.OK);
+    }
 }

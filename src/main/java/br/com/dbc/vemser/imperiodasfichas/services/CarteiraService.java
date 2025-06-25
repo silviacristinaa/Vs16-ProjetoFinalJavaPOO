@@ -37,8 +37,12 @@ public class CarteiraService {
         return carteiraRepository.editar(id, carteiraAtualizar);
     }
 
-    public void removerCarteira(Integer idCarteira) throws RegraDeNegocioException {
-        buscarCarteiraPorId(idCarteira);
-        carteiraRepository.remover(idCarteira);
+    public CarteiraEntity depositarDinheiro(Integer idCarteira, double valor) throws RegraDeNegocioException {
+        CarteiraEntity carteira = buscarCarteiraPorId(idCarteira);
+        if (valor <= 0) {
+            throw new RegraDeNegocioException("Valor de depósito inválido: " + valor);
+        }
+        carteira.setDinheiro(carteira.getDinheiro() + valor);
+        return carteiraRepository.editar(idCarteira, carteira);
     }
 }

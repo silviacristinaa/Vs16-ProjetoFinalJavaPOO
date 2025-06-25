@@ -57,4 +57,19 @@ public class CarteiraService {
         carteira.setDinheiro(carteira.getDinheiro() - valor);
         return carteiraRepository.editar(idCarteira, carteira);
     }
+
+    public CarteiraEntity comprarFichas(Integer idCarteira, int quantidadeFicha) throws RegraDeNegocioException {
+        CarteiraEntity carteira = buscarCarteiraPorId(idCarteira);
+        final double valorFicha = 1.0;
+        if (quantidadeFicha <= 0) {
+            throw new RegraDeNegocioException("Quantidade de fichas para compra deve ser positiva: " + quantidadeFicha);
+        }
+        double custoTotal = quantidadeFicha * valorFicha;
+        if (carteira.getDinheiro() < custoTotal) {
+            throw new RegraDeNegocioException("Dinheiro insuficiente para comprar as fichas. Custo total: R$ " + custoTotal);
+        }
+        carteira.setFichas(carteira.getFichas() + quantidadeFicha);
+        carteira.setDinheiro(carteira.getDinheiro() - custoTotal);
+        return carteiraRepository.editar(idCarteira, carteira);
+    }
 }

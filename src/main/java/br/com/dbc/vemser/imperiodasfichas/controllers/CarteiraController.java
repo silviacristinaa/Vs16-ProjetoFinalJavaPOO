@@ -25,7 +25,12 @@ public class CarteiraController {
     }
 
     @GetMapping("/{idCarteira}")
-    public CarteiraEntity buscarPorId(@PathVariable("idCarteira") Integer id) throws RegraDeNegocioException {
-        return carteiraService.buscarCarteiraPorId(id);
+    public ResponseEntity<CarteiraEntity> buscarPorId(@PathVariable("idCarteira") Integer id) throws RegraDeNegocioException {
+        return new ResponseEntity<>(carteiraService.buscarCarteiraPorId(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/jogador/{idJogador}")
+    public ResponseEntity<CarteiraEntity> buscarPorIdJogador(@PathVariable("idJogador") Integer idJogador) throws RegraDeNegocioException {
+        return new ResponseEntity<>(carteiraService.buscarCarteiraPorIdJogador(idJogador), HttpStatus.OK);
     }
 }

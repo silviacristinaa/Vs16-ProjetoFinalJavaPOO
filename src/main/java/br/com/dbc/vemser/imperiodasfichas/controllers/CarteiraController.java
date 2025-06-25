@@ -52,9 +52,15 @@ public class CarteiraController {
         return new ResponseEntity<>(carteiraService.sacarDinheiro(id, valor), HttpStatus.OK);
     }
 
-    @PutMapping("/{idCarteira}/comprar")
+    @PutMapping("/{idCarteira}/comprar") // /carteira/1/comprar?quantidade=50
     public ResponseEntity<CarteiraEntity> comprarFichas(@PathVariable("idCarteira") Integer id,
                                         @RequestParam int quantidade) throws RegraDeNegocioException {
         return new ResponseEntity<>(carteiraService.comprarFichas(id, quantidade), HttpStatus.OK);
+    }
+
+    @PutMapping("/{idCarteira}/vender") // /carteira/1/vender?quantidade=50
+    public ResponseEntity<CarteiraEntity> venderFichas(@PathVariable("idCarteira") Integer id,
+                                                       @RequestParam int quantidade) throws RegraDeNegocioException {
+        return new ResponseEntity<>(carteiraService.venderFichas(id, quantidade), HttpStatus.OK);
     }
 }

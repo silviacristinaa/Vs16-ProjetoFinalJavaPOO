@@ -20,7 +20,7 @@ public class CarteiraController {
     }
 
     @GetMapping
-    public List<CarteiraEntity> listar() throws RegraDeNegocioException {
-        return carteiraService.listar();
+    public ResponseEntity<List<CarteiraEntity>> listar() throws RegraDeNegocioException {
+        return new ResponseEntity<>(carteiraService.listar(), HttpStatus.OK);
     }
 }

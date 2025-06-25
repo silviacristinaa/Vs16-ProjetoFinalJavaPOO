@@ -23,4 +23,8 @@ public class CarteiraService {
     public List<CarteiraEntity> listar() throws RegraDeNegocioException {
         return carteiraRepository.listar();
     }
+
+    public CarteiraEntity buscarCarteiraPorId(Integer idCarteira) throws RegraDeNegocioException {
+        return carteiraRepository.buscarPorId(idCarteira);
+    }
 }

@@ -23,4 +23,9 @@ public class CarteiraController {
     public ResponseEntity<List<CarteiraEntity>> listar() throws RegraDeNegocioException {
         return new ResponseEntity<>(carteiraService.listar(), HttpStatus.OK);
     }
+
+    @GetMapping("/{idCarteira}")
+    public CarteiraEntity buscarPorId(@PathVariable("idCarteira") Integer id) throws RegraDeNegocioException {
+        return carteiraService.buscarCarteiraPorId(id);
+    }
 }

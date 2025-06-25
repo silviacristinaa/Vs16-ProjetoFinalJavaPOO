@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.imperiodasfichas.repositories;
 
+import br.com.dbc.vemser.imperiodasfichas.entities.CarteiraEntity;
 import br.com.dbc.vemser.imperiodasfichas.entities.JogadorEntity;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import org.springframework.stereotype.Repository;
@@ -10,6 +11,12 @@ import java.util.List;
 
 @Repository
 public class JogadorRepository implements GenericRepository<Integer, JogadorEntity> {
+    private final CarteiraRepository carteiraRepository;
+
+    public JogadorRepository(CarteiraRepository carteiraRepository) {
+        this.carteiraRepository = carteiraRepository;
+    }
+
     @Override
     public Integer getProximoId(Connection connection) throws SQLException {
         String sql = "SELECT SEQ_JOGADOR.nextval mysequence from DUAL";
@@ -86,6 +93,11 @@ public class JogadorRepository implements GenericRepository<Integer, JogadorEnti
             //if (jogador.getCarteira() != null && jogador.getCarteira().getIdCarteira() != null) {
             //    Carteira.removerCarteiraDoBanco(con, jogador.getCarteira().getIdCarteira());
             //}
+
+            CarteiraEntity carteiraJogador = carteiraRepository.buscarCarteiraPorIdJogador(id);
+            if (carteiraJogador != null) {
+                carteiraRepository.remover(carteiraJogador.getIdCarteira());
+            }
 
             String sql = "DELETE FROM JOGADOR WHERE ID = ?";
             PreparedStatement stmt = con.prepareStatement(sql);

@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.imperiodasfichas.services;
 
+import br.com.dbc.vemser.imperiodasfichas.entities.CarteiraEntity;
 import br.com.dbc.vemser.imperiodasfichas.entities.JogadorEntity;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.imperiodasfichas.repositories.JogadorRepository;
@@ -11,17 +12,25 @@ import java.util.List;
 public class JogadorService {
 
     private final JogadorRepository jogadorRepository;
+    private final CarteiraService carteiraService;
 
-    public JogadorService(JogadorRepository jogadorRepository) {
+    public JogadorService(JogadorRepository jogadorRepository, CarteiraService carteiraService) {
         this.jogadorRepository = jogadorRepository;
+        this.carteiraService = carteiraService;
     }
 
     public JogadorEntity adicionarJogador(JogadorEntity jogador) throws RegraDeNegocioException {
 //        if (jogadorExiste(nickname)) {
 //            throw new DadosDuplicadosException("Jogador com o nickname " + nickname + " já existe.");
 //        }
+        JogadorEntity jogadorAdicionado = jogadorRepository.adicionar(jogador);
+        CarteiraEntity carteira = new CarteiraEntity();
+        carteira.setIdJogador(jogadorAdicionado.getIdJogador());
 
-        return jogadorRepository.adicionar(jogador);
+        CarteiraEntity carteiraAdicionada = carteiraService.adicionarCarteira(carteira);
+        jogadorAdicionado.setCarteira(carteiraAdicionada);
+
+        return jogadorAdicionado;
     }
 
 //    public boolean jogadorExiste(String nicknameJogador) throws RegraDeNegocioException {

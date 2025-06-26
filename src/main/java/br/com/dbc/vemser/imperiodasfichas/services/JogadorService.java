@@ -4,20 +4,17 @@ import br.com.dbc.vemser.imperiodasfichas.entities.CarteiraEntity;
 import br.com.dbc.vemser.imperiodasfichas.entities.JogadorEntity;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.imperiodasfichas.repositories.JogadorRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 public class JogadorService {
 
     private final JogadorRepository jogadorRepository;
     private final CarteiraService carteiraService;
-
-    public JogadorService(JogadorRepository jogadorRepository, CarteiraService carteiraService) {
-        this.jogadorRepository = jogadorRepository;
-        this.carteiraService = carteiraService;
-    }
 
     public JogadorEntity adicionarJogador(JogadorEntity jogador) throws RegraDeNegocioException {
 //        if (jogadorExiste(nickname)) {

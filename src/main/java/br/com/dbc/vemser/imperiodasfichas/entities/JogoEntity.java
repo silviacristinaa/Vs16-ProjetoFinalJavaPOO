@@ -17,7 +17,7 @@ public class JogoEntity {
         this.idJogo = idJogo;
     }
 
-    protected JogoEntity(Integer idJogo, String nomeJogo, String regras, int valorInicial) {
+    public JogoEntity(Integer idJogo, String nomeJogo, String regras, int valorInicial) {
         this.idJogo = idJogo;
         this.nomeJogo = nomeJogo;
         this.regras = regras;

@@ -1,15 +1,19 @@
 package br.com.dbc.vemser.imperiodasfichas.repositories;
 
+import br.com.dbc.vemser.imperiodasfichas.database.ConexaoDataBase;
 import br.com.dbc.vemser.imperiodasfichas.entities.JogoEntity;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@RequiredArgsConstructor
 @Repository
 public class JogoRepository implements GenericRepository<Integer, JogoEntity>{
+    private final ConexaoDataBase conexaoDataBase;
 
     @Override
     public Integer getProximoId(Connection connection) throws SQLException {
@@ -28,7 +32,7 @@ public class JogoRepository implements GenericRepository<Integer, JogoEntity>{
     public JogoEntity adicionar(JogoEntity jogo) throws RegraDeNegocioException {
         Connection con = null;
         try {
-            con = ConexaoDataBase.getConnection();
+            con = conexaoDataBase.getConnection();
             con.setAutoCommit(false); // Inicia a transação
 
             Integer proximoId = this.getProximoId(con);
@@ -71,7 +75,7 @@ public class JogoRepository implements GenericRepository<Integer, JogoEntity>{
     public JogoEntity editar(Integer id, JogoEntity jogoAtualizar) throws RegraDeNegocioException {
         Connection con = null;
         try {
-            con = ConexaoDataBase.getConnection();
+            con = conexaoDataBase.getConnection();
 
             StringBuilder sql = new StringBuilder();
             sql.append("UPDATE JOGO SET ");
@@ -113,7 +117,7 @@ public class JogoRepository implements GenericRepository<Integer, JogoEntity>{
     public void remover(Integer id) throws RegraDeNegocioException {
         Connection con = null;
         try {
-            con = ConexaoDataBase.getConnection();
+            con = conexaoDataBase.getConnection();
             con.setAutoCommit(false); // Inicia a transação
 
             String sql = "DELETE FROM JOGO WHERE ID = ?";
@@ -149,7 +153,7 @@ public class JogoRepository implements GenericRepository<Integer, JogoEntity>{
         JogoEntity jogo = null;
         Connection con = null;
         try {
-            con = ConexaoDataBase.getConnection();
+            con = conexaoDataBase.getConnection();
 
             String sql = "SELECT ID, NOME_JOGO, REGRAS, VALOR_INICIAL FROM JOGO WHERE ID = ?";
             PreparedStatement stmt = con.prepareStatement(sql);
@@ -182,7 +186,7 @@ public class JogoRepository implements GenericRepository<Integer, JogoEntity>{
         List<JogoEntity> jogos = new ArrayList<>();
         Connection con = null;
         try {
-            con = ConexaoDataBase.getConnection();
+            con = conexaoDataBase.getConnection();
 
             String sql = "SELECT ID, NOME_JOGO, REGRAS, VALOR_INICIAL FROM JOGO";
             PreparedStatement stmt = con.prepareStatement(sql);

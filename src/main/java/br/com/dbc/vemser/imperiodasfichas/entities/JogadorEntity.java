@@ -18,8 +18,14 @@ public class JogadorEntity {
     private CarteiraEntity carteira;
     private Set<PartidaEntity> partidas;
 
+    public JogadorEntity(Integer idJogador, String nome, String nickname, int idade) {
+        this.idJogador = idJogador;
+        this.nome = nome;
+        this.nickname = nickname;
+        this.idade = idade;
+    }
 
-//    public JogadorEntity() {
+    //    public JogadorEntity() {
 //        this.partidas = new HashSet<>();
 //    }
 }

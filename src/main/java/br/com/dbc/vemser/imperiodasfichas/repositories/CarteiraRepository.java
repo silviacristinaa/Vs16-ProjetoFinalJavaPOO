@@ -1,15 +1,20 @@
 package br.com.dbc.vemser.imperiodasfichas.repositories;
 
+import br.com.dbc.vemser.imperiodasfichas.database.ConexaoDataBase;
+
 import br.com.dbc.vemser.imperiodasfichas.entities.CarteiraEntity;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@RequiredArgsConstructor
 @Repository
 public class CarteiraRepository implements GenericRepository<Integer, CarteiraEntity> {
+    private final ConexaoDataBase conexaoDataBase;
 
     @Override
     public Integer getProximoId(Connection connection) throws SQLException {
@@ -27,7 +32,7 @@ public class CarteiraRepository implements GenericRepository<Integer, CarteiraEn
     public CarteiraEntity adicionar(CarteiraEntity carteira) throws RegraDeNegocioException {
         Connection con = null;
         try {
-            con = ConexaoDataBase.getConnection();
+            con = conexaoDataBase.getConnection();
             con.setAutoCommit(false);
 
             Integer proximoId = this.getProximoId(con);
@@ -68,7 +73,7 @@ public class CarteiraRepository implements GenericRepository<Integer, CarteiraEn
     public void remover(Integer id) throws RegraDeNegocioException {
         Connection con = null;
         try {
-            con = ConexaoDataBase.getConnection();
+            con = conexaoDataBase.getConnection();
             con.setAutoCommit(false);
 
             String sql = "DELETE FROM CARTEIRA WHERE ID = ?";
@@ -102,7 +107,7 @@ public class CarteiraRepository implements GenericRepository<Integer, CarteiraEn
     public CarteiraEntity editar(Integer idCarteira, CarteiraEntity carteiraAtualizar) throws RegraDeNegocioException {
         Connection con = null;
         try {
-            con = ConexaoDataBase.getConnection();
+            con = conexaoDataBase.getConnection();
 
             StringBuilder sql = new StringBuilder();
             sql.append("UPDATE CARTEIRA SET ");
@@ -143,7 +148,8 @@ public class CarteiraRepository implements GenericRepository<Integer, CarteiraEn
         CarteiraEntity carteira = null;
         Connection con = null;
         try {
-            con = ConexaoDataBase.getConnection();
+            // ***** CORREÇÃO APLICADA AQUI *****
+            con = conexaoDataBase.getConnection();
 
             String sql = "SELECT ID, FICHAS, DINHEIRO, ID_JOGADOR FROM CARTEIRA WHERE ID = ?";
             PreparedStatement stmt = con.prepareStatement(sql);
@@ -176,7 +182,8 @@ public class CarteiraRepository implements GenericRepository<Integer, CarteiraEn
         CarteiraEntity carteira = null;
         Connection con = null;
         try {
-            con = ConexaoDataBase.getConnection();
+            // ***** CORREÇÃO APLICADA AQUI *****
+            con = conexaoDataBase.getConnection();
 
             String sql = "SELECT ID, FICHAS, DINHEIRO, ID_JOGADOR FROM CARTEIRA WHERE ID_JOGADOR = ?";
             PreparedStatement stmt = con.prepareStatement(sql);
@@ -210,7 +217,8 @@ public class CarteiraRepository implements GenericRepository<Integer, CarteiraEn
         List<CarteiraEntity> carteiras = new ArrayList<>();
         Connection con = null;
         try {
-            con = ConexaoDataBase.getConnection();
+            // ***** CORREÇÃO APLICADA AQUI *****
+            con = conexaoDataBase.getConnection();
             Statement stmt = con.createStatement();
 
             String sql = "SELECT ID, FICHAS, DINHEIRO, ID_JOGADOR FROM CARTEIRA";

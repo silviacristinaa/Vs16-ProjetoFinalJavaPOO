@@ -1,32 +1,38 @@
 package br.com.dbc.vemser.imperiodasfichas.services;
 
+import br.com.dbc.vemser.imperiodasfichas.dtos.CarteiraResponseDTO;
 import br.com.dbc.vemser.imperiodasfichas.entities.CarteiraEntity;
 import br.com.dbc.vemser.imperiodasfichas.entities.JogadorEntity;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.imperiodasfichas.repositories.JogadorRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class JogadorService {
 
     private final JogadorRepository jogadorRepository;
     private final CarteiraService carteiraService;
+    private final ObjectMapper objectMapper;
 
     public JogadorEntity adicionarJogador(JogadorEntity jogador) throws RegraDeNegocioException {
 //        if (jogadorExiste(nickname)) {
 //            throw new DadosDuplicadosException("Jogador com o nickname " + nickname + " já existe.");
 //        }
         JogadorEntity jogadorAdicionado = jogadorRepository.adicionar(jogador);
-        CarteiraEntity carteira = new CarteiraEntity();
-        carteira.setIdJogador(jogadorAdicionado.getIdJogador());
+        log.info("Jogador adicionado com sucesso! ID: {}", jogadorAdicionado.getIdJogador());
 
-        CarteiraEntity carteiraAdicionada = carteiraService.adicionarCarteira(carteira);
-        jogadorAdicionado.setCarteira(carteiraAdicionada);
+        CarteiraResponseDTO carteiraCriadaResponse = carteiraService.adicionarCarteira(jogadorAdicionado.getIdJogador());
 
+        CarteiraEntity carteiraCompleta = objectMapper.convertValue(carteiraCriadaResponse, CarteiraEntity.class);
+
+        jogadorAdicionado.setCarteira(carteiraCompleta);
         return jogadorAdicionado;
     }
 

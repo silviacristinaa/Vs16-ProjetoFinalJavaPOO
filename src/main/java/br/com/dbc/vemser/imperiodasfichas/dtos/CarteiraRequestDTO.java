@@ -7,8 +7,8 @@ import javax.validation.constraints.*;
 @Data
 public class CarteiraRequestDTO {
     @PositiveOrZero()
-    private int fichas;
+    private int fichas = 10;
 
     @PositiveOrZero()
-    private double dinheiro;
+    private double dinheiro = 0;
 }

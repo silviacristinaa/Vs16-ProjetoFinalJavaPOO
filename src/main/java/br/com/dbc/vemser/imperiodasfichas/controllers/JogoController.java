@@ -2,7 +2,6 @@ package br.com.dbc.vemser.imperiodasfichas.controllers;
 
 import br.com.dbc.vemser.imperiodasfichas.dtos.JogoRequestDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.JogoResponseDTO;
-import br.com.dbc.vemser.imperiodasfichas.entities.JogoEntity;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.imperiodasfichas.services.JogoService;
 import lombok.RequiredArgsConstructor;

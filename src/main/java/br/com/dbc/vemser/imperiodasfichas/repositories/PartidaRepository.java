@@ -127,11 +127,9 @@ public class PartidaRepository implements GenericRepository<Integer, PartidaEnti
             ResultSet res = stmt.executeQuery();
 
             if (res.next()) {
-
                 JogoEntity jogo = new JogoEntity(res.getInt("ID_JOGO"), res.getString("NOME_JOGO"),
                         res.getString("REGRAS"), res.getInt("VALOR_INICIAL"));
 
-                // criei construtor
                 JogadorEntity jogador = new JogadorEntity(res.getInt("ID_JOGADOR"), res.getString("NOME"),
                         res.getString("NICKNAME"), res.getInt("IDADE"));
 

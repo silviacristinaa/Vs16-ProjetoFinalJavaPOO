@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Data
 public class PartidaEntity {
-
     private Integer idPartida;
     private LocalDateTime dataHora;
     private int quantidadeFichasApostado;

@@ -2,13 +2,19 @@ package br.com.dbc.vemser.imperiodasfichas.dtos;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
 public class PartidaCreateDTO {
+    @NotNull
     private LocalDateTime dataHora;
-    private int quantidadeFichasApostado;
-    private boolean ganhou;
-    private int idJogo;
-    private int idJogador;
+    @NotNull
+    private Integer quantidadeFichasApostado;
+    @NotNull
+    private Boolean ganhou;
+    @NotNull
+    private Integer idJogo;
+    @NotNull
+    private Integer idJogador;
 }

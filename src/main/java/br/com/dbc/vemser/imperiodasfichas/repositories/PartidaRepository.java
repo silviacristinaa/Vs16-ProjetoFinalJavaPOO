@@ -1,17 +1,21 @@
 package br.com.dbc.vemser.imperiodasfichas.repositories;
 
+import br.com.dbc.vemser.imperiodasfichas.database.ConexaoDataBase;
 import br.com.dbc.vemser.imperiodasfichas.entities.JogadorEntity;
 import br.com.dbc.vemser.imperiodasfichas.entities.JogoEntity;
 import br.com.dbc.vemser.imperiodasfichas.entities.PartidaEntity;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@RequiredArgsConstructor
 @Repository
 public class PartidaRepository implements GenericRepository<Integer, PartidaEntity> {
+    private final ConexaoDataBase conexaoDataBase;
 
     @Override
     public Integer getProximoId(Connection connection) throws SQLException {
@@ -29,7 +33,7 @@ public class PartidaRepository implements GenericRepository<Integer, PartidaEnti
     public PartidaEntity adicionar(PartidaEntity partida) throws RegraDeNegocioException {
         Connection con = null;
         try {
-            con = ConexaoDataBase.getConnection();
+            con = conexaoDataBase.getConnection();
             con.setAutoCommit(false);
 
             Integer proximoId = this.getProximoId(con);
@@ -75,7 +79,7 @@ public class PartidaRepository implements GenericRepository<Integer, PartidaEnti
     public void remover(Integer id) throws RegraDeNegocioException {
         Connection con = null;
         try {
-            con = ConexaoDataBase.getConnection();
+            con = conexaoDataBase.getConnection();
             con.setAutoCommit(false);
 
             String sql = "DELETE FROM PARTIDA WHERE ID_PARTIDA = ?";
@@ -115,7 +119,7 @@ public class PartidaRepository implements GenericRepository<Integer, PartidaEnti
         PartidaEntity partida = null;
         Connection con = null;
         try {
-            con = ConexaoDataBase.getConnection();
+            con = conexaoDataBase.getConnection();
 
             String sql = "SELECT * FROM PARTIDA p\n" +
                     "INNER JOIN JOGADOR j ON j.ID = p.ID_JOGADOR\n" +
@@ -161,7 +165,7 @@ public class PartidaRepository implements GenericRepository<Integer, PartidaEnti
         List<PartidaEntity> partidas = new ArrayList<>();
         Connection con = null;
         try {
-            con = ConexaoDataBase.getConnection();
+            con = conexaoDataBase.getConnection();
             Statement stmt = con.createStatement();
 
             String sql = "SELECT ID_PARTIDA, DATA_HORA, FICHAS_APOSTADAS, GANHOU, ID_JOGADOR, ID_JOGO FROM PARTIDA";

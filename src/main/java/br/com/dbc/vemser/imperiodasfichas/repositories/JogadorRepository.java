@@ -1,21 +1,21 @@
 package br.com.dbc.vemser.imperiodasfichas.repositories;
 
+import br.com.dbc.vemser.imperiodasfichas.database.ConexaoDataBase;
 import br.com.dbc.vemser.imperiodasfichas.entities.CarteiraEntity;
 import br.com.dbc.vemser.imperiodasfichas.entities.JogadorEntity;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@RequiredArgsConstructor
 @Repository
 public class JogadorRepository implements GenericRepository<Integer, JogadorEntity> {
     private final CarteiraRepository carteiraRepository;
-
-    public JogadorRepository(CarteiraRepository carteiraRepository) {
-        this.carteiraRepository = carteiraRepository;
-    }
+    private final ConexaoDataBase conexaoDataBase;
 
     @Override
     public Integer getProximoId(Connection connection) throws SQLException {
@@ -34,7 +34,7 @@ public class JogadorRepository implements GenericRepository<Integer, JogadorEnti
     public JogadorEntity adicionar(JogadorEntity jogador) throws RegraDeNegocioException {
         Connection con = null;
         try {
-            con = ConexaoDataBase.getConnection();
+            con = conexaoDataBase.getConnection();
             con.setAutoCommit(false);
 
             Integer proximoId = this.getProximoId(con);
@@ -77,7 +77,7 @@ public class JogadorRepository implements GenericRepository<Integer, JogadorEnti
     public void remover(Integer id) throws RegraDeNegocioException {
         Connection con = null;
         try {
-            con = ConexaoDataBase.getConnection();
+            con = conexaoDataBase.getConnection();
             con.setAutoCommit(false);
 
             CarteiraEntity carteiraJogador = carteiraRepository.buscarCarteiraPorIdJogador(id);
@@ -117,7 +117,7 @@ public class JogadorRepository implements GenericRepository<Integer, JogadorEnti
     public JogadorEntity editar(Integer idJogador, JogadorEntity jogadorAtualizar) throws RegraDeNegocioException {
         Connection con = null;
         try {
-            con = ConexaoDataBase.getConnection();
+            con = conexaoDataBase.getConnection();
 
             StringBuilder sql = new StringBuilder();
             sql.append("UPDATE JOGADOR SET ");
@@ -160,7 +160,7 @@ public class JogadorRepository implements GenericRepository<Integer, JogadorEnti
         JogadorEntity jogador = null;
         Connection con = null;
         try {
-            con = ConexaoDataBase.getConnection();
+            con = conexaoDataBase.getConnection();
 
             String sql = "SELECT J.ID, J.NOME, J.NICKNAME, J.IDADE, C.ID AS CARTEIRA_ID, C.FICHAS, C.DINHEIRO " +
                     "FROM JOGADOR J LEFT JOIN CARTEIRA C ON J.ID = C.ID_JOGADOR " +
@@ -199,7 +199,7 @@ public class JogadorRepository implements GenericRepository<Integer, JogadorEnti
         List<JogadorEntity> jogadores = new ArrayList<>();
         Connection con = null;
         try {
-            con = ConexaoDataBase.getConnection();
+            con = conexaoDataBase.getConnection();
             Statement stmt = con.createStatement();
 
             String sql = "SELECT J.ID, J.NOME, J.NICKNAME, J.IDADE, C.ID AS CARTEIRA_ID, C.FICHAS, C.DINHEIRO " +

@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.imperiodasfichas.services;
 
+import br.com.dbc.vemser.imperiodasfichas.dtos.JogadorResponseDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.JogoResponseDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.PartidaCreateDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.PartidaDTO;
@@ -25,9 +26,10 @@ public class PartidaService {
 
     public PartidaDTO adicionarPartida(PartidaCreateDTO partida) throws Exception {
         JogoResponseDTO jogoDTO = jogoService.findById(partida.getIdJogo());
-        JogadorEntity jogador = jogadorService.buscarJogadorPorId(partida.getIdJogador());
+        JogadorResponseDTO jogadorDTO = jogadorService.buscarJogadorPorId(partida.getIdJogador());
 
         JogoEntity jogo = objectMapper.convertValue(jogoDTO, JogoEntity.class);
+        JogadorEntity jogador = objectMapper.convertValue(jogadorDTO, JogadorEntity.class);
 
         PartidaEntity partidaEntity = objectMapper.convertValue(partida, PartidaEntity.class);
         partidaEntity.setJogo(jogo);

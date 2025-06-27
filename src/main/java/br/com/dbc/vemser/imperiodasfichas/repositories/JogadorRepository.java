@@ -35,7 +35,7 @@ public class JogadorRepository implements GenericRepository<Integer, JogadorEnti
         Connection con = null;
         try {
             con = ConexaoDataBase.getConnection();
-            con.setAutoCommit(false); // Inicia a transação
+            con.setAutoCommit(false);
 
             Integer proximoId = this.getProximoId(con);
             jogador.setIdJogador(proximoId);
@@ -51,21 +51,12 @@ public class JogadorRepository implements GenericRepository<Integer, JogadorEnti
 
             stmtJogador.executeUpdate();
 
-            // Cria e associa a Carteira no banco de dados
-            //Carteira carteira = jogador.getCarteira();
-            //if (carteira == null) {
-            //    carteira = new Carteira(); // Cria uma carteira padrão se não houver
-            //    jogador.setCarteira(carteira);
-            //}
-            //carteira.setIdJogador(jogador.getIdJogador()); // Define o ID do jogador na carteira
-            //carteira.criarCarteiraNoBanco(con); // Chama o método CRUD para criar no banco
-
-            con.commit(); // Confirma a transação
+            con.commit();
             return jogador;
         } catch (SQLException e) {
             try {
                 if (con != null) {
-                    con.rollback(); // Desfaz a transação em caso de erro
+                    con.rollback();
                 }
             } catch (SQLException rollbackEx) {
                 rollbackEx.printStackTrace();
@@ -87,12 +78,7 @@ public class JogadorRepository implements GenericRepository<Integer, JogadorEnti
         Connection con = null;
         try {
             con = ConexaoDataBase.getConnection();
-            con.setAutoCommit(false); // Inicia a transação
-
-            // Remove a carteira do jogador primeiro para manter a integridade referencial
-            //if (jogador.getCarteira() != null && jogador.getCarteira().getIdCarteira() != null) {
-            //    Carteira.removerCarteiraDoBanco(con, jogador.getCarteira().getIdCarteira());
-            //}
+            con.setAutoCommit(false);
 
             CarteiraEntity carteiraJogador = carteiraRepository.buscarCarteiraPorIdJogador(id);
             if (carteiraJogador != null) {
@@ -105,12 +91,12 @@ public class JogadorRepository implements GenericRepository<Integer, JogadorEnti
             stmt.setInt(1, id);
 
             int res = stmt.executeUpdate();
-            con.commit(); // Confirma a transação
+            con.commit();
 
         } catch (SQLException e) {
             try {
                 if (con != null) {
-                    con.rollback(); // Desfaz a transação em caso de erro
+                    con.rollback();
                 }
             } catch (SQLException rollbackEx) {
                 rollbackEx.printStackTrace();
@@ -153,7 +139,7 @@ public class JogadorRepository implements GenericRepository<Integer, JogadorEnti
             return jogadorAtualizar; // Retorna o jogador atualizado (com a carteira também atualizada)
         } catch (SQLException e) {
             try {
-                if (con != null) con.rollback(); // Desfaz a transação em caso de erro
+                if (con != null) con.rollback();
             } catch (SQLException rollbackEx) {
                 rollbackEx.printStackTrace();
             }
@@ -190,19 +176,9 @@ public class JogadorRepository implements GenericRepository<Integer, JogadorEnti
                 jogador.setNickname(res.getString("NICKNAME"));
                 jogador.setIdade(res.getInt("IDADE"));
 
-                // Verifica se há dados da carteira e a popula
-//                if (res.getObject("CARTEIRA_ID") != null) {
-//                    Carteira carteira = new Carteira(
-//                            res.getInt("CARTEIRA_ID"),
-//                            res.getInt("FICHAS"),
-//                            res.getDouble("DINHEIRO"),
-//                            res.getInt("ID") // ID do jogador
-//                    );
-//                    jogador.setCarteira(carteira);
-//                } else {
-//                    // Se o jogador não tiver carteira (o que não deveria acontecer com o design atual)
-//                    jogador.setCarteira(new Carteira());
-//                }
+                CarteiraEntity carteira = new CarteiraEntity();
+                carteira.setIdCarteira(res.getInt("CARTEIRA_ID"));
+                jogador.setCarteira(carteira);
             }
         } catch (SQLException e) {
             throw new RegraDeNegocioException(e.getMessage());
@@ -238,17 +214,10 @@ public class JogadorRepository implements GenericRepository<Integer, JogadorEnti
                 jogador.setNickname(res.getString("NICKNAME"));
                 jogador.setIdade(res.getInt("IDADE"));
 
-//                if (res.getObject("CARTEIRA_ID") != null) {
-//                    Carteira carteira = new Carteira(
-//                            res.getInt("CARTEIRA_ID"),
-//                            res.getInt("FICHAS"),
-//                            res.getDouble("DINHEIRO"),
-//                            res.getInt("ID")
-//                    );
-//                    jogador.setCarteira(carteira);
-//                } else {
-//                    jogador.setCarteira(new Carteira());
-//                }
+                CarteiraEntity carteira = new CarteiraEntity();
+                carteira.setIdCarteira(res.getInt("CARTEIRA_ID"));
+                jogador.setCarteira(carteira);
+
                 jogadores.add(jogador);
             }
         } catch (SQLException e) {

@@ -20,14 +20,18 @@ import java.util.stream.Collectors;
 @Service
 public class JogadorService {
 
+    private static final String NICKNAME_JA_UTILIZADO = "Esse nickname já está sendo usado por outro jogador.";
+
     private final JogadorRepository jogadorRepository;
     private final CarteiraService carteiraService;
+    private final PartidaService partidaService;
     private final ObjectMapper objectMapper;
 
     public JogadorResponseDTO adicionarJogador(JogadorRequestDTO jogador) throws RegraDeNegocioException {
-//        if (jogadorExiste(nickname)) {
-//            throw new DadosDuplicadosException("Jogador com o nickname " + nickname + " já existe.");
-//        }
+
+        if (buscarJogadorPorNickname(jogador.getNickname()) != null) {
+            throw new RegraDeNegocioException(NICKNAME_JA_UTILIZADO);
+        }
 
         JogadorEntity jogadorEntity = objectMapper.convertValue(jogador, JogadorEntity.class);
         jogadorEntity = jogadorRepository.adicionar(jogadorEntity);
@@ -43,10 +47,6 @@ public class JogadorService {
         jogadorDTO.setIdCarteira(carteiraCompleta.getIdCarteira());
         return jogadorDTO;
     }
-
-//    public boolean jogadorExiste(String nicknameJogador) throws RegraDeNegocioException {
-//        return jogadorRepository.buscar(nicknameJogador) != null;
-//    }
 
     public List<JogadorResponseDTO> listar() throws RegraDeNegocioException {
         List<JogadorEntity> jogadores = jogadorRepository.listar();
@@ -77,6 +77,12 @@ public class JogadorService {
     public JogadorResponseDTO atualizarJogador(Integer id, JogadorRequestDTO jogador) throws Exception {
         JogadorResponseDTO jogadorRecuperado = buscarJogadorPorId(id);
 
+        JogadorEntity jogadorComMesmoNickname = buscarJogadorPorNickname(jogador.getNickname());
+
+        if (jogadorComMesmoNickname != null && !jogadorComMesmoNickname.getIdJogador().equals(jogadorRecuperado.getIdJogador())) {
+            throw new RegraDeNegocioException(NICKNAME_JA_UTILIZADO);
+        }
+
         JogadorEntity jogadorAtualizar = objectMapper.convertValue(jogador, JogadorEntity.class);
         JogadorEntity jogagorAtualizado = jogadorRepository.editar(id, jogadorAtualizar);
 
@@ -89,13 +95,11 @@ public class JogadorService {
     public void removerJogador(Integer idJogador) throws Exception {
         buscarJogadorPorId(idJogador);
 
-//        if (daoGenericoPartida != null) {
-//            Partida partida = daoGenericoPartida.buscar(jogador.getIdJogador().toString());
-//            if (partida != null) {
-//                partida.setJogador(jogador);
-//                daoGenericoPartida.remover(partida);
-//            }
-//        }
+        partidaService.removerPartidasPorIdJogador(idJogador);
         jogadorRepository.remover(idJogador);
+    }
+
+    private JogadorEntity buscarJogadorPorNickname(String nickname) throws RegraDeNegocioException {
+        return jogadorRepository.buscarPorNickname(nickname);
     }
 }

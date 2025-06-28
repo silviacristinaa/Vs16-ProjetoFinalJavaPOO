@@ -24,8 +24,4 @@ public class JogadorEntity {
         this.nickname = nickname;
         this.idade = idade;
     }
-
-    //    public JogadorEntity() {
-//        this.partidas = new HashSet<>();
-//    }
 }

@@ -3,6 +3,6 @@ package br.com.dbc.vemser.imperiodasfichas.dtos;
 import lombok.Data;
 
 @Data
-public class PartidaDTO extends PartidaCreateDTO {
+public class PartidaResponseDTO extends PartidaRequestDTO {
     private Integer idPartida;
 }

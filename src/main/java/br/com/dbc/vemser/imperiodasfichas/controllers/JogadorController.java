@@ -23,12 +23,16 @@ public class JogadorController {
 
     @GetMapping
     public ResponseEntity<List<JogadorResponseDTO>> listar() throws RegraDeNegocioException {
-        return new ResponseEntity<>(jogadorService.listar(), HttpStatus.OK);
+        log.info("Listando todos os jogadores...");
+        List<JogadorResponseDTO> jogadores = jogadorService.listar();
+        return new ResponseEntity<>(jogadores, HttpStatus.OK);
     }
 
     @GetMapping("/{idJogador}")
     public ResponseEntity<JogadorResponseDTO> buscarPorId(@PathVariable("idJogador") Integer id) throws Exception {
-        return new ResponseEntity<>(jogadorService.buscarJogadorPorId(id), HttpStatus.OK);
+        log.info("Buscando jogador com ID: {}", id);
+        JogadorResponseDTO jogador = jogadorService.buscarJogadorPorId(id);
+        return new ResponseEntity<>(jogador, HttpStatus.OK);
     }
 
     @PostMapping

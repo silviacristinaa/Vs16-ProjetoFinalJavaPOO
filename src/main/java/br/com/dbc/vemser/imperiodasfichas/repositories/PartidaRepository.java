@@ -87,7 +87,40 @@ public class PartidaRepository implements GenericRepository<Integer, PartidaEnti
 
             stmt.setInt(1, id);
 
-            int res = stmt.executeUpdate();
+            stmt.executeUpdate();
+            con.commit();
+        } catch (SQLException e) {
+            try {
+                if (con != null) {
+                    con.rollback();
+                }
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
+            throw new RegraDeNegocioException(e.getMessage());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void removerPartidasPorIdJogador(Integer idJogador) throws RegraDeNegocioException {
+        Connection con = null;
+        try {
+            con = conexaoDataBase.getConnection();
+            con.setAutoCommit(false);
+
+            String sql = "DELETE FROM PARTIDA WHERE ID_JOGADOR = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            stmt.setInt(1, idJogador);
+
+            stmt.executeUpdate();
             con.commit();
         } catch (SQLException e) {
             try {

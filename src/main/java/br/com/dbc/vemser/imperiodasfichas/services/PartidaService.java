@@ -1,10 +1,8 @@
 package br.com.dbc.vemser.imperiodasfichas.services;
 
-import br.com.dbc.vemser.imperiodasfichas.dtos.JogadorResponseDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.JogoResponseDTO;
-import br.com.dbc.vemser.imperiodasfichas.dtos.PartidaCreateDTO;
-import br.com.dbc.vemser.imperiodasfichas.dtos.PartidaDTO;
-import br.com.dbc.vemser.imperiodasfichas.entities.JogadorEntity;
+import br.com.dbc.vemser.imperiodasfichas.dtos.PartidaRequestDTO;
+import br.com.dbc.vemser.imperiodasfichas.dtos.PartidaResponseDTO;
 import br.com.dbc.vemser.imperiodasfichas.entities.JogoEntity;
 import br.com.dbc.vemser.imperiodasfichas.entities.PartidaEntity;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
@@ -20,36 +18,36 @@ import java.util.stream.Collectors;
 @Service
 public class PartidaService {
     private final PartidaRepository partidaRepository;
-    private final JogadorService jogadorService;
+    //private final JogadorService jogadorService;
     private final JogoService jogoService;
     private final ObjectMapper objectMapper;
 
-    public PartidaDTO adicionarPartida(PartidaCreateDTO partida) throws Exception {
+    public PartidaResponseDTO adicionarPartida(PartidaRequestDTO partida) throws Exception {
         JogoResponseDTO jogoDTO = jogoService.findById(partida.getIdJogo());
-        JogadorResponseDTO jogadorDTO = jogadorService.buscarJogadorPorId(partida.getIdJogador());
+        //JogadorResponseDTO jogadorDTO = jogadorService.buscarJogadorPorId(partida.getIdJogador());
 
         JogoEntity jogo = objectMapper.convertValue(jogoDTO, JogoEntity.class);
-        JogadorEntity jogador = objectMapper.convertValue(jogadorDTO, JogadorEntity.class);
+        //JogadorEntity jogador = objectMapper.convertValue(jogadorDTO, JogadorEntity.class);
 
         PartidaEntity partidaEntity = objectMapper.convertValue(partida, PartidaEntity.class);
         partidaEntity.setJogo(jogo);
-        partidaEntity.setJogador(jogador);
+        //partidaEntity.setJogador(jogador);
 
         partidaEntity = partidaRepository.adicionar(partidaEntity);
 
-        PartidaDTO partidaDTO = objectMapper.convertValue(partidaEntity, PartidaDTO.class);
+        PartidaResponseDTO partidaDTO = objectMapper.convertValue(partidaEntity, PartidaResponseDTO.class);
         partidaDTO.setIdJogo(jogo.getIdJogo());
-        partidaDTO.setIdJogador(jogador.getIdJogador());
+        //partidaDTO.setIdJogador(jogador.getIdJogador());
 
         return partidaDTO;
     }
 
-    public List<PartidaDTO> listar() throws RegraDeNegocioException {
+    public List<PartidaResponseDTO> listar() throws RegraDeNegocioException {
         List<PartidaEntity> partidas = partidaRepository.listar();
 
-        List<PartidaDTO> partidaDTOS = partidas.stream()
+        List<PartidaResponseDTO> partidaDTOS = partidas.stream()
                 .map(partida -> {
-                    PartidaDTO partidaDTO = objectMapper.convertValue(partida, PartidaDTO.class);
+                    PartidaResponseDTO partidaDTO = objectMapper.convertValue(partida, PartidaResponseDTO.class);
                     partidaDTO.setIdJogo(partida.getJogo().getIdJogo());
                     partidaDTO.setIdJogador(partida.getJogador().getIdJogador());
 
@@ -60,13 +58,13 @@ public class PartidaService {
         return partidaDTOS;
     }
 
-    public PartidaDTO buscarPartidaPorId(Integer idPartida) throws Exception {
+    public PartidaResponseDTO buscarPartidaPorId(Integer idPartida) throws Exception {
         PartidaEntity partida = partidaRepository.buscarPorId(idPartida);
         if (partida == null) {
             throw new RegraDeNegocioException("Partida não encontrada!");
         }
 
-        PartidaDTO partidaDTO = objectMapper.convertValue(partida, PartidaDTO.class);
+        PartidaResponseDTO partidaDTO = objectMapper.convertValue(partida, PartidaResponseDTO.class);
         partidaDTO.setIdJogo(partida.getJogo().getIdJogo());
         partidaDTO.setIdJogador(partida.getJogador().getIdJogador());
 
@@ -76,5 +74,9 @@ public class PartidaService {
     public void removerPartida(Integer idPartida) throws Exception {
         buscarPartidaPorId(idPartida);
         partidaRepository.remover(idPartida);
+    }
+
+    public void removerPartidasPorIdJogador(Integer idJogador) throws RegraDeNegocioException {
+        partidaRepository.removerPartidasPorIdJogador(idJogador);
     }
 }

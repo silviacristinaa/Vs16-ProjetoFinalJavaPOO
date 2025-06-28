@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
-public class PartidaCreateDTO {
+public class PartidaRequestDTO {
     @NotNull
     private LocalDateTime dataHora;
     @NotNull

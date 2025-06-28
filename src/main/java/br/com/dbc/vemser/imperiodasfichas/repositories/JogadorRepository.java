@@ -90,9 +90,8 @@ public class JogadorRepository implements GenericRepository<Integer, JogadorEnti
 
             stmt.setInt(1, id);
 
-            int res = stmt.executeUpdate();
+            stmt.executeUpdate();
             con.commit();
-
         } catch (SQLException e) {
             try {
                 if (con != null) {
@@ -167,6 +166,44 @@ public class JogadorRepository implements GenericRepository<Integer, JogadorEnti
                     "WHERE J.ID = ?";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, id);
+            ResultSet res = stmt.executeQuery();
+
+            if (res.next()) {
+                jogador = new JogadorEntity();
+                jogador.setIdJogador(res.getInt("ID"));
+                jogador.setNome(res.getString("NOME"));
+                jogador.setNickname(res.getString("NICKNAME"));
+                jogador.setIdade(res.getInt("IDADE"));
+
+                CarteiraEntity carteira = new CarteiraEntity();
+                carteira.setIdCarteira(res.getInt("CARTEIRA_ID"));
+                jogador.setCarteira(carteira);
+            }
+        } catch (SQLException e) {
+            throw new RegraDeNegocioException(e.getMessage());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return jogador;
+    }
+
+    public JogadorEntity buscarPorNickname(String nickname) throws RegraDeNegocioException {
+        JogadorEntity jogador = null;
+        Connection con = null;
+        try {
+            con = conexaoDataBase.getConnection();
+
+            String sql = "SELECT J.ID, J.NOME, J.NICKNAME, J.IDADE, C.ID AS CARTEIRA_ID, C.FICHAS, C.DINHEIRO " +
+                    "FROM JOGADOR J LEFT JOIN CARTEIRA C ON J.ID = C.ID_JOGADOR " +
+                    "WHERE J.NICKNAME = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, nickname);
             ResultSet res = stmt.executeQuery();
 
             if (res.next()) {

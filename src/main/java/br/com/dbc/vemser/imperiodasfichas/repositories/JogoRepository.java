@@ -2,7 +2,7 @@ package br.com.dbc.vemser.imperiodasfichas.repositories;
 
 import br.com.dbc.vemser.imperiodasfichas.database.ConexaoDataBase;
 import br.com.dbc.vemser.imperiodasfichas.entities.JogoEntity;
-import br.com.dbc.vemser.imperiodasfichas.entities.NomeJogoEnum;
+import br.com.dbc.vemser.imperiodasfichas.enums.NomeJogoEnum;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

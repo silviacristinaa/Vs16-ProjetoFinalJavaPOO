@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.imperiodasfichas.entities;
 
+import br.com.dbc.vemser.imperiodasfichas.enums.NomeJogoEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

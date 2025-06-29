@@ -1,4 +1,4 @@
-package br.com.dbc.vemser.imperiodasfichas.entities;
+package br.com.dbc.vemser.imperiodasfichas.enums;
 
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import lombok.AllArgsConstructor;

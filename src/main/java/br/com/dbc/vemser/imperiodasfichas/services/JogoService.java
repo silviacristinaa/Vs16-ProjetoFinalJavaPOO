@@ -2,7 +2,7 @@ package br.com.dbc.vemser.imperiodasfichas.services;
 import br.com.dbc.vemser.imperiodasfichas.dtos.JogoRequestDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.JogoResponseDTO;
 import br.com.dbc.vemser.imperiodasfichas.entities.JogoEntity;
-import br.com.dbc.vemser.imperiodasfichas.entities.NomeJogoEnum;
+import br.com.dbc.vemser.imperiodasfichas.enums.NomeJogoEnum;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.imperiodasfichas.repositories.JogoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;

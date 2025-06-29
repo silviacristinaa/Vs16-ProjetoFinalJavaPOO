@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +17,7 @@ public class JogadaService {
 
     private final RoletaParImparService roletaParImparService;
     private final RoletaCoresService roletaCoresService;
+    private final CacaNiquelService cacaNiquelService;
     private final JogadorService jogadorService;
     private final JogoService jogoService;
     private final PartidaService partidaService;
@@ -55,6 +57,29 @@ public class JogadaService {
         boolean ganhou = roletaCoresService.verificarResultado(resultadoRoleta, jogada.getOpcao().getTipo());
 
         atualizarFichas(jogada.getQuantidadeFichasApostado(), ganhou, carteiraDTO, 4);
+
+        CarteiraEntity carteira = objectMapper.convertValue(carteiraDTO, CarteiraEntity.class);
+        carteiraService.atualizarCarteira(carteira);
+
+        PartidaRequestDTO partidaRequestDTO = new PartidaRequestDTO(LocalDateTime.now(),
+                jogada.getQuantidadeFichasApostado(), ganhou, jogoDTO.getIdJogo(), jogadorDTO.getIdJogador());
+        PartidaResponseDTO partida = partidaService.adicionarPartida(partidaRequestDTO);
+
+        JogadaResponseDTO jogadaResponseDTO = new JogadaResponseDTO();
+        jogadaResponseDTO.setGanhou(ganhou);
+        return jogadaResponseDTO;
+    }
+
+    public JogadaResponseDTO jogarCacaNiquel(CacaNiquelRequestDTO jogada) throws Exception {
+        JogadorResponseDTO jogadorDTO = jogadorService.buscarJogadorPorId(jogada.getIdJogador());
+        JogoResponseDTO jogoDTO = jogoService.buscarPorNomeJogo(NomeJogoEnum.CACA_NIQUEL);
+
+        CarteiraResponseDTO carteiraDTO = validacoesFichasApostadas(jogada.getQuantidadeFichasApostado(), jogoDTO, jogada.getIdJogador());
+
+        List<String> resultadoCacaNiquel = cacaNiquelService.girarRolos();
+        boolean ganhou = cacaNiquelService.verificarResultado(resultadoCacaNiquel);
+
+        atualizarFichas(jogada.getQuantidadeFichasApostado(), ganhou, carteiraDTO, 2);
 
         CarteiraEntity carteira = objectMapper.convertValue(carteiraDTO, CarteiraEntity.class);
         carteiraService.atualizarCarteira(carteira);

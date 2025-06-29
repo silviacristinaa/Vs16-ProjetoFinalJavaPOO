@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.imperiodasfichas.controllers;
 
+import br.com.dbc.vemser.imperiodasfichas.dtos.CacaNiquelRequestDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.JogadaResponseDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.RoletaCoresRequestDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.RoletaParImparRequestDTO;
@@ -32,6 +33,12 @@ public class JogadaController {
     @PostMapping("/roleta/cores")
     public ResponseEntity<JogadaResponseDTO> jogarRoletaCores(@RequestBody @Valid RoletaCoresRequestDTO jogada) throws Exception {
         JogadaResponseDTO response = jogadaService.jogarRoletaCores(jogada);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/cacaniquel")
+    public ResponseEntity<JogadaResponseDTO> jogarCacaNiquel(@RequestBody @Valid CacaNiquelRequestDTO jogada) throws Exception {
+        JogadaResponseDTO response = jogadaService.jogarCacaNiquel(jogada);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 }

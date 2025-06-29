@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.imperiodasfichas.controllers;
 
+import br.com.dbc.vemser.imperiodasfichas.documentacao.JogadaControllerDoc;
 import br.com.dbc.vemser.imperiodasfichas.dtos.CacaNiquelRequestDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.JogadaResponseDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.RoletaCoresRequestDTO;
@@ -20,7 +21,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/jogada")
-public class JogadaController {
+public class JogadaController implements JogadaControllerDoc {
 
     private final JogadaService jogadaService;
 

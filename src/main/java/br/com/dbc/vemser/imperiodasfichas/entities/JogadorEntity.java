@@ -24,4 +24,8 @@ public class JogadorEntity {
         this.nickname = nickname;
         this.idade = idade;
     }
+
+    public JogadorEntity(Integer idJogador) {
+        this.idJogador = idJogador;
+    }
 }

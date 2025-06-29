@@ -29,6 +29,10 @@ public class CarteiraService {
         return objectMapper.convertValue(carteiraRequestDTO, CarteiraEntity.class);
     }
 
+    public void atualizarCarteira(CarteiraEntity carteira) throws RegraDeNegocioException {
+        carteiraRepository.editar(carteira.getIdCarteira(), carteira);
+    }
+
     public CarteiraResponseDTO adicionarCarteira(Integer idJogador) throws RegraDeNegocioException {
         log.info("Criando carteira padrão para o jogador ID: {}", idJogador);
 

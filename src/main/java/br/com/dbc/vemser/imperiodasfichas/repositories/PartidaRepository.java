@@ -3,6 +3,7 @@ package br.com.dbc.vemser.imperiodasfichas.repositories;
 import br.com.dbc.vemser.imperiodasfichas.database.ConexaoDataBase;
 import br.com.dbc.vemser.imperiodasfichas.entities.JogadorEntity;
 import br.com.dbc.vemser.imperiodasfichas.entities.JogoEntity;
+import br.com.dbc.vemser.imperiodasfichas.entities.NomeJogoEnum;
 import br.com.dbc.vemser.imperiodasfichas.entities.PartidaEntity;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import lombok.RequiredArgsConstructor;
@@ -164,7 +165,7 @@ public class PartidaRepository implements GenericRepository<Integer, PartidaEnti
             ResultSet res = stmt.executeQuery();
 
             if (res.next()) {
-                JogoEntity jogo = new JogoEntity(res.getInt("ID_JOGO"), res.getString("NOME_JOGO"),
+                JogoEntity jogo = new JogoEntity(res.getInt("ID_JOGO"), NomeJogoEnum.fromNome(res.getString("NOME_JOGO")),
                         res.getString("REGRAS"), res.getInt("VALOR_INICIAL"));
 
                 JogadorEntity jogador = new JogadorEntity(res.getInt("ID_JOGADOR"), res.getString("NOME"),

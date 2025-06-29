@@ -1,8 +1,8 @@
 package br.com.dbc.vemser.imperiodasfichas.services;
 
-import br.com.dbc.vemser.imperiodasfichas.dtos.JogoResponseDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.PartidaRequestDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.PartidaResponseDTO;
+import br.com.dbc.vemser.imperiodasfichas.entities.JogadorEntity;
 import br.com.dbc.vemser.imperiodasfichas.entities.JogoEntity;
 import br.com.dbc.vemser.imperiodasfichas.entities.PartidaEntity;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
@@ -18,26 +18,19 @@ import java.util.stream.Collectors;
 @Service
 public class PartidaService {
     private final PartidaRepository partidaRepository;
-    //private final JogadorService jogadorService;
-    private final JogoService jogoService;
     private final ObjectMapper objectMapper;
 
     public PartidaResponseDTO adicionarPartida(PartidaRequestDTO partida) throws Exception {
-        JogoResponseDTO jogoDTO = jogoService.findById(partida.getIdJogo());
-        //JogadorResponseDTO jogadorDTO = jogadorService.buscarJogadorPorId(partida.getIdJogador());
-
-        JogoEntity jogo = objectMapper.convertValue(jogoDTO, JogoEntity.class);
-        //JogadorEntity jogador = objectMapper.convertValue(jogadorDTO, JogadorEntity.class);
-
         PartidaEntity partidaEntity = objectMapper.convertValue(partida, PartidaEntity.class);
-        partidaEntity.setJogo(jogo);
-        //partidaEntity.setJogador(jogador);
+
+        partidaEntity.setJogo(new JogoEntity(partida.getIdJogo()));
+        partidaEntity.setJogador(new JogadorEntity(partida.getIdJogador()));
 
         partidaEntity = partidaRepository.adicionar(partidaEntity);
 
         PartidaResponseDTO partidaDTO = objectMapper.convertValue(partidaEntity, PartidaResponseDTO.class);
-        partidaDTO.setIdJogo(jogo.getIdJogo());
-        //partidaDTO.setIdJogador(jogador.getIdJogador());
+        partidaDTO.setIdJogo(partida.getIdJogo());
+        partidaDTO.setIdJogador(partida.getIdJogador());
 
         return partidaDTO;
     }

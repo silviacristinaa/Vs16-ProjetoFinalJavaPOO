@@ -2,6 +2,7 @@ package br.com.dbc.vemser.imperiodasfichas.repositories;
 
 import br.com.dbc.vemser.imperiodasfichas.database.ConexaoDataBase;
 import br.com.dbc.vemser.imperiodasfichas.entities.JogoEntity;
+import br.com.dbc.vemser.imperiodasfichas.enums.NomeJogoEnum;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -43,7 +44,7 @@ public class JogoRepository implements GenericRepository<Integer, JogoEntity>{
             PreparedStatement stmtJogo = con.prepareStatement(sqlJogo);
 
             stmtJogo.setInt(1, jogo.getIdJogo());
-            stmtJogo.setString(2, jogo.getNomeJogo());
+            stmtJogo.setString(2, jogo.getNomeJogo().getNome());
             stmtJogo.setString(3, jogo.getRegras());
             stmtJogo.setInt(4, jogo.getValorInicial());
 
@@ -86,7 +87,7 @@ public class JogoRepository implements GenericRepository<Integer, JogoEntity>{
 
             PreparedStatement stmt = con.prepareStatement(sql.toString());
 
-            stmt.setString(1, jogoAtualizar.getNomeJogo());
+            stmt.setString(1, jogoAtualizar.getNomeJogo().getNome());
             stmt.setString(2, jogoAtualizar.getRegras());
             stmt.setInt(3, jogoAtualizar.getValorInicial());
             stmt.setInt(4, id);
@@ -163,7 +164,39 @@ public class JogoRepository implements GenericRepository<Integer, JogoEntity>{
             if (res.next()) {
                 jogo = new JogoEntity();
                 jogo.setIdJogo(res.getInt("ID"));
-                jogo.setNomeJogo(res.getString("NOME_JOGO"));
+                jogo.setNomeJogo(NomeJogoEnum.fromNome(res.getString("NOME_JOGO")));
+                jogo.setRegras(res.getString("REGRAS"));
+                jogo.setValorInicial(res.getInt("VALOR_INICIAL"));
+            }
+        } catch (SQLException e) {
+            throw new RegraDeNegocioException(e.getMessage());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return jogo;
+    }
+
+    public JogoEntity buscarPorNomeJogo(NomeJogoEnum nomeJogo) throws RegraDeNegocioException {
+        JogoEntity jogo = null;
+        Connection con = null;
+        try {
+            con = conexaoDataBase.getConnection();
+
+            String sql = "SELECT ID, NOME_JOGO, REGRAS, VALOR_INICIAL FROM JOGO WHERE NOME_JOGO = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, nomeJogo.getNome());
+            ResultSet res = stmt.executeQuery();
+
+            if (res.next()) {
+                jogo = new JogoEntity();
+                jogo.setIdJogo(res.getInt("ID"));
+                jogo.setNomeJogo(NomeJogoEnum.fromNome(res.getString("NOME_JOGO")));
                 jogo.setRegras(res.getString("REGRAS"));
                 jogo.setValorInicial(res.getInt("VALOR_INICIAL"));
             }
@@ -195,7 +228,7 @@ public class JogoRepository implements GenericRepository<Integer, JogoEntity>{
             while (res.next()) {
                 JogoEntity jogo = new JogoEntity();
                 jogo.setIdJogo(res.getInt("ID"));
-                jogo.setNomeJogo(res.getString("NOME_JOGO"));
+                jogo.setNomeJogo(NomeJogoEnum.fromNome(res.getString("NOME_JOGO")));
                 jogo.setRegras(res.getString("REGRAS"));
                 jogo.setValorInicial(res.getInt("VALOR_INICIAL"));
                 jogos.add(jogo);

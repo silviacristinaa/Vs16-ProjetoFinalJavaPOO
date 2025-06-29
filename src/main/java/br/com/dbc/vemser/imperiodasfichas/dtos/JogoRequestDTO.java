@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.imperiodasfichas.dtos;
 
+import br.com.dbc.vemser.imperiodasfichas.enums.NomeJogoEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,8 +13,7 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 public class JogoRequestDTO {
     @NotNull
-    @Size(max = 50)
-    private String nomeJogo;
+    private NomeJogoEnum nomeJogo;
 
     @Size(max = 500)
     private String regras;

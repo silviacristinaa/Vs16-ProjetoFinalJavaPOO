@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.imperiodasfichas.controllers;
 
+import br.com.dbc.vemser.imperiodasfichas.documentacao.JogoControllerDoc;
 import br.com.dbc.vemser.imperiodasfichas.dtos.JogoRequestDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.JogoResponseDTO;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
@@ -19,7 +20,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @Slf4j
-public class JogoController {
+public class JogoController implements JogoControllerDoc {
     private final JogoService jogoService;
 
     @GetMapping // GET localhost:8080/jogo

@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.imperiodasfichas.controllers;
 
+import br.com.dbc.vemser.imperiodasfichas.documentacao.JogadorControllerDoc;
 import br.com.dbc.vemser.imperiodasfichas.dtos.JogadorRequestDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.JogadorResponseDTO;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
@@ -17,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/jogador")
-public class JogadorController {
+public class JogadorController implements JogadorControllerDoc {
 
     private final JogadorService jogadorService;
 

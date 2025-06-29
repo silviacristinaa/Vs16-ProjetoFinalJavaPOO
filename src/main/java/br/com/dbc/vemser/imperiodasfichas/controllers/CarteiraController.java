@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.imperiodasfichas.controllers;
 
+import br.com.dbc.vemser.imperiodasfichas.documentacao.CarteiraControllerDoc;
 import br.com.dbc.vemser.imperiodasfichas.dtos.CarteiraRequestDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.CarteiraResponseDTO;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
@@ -20,7 +21,7 @@ import java.util.List;
 @Validated
 @RestController
 @RequestMapping("/carteira")
-public class CarteiraController {
+public class CarteiraController implements CarteiraControllerDoc {
 
     private final CarteiraService carteiraService;
 

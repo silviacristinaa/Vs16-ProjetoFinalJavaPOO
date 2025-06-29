@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.imperiodasfichas.controllers;
 
+import br.com.dbc.vemser.imperiodasfichas.documentacao.PartidaControllerDoc;
 import br.com.dbc.vemser.imperiodasfichas.dtos.PartidaRequestDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.PartidaResponseDTO;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
@@ -17,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/partida")
-public class PartidaController {
+public class PartidaController implements PartidaControllerDoc {
 
     private final PartidaService partidaService;
 

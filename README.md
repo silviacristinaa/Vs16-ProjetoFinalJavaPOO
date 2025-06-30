@@ -645,7 +645,7 @@ Projeto foi migrado para Spring com Maven. Novas implementações e melhorias si
 
 ### ⚙️ Requisitos
 
-- ☕ **Java 17 ou suprior instalado**
+- ☕ **Java 17 ou superior instalado**
 - 💻 **IDE** (IntelliJ, Eclipse)
 - 🐳 **Docker** instalado
 - 🗃️ **DBeaver** (ou outro cliente para conectar ao banco Oracle)

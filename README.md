@@ -207,22 +207,22 @@ Essas alterações na arquitetura e nas implementações proporcionam um sistema
 
 **Parte I:**
 <p align="center">
-  <img src="imperiodasfichas/src/images/diagrama.png" alt="Diagrama de Classes - Parte I" width="700"/>
+  <img src="src/main/resources/images/diagrama.png" alt="Diagrama de Classes - Parte I" width="700"/>
 </p>
 
 **Parte II:**
 <p align="center">
-  <img src="imperiodasfichas/src/images/diagrama2.png" alt="Diagrama de Classes - Parte II" width="700"/>
+  <img src="src/main/resources/images/diagrama2.png" alt="Diagrama de Classes - Parte II" width="700"/>
 </p>
 
 **Parte III:**
 <p align="center">
-  <img src="imperiodasfichas/src/images/diagrama3.png" alt="Diagrama de Classes - Parte III" width="700"/>
+  <img src="src/main/resources/images/diagrama3.png" alt="Diagrama de Classes - Parte III" width="700"/>
 </p>
 
 **Parte IV (FINAL)**
 <p align="center">
-  <img src="imperiodasfichas/src/images/diagrama4-final.png" alt="Diagrama de Classes - Parte III" width="700"/>
+  <img src="src/main/resources/images/diagrama4-final.png" alt="Diagrama de Classes - Parte III" width="700"/>
 </p>
 
 
@@ -543,7 +543,7 @@ Após executar o programa, o usuário pode escolher entre as seguintes opções:
 
 ## 🌟 Slide 1: Logo e Introdução
 <p align="center">
-  <img src="imperiodasfichas/src/images/slide1.png" alt="Slide 1" width="700"/>
+  <img src="src/main/resources/images/slide1.png" alt="Slide 1" width="700"/>
 </p>
 
 **Millennium Falcon Devs**  
@@ -554,7 +554,7 @@ Após executar o programa, o usuário pode escolher entre as seguintes opções:
 
 ## 🌟 Slide 2: Introdução ao Jogo
 <p align="center">
-  <img src="imperiodasfichas/src/images/slide2.png" alt="Slide 2" width="700"/>
+  <img src="src/main/resources/images/slide2.png" alt="Slide 2" width="700"/>
 </p>
 
 **Império das Fichas**  
@@ -564,7 +564,7 @@ Em uma cidade onde as luzes nunca se apagam, a sorte é a única lei. O Império
 
 ## 🌟 Slide 3: Jogos Disponíveis
 <p align="center">
-  <img src="imperiodasfichas/src/images/slide3.png" alt="Slide 3" width="700"/>
+  <img src="src/main/resources/images/slide3.png" alt="Slide 3" width="700"/>
 </p>
 
 **1. Roleta Clássica**  
@@ -576,7 +576,7 @@ Em uma cidade onde as luzes nunca se apagam, a sorte é a única lei. O Império
 
 ## 🌟 Slide 4: Funcionalidades de Gerenciamento
 <p align="center">
-  <img src="imperiodasfichas/src/images/slide4.png" alt="Slide 4" width="700"/>
+  <img src="src/main/resources/images/slide4.png" alt="Slide 4" width="700"/>
 </p>
 
 - Adicionar jogador (cadastro do jogador)
@@ -593,7 +593,7 @@ Em uma cidade onde as luzes nunca se apagam, a sorte é a única lei. O Império
 
 ## 🌟 Slide 5: Dificuldades e Facilidades
 <p align="center">
-  <img src="imperiodasfichas/src/images/slide5.png" alt="Slide 5" width="700"/>
+  <img src="src/main/resources/images/slide5.png" alt="Slide 5" width="700"/>
 </p>
 
 **Dificuldades e Facilidades**  
@@ -603,7 +603,7 @@ Esse projeto foi recompensador por ter a oportunidade de aprender um com o outro
 
 ## 🌟 Slide 6: Logo Final
 <p align="center">
-  <img src="imperiodasfichas/src/images/slide6.png" alt="Slide 6" width="700"/>
+  <img src="src/main/resources/images/slide6.png" alt="Slide 6" width="700"/>
 </p>
 
 **Let's Tech Up Together!**
@@ -634,4 +634,133 @@ Esse projeto foi recompensador por ter a oportunidade de aprender um com o outro
 - William Augusto
 - Robson Batista
 - Silvia Cristina
+
+---
+
+# 🎰 Império das Fichas - Spring Web
+
+## 🧭 Guia do Usuário
+
+Projeto foi migrado para Spring com Maven. Novas implementações e melhorias significativas foram feitas. Veja abaixo como testar:
+
+### ⚙️ Requisitos
+
+- ☕ **Java 17 ou superior instalado**
+- 💻 **IDE** (IntelliJ, Eclipse)
+- 🐳 **Docker** instalado
+- 🗃️ **DBeaver** (ou outro cliente para conectar ao banco Oracle)
+- 📁 Estrutura de diretórios:
+
 ```
+Vs16-ProjetoFinalJavaPOO
+├── .idea
+├── src
+│   └── main
+│       ├── java
+│       │   └── br.com.dbc.vemser.imperiodasfichas
+│       │       ├── config
+│       │       ├── controllers
+│       │       ├── database
+│       │       ├── documentacao
+│       │       ├── dtos
+│       │       ├── entities
+│       │       ├── enums
+│       │       ├── exceptions
+│       │       ├── repositories
+│       │       ├── services
+│       │       └── ImperiodasfichasApplication.java
+│       └── resources
+│           ├── bd
+│           │   ├── criar_esquema.sql
+│           │   ├── criar.sql
+│           │   └── dados.sql
+│           ├── images
+│           ├── static
+│           ├── templates
+│           └── application.properties
+├── test
+├── .gitignore
+├── HELP.md
+├── mvnw
+├── mvnw.cmd
+├── pom.xml
+└── README.md
+```
+
+---
+
+## 🐳 Inicialização do Banco Oracle com Docker
+
+Rode o comando abaixo no terminal para subir o banco Oracle localmente com Docker:
+```
+docker run -d --name bd-oracle -p 1521:1521 --restart=unless-stopped -e ORACLE_ALLOW_REMOTE=true -e ORACLE_PASSWORD=oracle -e RELAX_SECURITY=1 -v bd-oracle:/u01/app/oracle epiclabs/docker-oracle-xe-11g
+```
+
+⚠️ Este banco roda localmente e as credenciais utilizadas são padrão para fins de testes e desenvolvimento.
+
+## 📂 3. Execução dos Scripts SQL
+
+Cire uma conexão com o banco pelo DBevaer, acesse a pasta `src/main/resources/bd` do projeto e execute os arquivos a seguir **na ordem indicada**:
+
+1. `criar_esquema_jogo.sql` – Cria o schema (jogo) da aplicação.
+2. `criar.sql` – Cria as tabelas no banco.
+3. `dados.sql` – Insere os dados iniciais.
+
+---
+
+## 🔍 Endpoints Disponíveis (Documentados no Swagger)
+
+> 📄 A documentação completa da API pode ser acessada via Swagger após iniciar a aplicação:  
+> 🔗 [http://localhost:8080](http://localhost:8080)
+
+- **🎮 Jogo:**
+  - Listar todos os jogos
+  - Buscar jogo por ID
+  - Criar um novo jogo
+  - Atualizar um jogo
+  - Deletar um jogo por ID
+
+
+- **🧑‍🤝‍🧑 Jogador:**
+  - Listar todos os jogadores
+  - Buscar jogador por ID
+  - Criar um novo jogador
+  - Atualizar um jogador
+  - Deletar um jogador por ID
+
+
+- **💼 Carteira:**
+  - Listar todas as carteiras
+  - Buscar carteira por ID
+  - Buscar carteira pelo ID do jogador
+  - Atualizar carteira
+  - Depositar e sacar dinheiro pela carteira (ID)
+  - Comprar e vender fichas pela carteira (ID)
+
+
+- **🏆 Partida:**
+  - Listar todas as partidas
+  - Buscar uma partida por ID
+  - Deletar uma partida por ID
+
+
+- **🎲 Jogada:**
+  - Jogar Roleta Clássica (Par/Ímpar)
+  - Jogar Roleta das Cores
+  - Jogar Caça-Níquel
+
+
+---
+
+## 📌 Kanban do Projeto
+🔗 [Acompanhe o progresso no GitHub Projects](https://github.com/users/Gabssanjoss/projects/2/views/1)
+
+---
+
+## 👥 Time Técnico
+
+👩‍💼 **Tech Lead:** Silvia Cristina
+
+👨‍💻 **Desenvolvedores:**
+- William Augusto
+- Daniele Lins

@@ -58,7 +58,12 @@ public class CarteiraService {
 
     public CarteiraResponseDTO buscarCarteiraPorId(Integer idCarteira) throws RegraDeNegocioException {
         log.info("Buscando carteira pelo ID: {}", idCarteira);
+
         CarteiraEntity carteira = carteiraRepository.buscarPorId(idCarteira);
+        if(carteira == null) {
+            throw new RegraDeNegocioException("Carteira com ID " + idCarteira + " não encontrada.");
+        }
+
         log.info("Carteira encontrada: ID {}", carteira.getIdCarteira());
         return convertToResponseDTO(carteira);
     }

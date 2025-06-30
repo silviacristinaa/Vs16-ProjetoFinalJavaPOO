@@ -69,22 +69,27 @@ public class CarteiraService {
     }
 
     public CarteiraResponseDTO buscarCarteiraPorIdJogador(Integer idJogador) throws RegraDeNegocioException {
+        if(carteiraRepository.listar().stream().noneMatch(carteira -> carteira.getIdJogador().equals(idJogador))) {
+            throw new RegraDeNegocioException("ID do jogador não foi encontrado.");
+        }
         log.info("Buscando carteira pelo ID do jogador: {}", idJogador);
         CarteiraEntity carteira = carteiraRepository.buscarCarteiraPorIdJogador(idJogador);
         log.info("Carteira do jogador {} encontrada.", idJogador);
         return convertToResponseDTO(carteira);
     }
 
-    public CarteiraResponseDTO atualizarCarteira(Integer id, CarteiraRequestDTO carteiraAtualizarDTO) throws RegraDeNegocioException {
-        log.info("Atualizando carteira com ID: {}", id);
+    public CarteiraResponseDTO atualizarCarteira(Integer idCarteira, CarteiraRequestDTO carteiraAtualizarDTO) throws RegraDeNegocioException {
 
-        buscarCarteiraPorId(id);
-        CarteiraEntity carteiraAtualizada = carteiraRepository.editar(id, convertToEntity(carteiraAtualizarDTO));
-        log.info("Carteira com ID {} atualizada com sucesso.", id);
+        buscarCarteiraPorId(idCarteira);
+
+        log.info("Atualizando carteira com ID: {}", idCarteira);
+        CarteiraEntity carteiraAtualizada = carteiraRepository.editar(idCarteira, convertToEntity(carteiraAtualizarDTO));
+        log.info("Carteira com ID {} atualizada com sucesso.", idCarteira);
         return convertToResponseDTO(carteiraAtualizada);
     }
 
     public CarteiraResponseDTO depositarDinheiro(Integer idCarteira, double valor) throws RegraDeNegocioException {
+        buscarCarteiraPorId(idCarteira);
         log.info("Depositando R$ {} na carteira ID: {}", valor, idCarteira);
         CarteiraEntity carteira = carteiraRepository.buscarPorId(idCarteira);
         if (valor <= 0) {
@@ -96,7 +101,10 @@ public class CarteiraService {
         return convertToResponseDTO(carteiraAtualizada);
     }
 
+
+
     public CarteiraResponseDTO sacarDinheiro(Integer idCarteira, double valor) throws RegraDeNegocioException {
+        buscarCarteiraPorId(idCarteira);
         log.info("Sacando R$ {} da carteira ID: {}", valor, idCarteira);
         CarteiraEntity carteira = carteiraRepository.buscarPorId(idCarteira);
         if (valor <= 0) {
@@ -112,6 +120,7 @@ public class CarteiraService {
     }
 
     public CarteiraResponseDTO comprarFichas(Integer idCarteira, int quantidadeFicha) throws RegraDeNegocioException {
+        buscarCarteiraPorId(idCarteira);
         log.info("Comprando {} fichas para a carteira ID: {}", quantidadeFicha, idCarteira);
         CarteiraEntity carteira = carteiraRepository.buscarPorId(idCarteira);
         final double valorFicha = 1.0;
@@ -130,6 +139,7 @@ public class CarteiraService {
     }
 
     public CarteiraResponseDTO venderFichas(Integer idCarteira, int quantidadeFicha) throws RegraDeNegocioException {
+        buscarCarteiraPorId(idCarteira);
         log.info("Vendendo {} fichas da carteira ID: {}", quantidadeFicha, idCarteira);
         CarteiraEntity carteira = carteiraRepository.buscarPorId(idCarteira);
         final double valorFicha = 1.0;

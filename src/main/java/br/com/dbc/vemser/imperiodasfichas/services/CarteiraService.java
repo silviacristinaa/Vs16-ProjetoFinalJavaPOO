@@ -80,10 +80,19 @@ public class CarteiraService {
 
     public CarteiraResponseDTO atualizarCarteira(Integer idCarteira, CarteiraRequestDTO carteiraAtualizarDTO) throws RegraDeNegocioException {
 
-        buscarCarteiraPorId(idCarteira);
+        CarteiraResponseDTO carteiraExistente = buscarCarteiraPorId(idCarteira);
+        if (carteiraExistente == null) {
+            throw new RegraDeNegocioException("Carteira com ID " + idCarteira + " não encontrada.");
+        }
 
         log.info("Atualizando carteira com ID: {}", idCarteira);
-        CarteiraEntity carteiraAtualizada = carteiraRepository.editar(idCarteira, convertToEntity(carteiraAtualizarDTO));
+
+        carteiraExistente.setFichas(carteiraAtualizarDTO.getFichas());
+        carteiraExistente.setDinheiro(carteiraAtualizarDTO.getDinheiro());
+
+        CarteiraEntity carteiraAtualizada = convertToEntity(carteiraExistente);
+        carteiraAtualizada = carteiraRepository.editar(idCarteira, carteiraAtualizada);
+
         log.info("Carteira com ID {} atualizada com sucesso.", idCarteira);
         return convertToResponseDTO(carteiraAtualizada);
     }
@@ -100,8 +109,6 @@ public class CarteiraService {
         log.info("Depósito de R$ {} realizado com sucesso na carteira ID {}. Saldo atual: R$ {}", valor, idCarteira, carteiraAtualizada.getDinheiro());
         return convertToResponseDTO(carteiraAtualizada);
     }
-
-
 
     public CarteiraResponseDTO sacarDinheiro(Integer idCarteira, double valor) throws RegraDeNegocioException {
         buscarCarteiraPorId(idCarteira);

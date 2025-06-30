@@ -1,7 +1,9 @@
 package br.com.dbc.vemser.imperiodasfichas.services;
 
 import br.com.dbc.vemser.imperiodasfichas.dtos.*;
+import br.com.dbc.vemser.imperiodasfichas.dtos.jogada.*;
 import br.com.dbc.vemser.imperiodasfichas.entities.CarteiraEntity;
+import br.com.dbc.vemser.imperiodasfichas.enums.CoresDaRoletaEnum;
 import br.com.dbc.vemser.imperiodasfichas.enums.NomeJogoEnum;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,16 +26,20 @@ public class JogadaService {
     private final CarteiraService carteiraService;
     private final ObjectMapper objectMapper;
 
-    public JogadaResponseDTO jogarRoletaParImpar(RoletaParImparRequestDTO jogada) throws Exception {
+    public RoletaParImparResponseDTO jogarRoletaParImpar(RoletaParImparRequestDTO jogada) throws Exception {
         JogadorResponseDTO jogadorDTO = jogadorService.buscarJogadorPorId(jogada.getIdJogador());
         JogoResponseDTO jogoDTO = jogoService.buscarPorNomeJogo(NomeJogoEnum.ROLETA_CLASSICA);
 
         CarteiraResponseDTO carteiraDTO = validacoesFichasApostadas(jogada.getQuantidadeFichasApostado(), jogoDTO, jogada.getIdJogador());
+        carteiraDTO.setFichas(carteiraDTO.getFichas() - jogada.getQuantidadeFichasApostado());
 
         int resultadoRoleta = roletaParImparService.girarRoleta();
         boolean ganhou = roletaParImparService.verificarResultado(resultadoRoleta, jogada.getOpcao());
 
-        atualizarFichas(jogada.getQuantidadeFichasApostado(), ganhou, carteiraDTO, 2);
+        int fichasRecebidas = 0;
+        if (ganhou) {
+            fichasRecebidas = atualizarFichas(jogada.getQuantidadeFichasApostado(), carteiraDTO, 2);
+        }
 
         CarteiraEntity carteira = objectMapper.convertValue(carteiraDTO, CarteiraEntity.class);
         carteiraService.atualizarCarteira(carteira);
@@ -42,21 +48,28 @@ public class JogadaService {
                 jogada.getQuantidadeFichasApostado(), ganhou, jogoDTO.getIdJogo(), jogadorDTO.getIdJogador());
         PartidaResponseDTO partida = partidaService.adicionarPartida(partidaRequestDTO);
 
-        JogadaResponseDTO jogadaResponseDTO = new JogadaResponseDTO();
-        jogadaResponseDTO.setGanhou(ganhou);
-        return jogadaResponseDTO;
+        RoletaParImparResponseDTO response = new RoletaParImparResponseDTO();
+        response.setGanhou(ganhou);
+        response.setFichasRecebidas(fichasRecebidas);
+        response.setNumeroSorteado(resultadoRoleta);
+        response.setSaldoFinalDeFichas(carteira.getFichas());
+        return response;
     }
 
-    public JogadaResponseDTO jogarRoletaCores(RoletaCoresRequestDTO jogada) throws Exception {
+    public RoletaCoresResponseDTO jogarRoletaCores(RoletaCoresRequestDTO jogada) throws Exception {
         JogadorResponseDTO jogadorDTO = jogadorService.buscarJogadorPorId(jogada.getIdJogador());
         JogoResponseDTO jogoDTO = jogoService.buscarPorNomeJogo(NomeJogoEnum.ROLETA_DAS_CORES);
 
         CarteiraResponseDTO carteiraDTO = validacoesFichasApostadas(jogada.getQuantidadeFichasApostado(), jogoDTO, jogada.getIdJogador());
+        carteiraDTO.setFichas(carteiraDTO.getFichas() - jogada.getQuantidadeFichasApostado());
 
         int resultadoRoleta = roletaCoresService.girarRoleta();
         boolean ganhou = roletaCoresService.verificarResultado(resultadoRoleta, jogada.getOpcao().getTipo());
 
-        atualizarFichas(jogada.getQuantidadeFichasApostado(), ganhou, carteiraDTO, 4);
+        int fichasRecebidas = 0;
+        if (ganhou) {
+            fichasRecebidas = atualizarFichas(jogada.getQuantidadeFichasApostado(), carteiraDTO, 4);
+        }
 
         CarteiraEntity carteira = objectMapper.convertValue(carteiraDTO, CarteiraEntity.class);
         carteiraService.atualizarCarteira(carteira);
@@ -65,21 +78,28 @@ public class JogadaService {
                 jogada.getQuantidadeFichasApostado(), ganhou, jogoDTO.getIdJogo(), jogadorDTO.getIdJogador());
         PartidaResponseDTO partida = partidaService.adicionarPartida(partidaRequestDTO);
 
-        JogadaResponseDTO jogadaResponseDTO = new JogadaResponseDTO();
-        jogadaResponseDTO.setGanhou(ganhou);
-        return jogadaResponseDTO;
+        RoletaCoresResponseDTO response = new RoletaCoresResponseDTO();
+        response.setGanhou(ganhou);
+        response.setFichasRecebidas(fichasRecebidas);
+        response.setCorSorteada(CoresDaRoletaEnum.fromTipo(resultadoRoleta));
+        response.setSaldoFinalDeFichas(carteira.getFichas());
+        return response;
     }
 
-    public JogadaResponseDTO jogarCacaNiquel(CacaNiquelRequestDTO jogada) throws Exception {
+    public CacaNiquelResponseDTO jogarCacaNiquel(CacaNiquelRequestDTO jogada) throws Exception {
         JogadorResponseDTO jogadorDTO = jogadorService.buscarJogadorPorId(jogada.getIdJogador());
         JogoResponseDTO jogoDTO = jogoService.buscarPorNomeJogo(NomeJogoEnum.CACA_NIQUEL);
 
         CarteiraResponseDTO carteiraDTO = validacoesFichasApostadas(jogada.getQuantidadeFichasApostado(), jogoDTO, jogada.getIdJogador());
+        carteiraDTO.setFichas(carteiraDTO.getFichas() - jogada.getQuantidadeFichasApostado());
 
         List<String> resultadoCacaNiquel = cacaNiquelService.girarRolos();
         boolean ganhou = cacaNiquelService.verificarResultado(resultadoCacaNiquel);
 
-        atualizarFichas(jogada.getQuantidadeFichasApostado(), ganhou, carteiraDTO, 2);
+        int fichasRecebidas = 0;
+        if (ganhou) {
+            fichasRecebidas = atualizarFichas(jogada.getQuantidadeFichasApostado(), carteiraDTO, 2);
+        }
 
         CarteiraEntity carteira = objectMapper.convertValue(carteiraDTO, CarteiraEntity.class);
         carteiraService.atualizarCarteira(carteira);
@@ -88,17 +108,18 @@ public class JogadaService {
                 jogada.getQuantidadeFichasApostado(), ganhou, jogoDTO.getIdJogo(), jogadorDTO.getIdJogador());
         PartidaResponseDTO partida = partidaService.adicionarPartida(partidaRequestDTO);
 
-        JogadaResponseDTO jogadaResponseDTO = new JogadaResponseDTO();
-        jogadaResponseDTO.setGanhou(ganhou);
-        return jogadaResponseDTO;
+        CacaNiquelResponseDTO respose = new CacaNiquelResponseDTO();
+        respose.setGanhou(ganhou);
+        respose.setFichasRecebidas(fichasRecebidas);
+        respose.setSimbolosSorteados(resultadoCacaNiquel);
+        respose.setSaldoFinalDeFichas(carteira.getFichas());
+        return respose;
     }
 
-    private static void atualizarFichas(int quantidadeFichasApostadas, boolean ganhou, CarteiraResponseDTO carteiraDTO, int multiplicadorFichas) {
-        if (ganhou) {
-            carteiraDTO.setFichas(carteiraDTO.getFichas()  + (quantidadeFichasApostadas * multiplicadorFichas));
-        } else  {
-            carteiraDTO.setFichas(carteiraDTO.getFichas() - quantidadeFichasApostadas);
-        }
+    private static int atualizarFichas(int quantidadeFichasApostadas, CarteiraResponseDTO carteiraDTO, int multiplicadorFichas) {
+        int fichasRecebidas = quantidadeFichasApostadas * multiplicadorFichas;
+        carteiraDTO.setFichas(carteiraDTO.getFichas()  + fichasRecebidas);
+        return fichasRecebidas;
     }
 
     private CarteiraResponseDTO validacoesFichasApostadas(int quantidadeFichasApostadas, JogoResponseDTO jogoDTO, int idJogador) throws RegraDeNegocioException {

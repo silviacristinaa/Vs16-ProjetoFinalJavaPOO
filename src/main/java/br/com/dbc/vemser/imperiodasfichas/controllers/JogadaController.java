@@ -1,10 +1,7 @@
 package br.com.dbc.vemser.imperiodasfichas.controllers;
 
 import br.com.dbc.vemser.imperiodasfichas.documentacao.JogadaControllerDoc;
-import br.com.dbc.vemser.imperiodasfichas.dtos.CacaNiquelRequestDTO;
-import br.com.dbc.vemser.imperiodasfichas.dtos.JogadaResponseDTO;
-import br.com.dbc.vemser.imperiodasfichas.dtos.RoletaCoresRequestDTO;
-import br.com.dbc.vemser.imperiodasfichas.dtos.RoletaParImparRequestDTO;
+import br.com.dbc.vemser.imperiodasfichas.dtos.jogada.*;
 import br.com.dbc.vemser.imperiodasfichas.services.JogadaService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,20 +23,20 @@ public class JogadaController implements JogadaControllerDoc {
     private final JogadaService jogadaService;
 
     @PostMapping("/roleta/classica")
-    public ResponseEntity<JogadaResponseDTO> jogarRoletaClassica(@RequestBody @Valid RoletaParImparRequestDTO jogada) throws Exception {
-        JogadaResponseDTO response = jogadaService.jogarRoletaParImpar(jogada);
+    public ResponseEntity<RoletaParImparResponseDTO> jogarRoletaClassica(@RequestBody @Valid RoletaParImparRequestDTO jogada) throws Exception {
+        RoletaParImparResponseDTO response = jogadaService.jogarRoletaParImpar(jogada);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @PostMapping("/roleta/cores")
-    public ResponseEntity<JogadaResponseDTO> jogarRoletaCores(@RequestBody @Valid RoletaCoresRequestDTO jogada) throws Exception {
-        JogadaResponseDTO response = jogadaService.jogarRoletaCores(jogada);
+    public ResponseEntity<RoletaCoresResponseDTO> jogarRoletaCores(@RequestBody @Valid RoletaCoresRequestDTO jogada) throws Exception {
+        RoletaCoresResponseDTO response = jogadaService.jogarRoletaCores(jogada);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @PostMapping("/cacaniquel")
-    public ResponseEntity<JogadaResponseDTO> jogarCacaNiquel(@RequestBody @Valid CacaNiquelRequestDTO jogada) throws Exception {
-        JogadaResponseDTO response = jogadaService.jogarCacaNiquel(jogada);
+    public ResponseEntity<CacaNiquelResponseDTO> jogarCacaNiquel(@RequestBody @Valid CacaNiquelRequestDTO jogada) throws Exception {
+        CacaNiquelResponseDTO response = jogadaService.jogarCacaNiquel(jogada);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 }

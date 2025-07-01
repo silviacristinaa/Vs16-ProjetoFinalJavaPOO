@@ -10,6 +10,6 @@ public class RoletaCoresService {
     }
 
     public int girarRoleta() {
-        return (int) (Math.random() * 4);
+        return (int) (Math.random() * 4) + 1;
     }
 }

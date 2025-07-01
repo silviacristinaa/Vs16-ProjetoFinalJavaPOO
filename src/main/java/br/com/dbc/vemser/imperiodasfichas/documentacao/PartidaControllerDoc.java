@@ -1,6 +1,5 @@
 package br.com.dbc.vemser.imperiodasfichas.documentacao;
 
-import br.com.dbc.vemser.imperiodasfichas.dtos.PartidaRequestDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.PartidaResponseDTO;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,10 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.validation.Valid;
 import java.util.List;
 
 public interface PartidaControllerDoc {
@@ -38,17 +34,6 @@ public interface PartidaControllerDoc {
     )
     @GetMapping("/{idPartida}")
     ResponseEntity<PartidaResponseDTO> buscarPorId(@PathVariable("idPartida") Integer id) throws Exception;
-
-    @Operation(summary = "Criar uma nova partida", description = "Registra uma nova partida no sistema. Geralmente é chamado internamente por um serviço de jogada.")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "201", description = "Retorna os detalhes da partida recém-criada."),
-                    @ApiResponse(responseCode = "400", description = "Requisição inválida. Verifique os dados enviados."),
-                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção no servidor.")
-            }
-    )
-    @PostMapping
-    ResponseEntity<PartidaResponseDTO> criar(@RequestBody @Valid PartidaRequestDTO partida) throws Exception;
 
     @Operation(summary = "Deletar partida", description = "Remove o registro de uma partida do sistema.")
     @ApiResponses(

@@ -671,7 +671,7 @@ Vs16-ProjetoFinalJavaPOO
 │       │       └── ImperiodasfichasApplication.java
 │       └── resources
 │           ├── bd
-│           │   ├── criar_esquema.sql
+│           │   ├── criar_esquema_jogo.sql
 │           │   ├── criar.sql
 │           │   └── dados.sql
 │           ├── images
@@ -708,6 +708,31 @@ Cire uma conexão com o banco pelo DBevaer, acesse a pasta `src/main/resources/b
 
 ---
 
+## ⚙️ Configuração de VM Options na IDE
+
+
+Para rodar o projeto localmente, adicione os seguintes parâmetros em sua IDE (Ex: IntelliJ > Edit Configurations > VM options):
+
+```
+-Dspring.mail.username=seu.email@gmail.com
+-Dspring.mail.password="senha gerada pelo gmail"
+-Ddb.url=jdbc:oracle:thin:@localhost:1521:xe
+-Ddb.user=system
+-Ddb.password=oracle
+-Ddb.schema=JOGO
+```
+
+ℹ️ Essas configurações são voltadas para **ambiente de testes e desenvolvimento**, estão informadas aqui para facilitar a execução do projeto.
+
+### 📸 Diagrama-ER
+
+<p align="center">
+  <img src="src/main/resources/bd/Diagrama-ER.png" alt="Diagrama-ER" width="700"/>
+</p>
+
+---
+
+
 ## 🔍 Endpoints Disponíveis (Documentados no Swagger)
 
 > 📄 A documentação completa da API pode ser acessada via Swagger após iniciar a aplicação:  
@@ -721,12 +746,13 @@ Cire uma conexão com o banco pelo DBevaer, acesse a pasta `src/main/resources/b
   - Deletar um jogo por ID
 
 
-- **🧑‍🤝‍🧑 Jogador:**
+- **👤‍ Jogador:**
   - Listar todos os jogadores
   - Buscar jogador por ID
   - Criar um novo jogador
   - Atualizar um jogador
   - Deletar um jogador por ID
+  - Listar ranking dos jogadores
 
 
 - **💼 Carteira:**
@@ -738,17 +764,16 @@ Cire uma conexão com o banco pelo DBevaer, acesse a pasta `src/main/resources/b
   - Comprar e vender fichas pela carteira (ID)
 
 
-- **🏆 Partida:**
-  - Listar todas as partidas
-  - Buscar uma partida por ID
-  - Deletar uma partida por ID
-
-
 - **🎲 Jogada:**
   - Jogar Roleta Clássica (Par/Ímpar)
   - Jogar Roleta das Cores
   - Jogar Caça-Níquel
 
+
+- **🏆 Partida:**
+  - Listar todas as partidas
+  - Buscar uma partida por ID
+  - Deletar uma partida por ID
 
 ---
 

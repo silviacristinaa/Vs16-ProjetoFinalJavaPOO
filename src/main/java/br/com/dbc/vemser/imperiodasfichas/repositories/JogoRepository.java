@@ -167,6 +167,8 @@ public class JogoRepository implements GenericRepository<Integer, JogoEntity>{
                 jogo.setNomeJogo(NomeJogoEnum.fromNome(res.getString("NOME_JOGO")));
                 jogo.setRegras(res.getString("REGRAS"));
                 jogo.setValorInicial(res.getInt("VALOR_INICIAL"));
+            } else {
+                throw new RegraDeNegocioException("Jogo não encontrado com o ID: " + id);
             }
         } catch (SQLException e) {
             throw new RegraDeNegocioException(e.getMessage());

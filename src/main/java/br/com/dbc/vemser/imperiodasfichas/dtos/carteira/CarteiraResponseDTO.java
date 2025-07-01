@@ -9,15 +9,9 @@ import javax.validation.constraints.NotNull;
 
 @Data
 public class CarteiraResponseDTO extends CarteiraRequestDTO {
-    @NotBlank
-    @NotNull
-    @NotEmpty
     @Schema(description = "ID único da carteira", example = "1")
     private Integer idCarteira;
 
-    @NotBlank
-    @NotNull
-    @NotEmpty
     @Schema(description = "ID do jogador associado à carteira", example = "1")
     private Integer idJogador;
 }

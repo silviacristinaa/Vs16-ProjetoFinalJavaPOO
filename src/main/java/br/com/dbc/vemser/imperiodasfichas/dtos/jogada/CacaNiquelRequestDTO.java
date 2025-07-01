@@ -5,21 +5,15 @@ import lombok.Data;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 @Data
 public class CacaNiquelRequestDTO {
 
     @NotBlank
-    @NotNull
-    @NotEmpty
     @Schema(description = "ID do Jogador", required = true, example = "1")
     private Integer idJogador;
 
     @NotBlank
-    @NotNull
-    @NotEmpty
     @Min(1)
     @Schema(description = "Quantidade de fichas a serem apostadas", required = true, example = "10")
     private Integer quantidadeFichasApostado;

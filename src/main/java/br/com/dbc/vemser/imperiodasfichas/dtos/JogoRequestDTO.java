@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -14,6 +15,7 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 public class JogoRequestDTO {
     @NotNull
+    @NotEmpty
     @Schema(description = "Nome do jogo", required = true, example = "ROLETA_CLASSICA")
     private NomeJogoEnum nomeJogo;
 
@@ -22,6 +24,7 @@ public class JogoRequestDTO {
     private String regras;
 
     @NotNull
+    @NotEmpty
     @Schema(description = "Valor mínimo de aposta para o jogo", required = true, example = "5")
     private int valorInicial;
 }

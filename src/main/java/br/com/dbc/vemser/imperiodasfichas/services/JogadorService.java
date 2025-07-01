@@ -1,6 +1,7 @@
 package br.com.dbc.vemser.imperiodasfichas.services;
 
-import br.com.dbc.vemser.imperiodasfichas.dtos.CarteiraResponseDTO;
+import br.com.dbc.vemser.imperiodasfichas.dtos.carteira.CarteiraResponseDTO;
+import br.com.dbc.vemser.imperiodasfichas.dtos.JogadorRankingDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.JogadorRequestDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.JogadorResponseDTO;
 import br.com.dbc.vemser.imperiodasfichas.entities.CarteiraEntity;
@@ -119,5 +120,15 @@ public class JogadorService {
 
     private JogadorEntity buscarJogadorPorEmail(String email) throws RegraDeNegocioException {
         return jogadorRepository.buscarPorEmail(email);
+    }
+
+    public List<JogadorRankingDTO> getRanking() throws RegraDeNegocioException {
+        List<JogadorRankingDTO> ranking = jogadorRepository.getRankingPorVitorias();
+
+        for (int i = 0; i < ranking.size(); i++) {
+            ranking.get(i).setRank(i + 1);
+        }
+
+        return ranking;
     }
 }

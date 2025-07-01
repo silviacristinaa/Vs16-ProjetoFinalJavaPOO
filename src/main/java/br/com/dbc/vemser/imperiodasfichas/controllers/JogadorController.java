@@ -1,6 +1,7 @@
 package br.com.dbc.vemser.imperiodasfichas.controllers;
 
 import br.com.dbc.vemser.imperiodasfichas.documentacao.JogadorControllerDoc;
+import br.com.dbc.vemser.imperiodasfichas.dtos.JogadorRankingDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.JogadorRequestDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.JogadorResponseDTO;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
@@ -21,6 +22,14 @@ import java.util.List;
 public class JogadorController implements JogadorControllerDoc {
 
     private final JogadorService jogadorService;
+
+    @GetMapping("/ranking")
+    public ResponseEntity<List<JogadorRankingDTO>> getRanking() throws RegraDeNegocioException {
+        log.info("Buscando ranking de jogadores por vitória...");
+        List<JogadorRankingDTO> ranking = jogadorService.getRanking();
+        log.info("Ranking retornado com sucesso.");
+        return new ResponseEntity<>(ranking, HttpStatus.OK);
+    }
 
     @GetMapping
     public ResponseEntity<List<JogadorResponseDTO>> listar() throws RegraDeNegocioException {

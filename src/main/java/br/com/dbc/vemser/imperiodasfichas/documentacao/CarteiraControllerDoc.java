@@ -1,7 +1,8 @@
 package br.com.dbc.vemser.imperiodasfichas.documentacao;
 
-import br.com.dbc.vemser.imperiodasfichas.dtos.CarteiraRequestDTO;
-import br.com.dbc.vemser.imperiodasfichas.dtos.CarteiraResponseDTO;
+import br.com.dbc.vemser.imperiodasfichas.dtos.carteira.CarteiraRequestDTO;
+import br.com.dbc.vemser.imperiodasfichas.dtos.carteira.CarteiraResponseDTO;
+import br.com.dbc.vemser.imperiodasfichas.dtos.carteira.SaldoDTO;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -65,7 +66,7 @@ public interface CarteiraControllerDoc {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção no servidor.")
             }
     )
-    ResponseEntity<CarteiraResponseDTO> depositarDinheiro(@PathVariable("idCarteira") Integer id,
+    ResponseEntity<SaldoDTO> depositarDinheiro(@PathVariable("idCarteira") Integer id,
                                                           @RequestParam double valor) throws RegraDeNegocioException;
 
     @Operation(summary = "Sacar dinheiro", description = "Retira um valor do saldo de dinheiro da carteira.")
@@ -77,7 +78,7 @@ public interface CarteiraControllerDoc {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção no servidor.")
             }
     )
-    ResponseEntity<CarteiraResponseDTO> sacarDinheiro(@PathVariable("idCarteira") Integer id,
+    ResponseEntity<SaldoDTO> sacarDinheiro(@PathVariable("idCarteira") Integer id,
                                                       @RequestParam double valor) throws RegraDeNegocioException;
 
     @Operation(summary = "Comprar fichas", description = "Usa o saldo de dinheiro para comprar fichas.")
@@ -89,7 +90,7 @@ public interface CarteiraControllerDoc {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção no servidor.")
             }
     )
-    ResponseEntity<CarteiraResponseDTO> comprarFichas(@PathVariable("idCarteira") Integer id,
+    ResponseEntity<SaldoDTO> comprarFichas(@PathVariable("idCarteira") Integer id,
                                                       @RequestParam int quantidade) throws RegraDeNegocioException;
 
     @Operation(summary = "Vender fichas", description = "Converte fichas em dinheiro, atualizando o saldo da carteira.")
@@ -101,6 +102,6 @@ public interface CarteiraControllerDoc {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção no servidor.")
             }
     )
-    ResponseEntity<CarteiraResponseDTO> venderFichas(@PathVariable("idCarteira") Integer id,
-                                                     @RequestParam int quantidade) throws RegraDeNegocioException;
+    ResponseEntity<SaldoDTO> venderFichas(@PathVariable("idCarteira") Integer id,
+                                          @RequestParam int quantidade) throws RegraDeNegocioException;
 }

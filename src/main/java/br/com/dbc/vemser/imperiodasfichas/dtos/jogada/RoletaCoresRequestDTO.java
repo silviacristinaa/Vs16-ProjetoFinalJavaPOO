@@ -1,4 +1,4 @@
-package br.com.dbc.vemser.imperiodasfichas.dtos;
+package br.com.dbc.vemser.imperiodasfichas.dtos.jogada;
 
 import br.com.dbc.vemser.imperiodasfichas.enums.CoresDaRoletaEnum;
 import io.swagger.v3.oas.annotations.media.Schema;

@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.imperiodasfichas.documentacao;
 
+import br.com.dbc.vemser.imperiodasfichas.dtos.JogadorRankingDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.JogadorRequestDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.JogadorResponseDTO;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
@@ -18,6 +19,16 @@ import javax.validation.Valid;
 import java.util.List;
 
 public interface JogadorControllerDoc {
+
+    @Operation(summary = "Listar ranking de jogadores", description = "Lista os jogadores ordenados pelo número de vitórias.")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Retorna o ranking de jogadores."),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção no servidor.")
+            }
+    )
+    @GetMapping("/ranking")
+    ResponseEntity<List<JogadorRankingDTO>> getRanking() throws RegraDeNegocioException;
 
     @Operation(summary = "Listar jogadores", description = "Lista todos os jogadores cadastrados no sistema.")
     @ApiResponses(

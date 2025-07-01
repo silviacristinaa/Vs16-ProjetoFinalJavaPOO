@@ -1,6 +1,7 @@
 package br.com.dbc.vemser.imperiodasfichas.repositories;
 
 import br.com.dbc.vemser.imperiodasfichas.database.ConexaoDataBase;
+import br.com.dbc.vemser.imperiodasfichas.dtos.JogadorRankingDTO;
 import br.com.dbc.vemser.imperiodasfichas.entities.CarteiraEntity;
 import br.com.dbc.vemser.imperiodasfichas.entities.JogadorEntity;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
@@ -321,5 +322,50 @@ public class JogadorRepository implements GenericRepository<Integer, JogadorEnti
             }
         }
         return jogadores;
+    }
+
+    public List<JogadorRankingDTO> getRankingPorVitorias() throws RegraDeNegocioException {
+        List<JogadorRankingDTO> ranking = new ArrayList<>();
+        Connection con = null;
+        try {
+            con = conexaoDataBase.getConnection();
+
+            String sql = "SELECT " +
+                    "    j.ID AS id_jogador, " +
+                    "    j.NICKNAME, " +
+                    "    COUNT(p.ID_PARTIDA) AS vitorias " +
+                    "FROM " +
+                    "    JOGADOR j " +
+                    "JOIN " +
+                    "    PARTIDA p ON j.ID = p.id_jogador " +
+                    "WHERE " +
+                    "    p.ganhou = 'S' " +
+                    "GROUP BY " +
+                    "    j.ID, j.NICKNAME " +
+                    "ORDER BY " +
+                    "    vitorias DESC";
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+            ResultSet res = stmt.executeQuery();
+
+            while (res.next()) {
+                JogadorRankingDTO jogadorRanking = new JogadorRankingDTO();
+                jogadorRanking.setIdJogador(res.getInt("id_jogador"));
+                jogadorRanking.setNickname(res.getString("NICKNAME"));
+                jogadorRanking.setVitorias(res.getInt("vitorias"));
+                ranking.add(jogadorRanking);
+            }
+        } catch (SQLException e) {
+            throw new RegraDeNegocioException(e.getMessage());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return ranking;
     }
 }

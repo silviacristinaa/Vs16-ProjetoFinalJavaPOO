@@ -1,9 +1,9 @@
 package br.com.dbc.vemser.imperiodasfichas.services;
 
 import br.com.dbc.vemser.imperiodasfichas.dtos.carteira.CarteiraResponseDTO;
-import br.com.dbc.vemser.imperiodasfichas.dtos.JogadorRankingDTO;
-import br.com.dbc.vemser.imperiodasfichas.dtos.JogadorRequestDTO;
-import br.com.dbc.vemser.imperiodasfichas.dtos.JogadorResponseDTO;
+import br.com.dbc.vemser.imperiodasfichas.dtos.jogador.JogadorRankingDTO;
+import br.com.dbc.vemser.imperiodasfichas.dtos.jogador.JogadorRequestDTO;
+import br.com.dbc.vemser.imperiodasfichas.dtos.jogador.JogadorResponseDTO;
 import br.com.dbc.vemser.imperiodasfichas.entities.CarteiraEntity;
 import br.com.dbc.vemser.imperiodasfichas.entities.JogadorEntity;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
@@ -75,7 +75,7 @@ public class JogadorService {
     public JogadorResponseDTO buscarJogadorPorId(Integer idJogador) throws Exception {
         JogadorEntity jogador = jogadorRepository.buscarPorId(idJogador);
         if (jogador == null) {
-            throw new RegraDeNegocioException("Jogador não encontrado!");
+            throw new RegraDeNegocioException("Jogador com ID " + idJogador + " não encontrado.");
         }
 
         JogadorResponseDTO jogadorDTO = objectMapper.convertValue(jogador, JogadorResponseDTO.class);

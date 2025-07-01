@@ -1,4 +1,4 @@
-package br.com.dbc.vemser.imperiodasfichas.dtos;
+package br.com.dbc.vemser.imperiodasfichas.dtos.jogador;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -19,7 +19,7 @@ public class JogadorRequestDTO {
     @Schema(description = "Apelido único do jogador", required = true, example = "fulano")
     private String nickname;
 
-    @NotBlank
+    @NotNull
     @Min(value = 18)
     @Max(value = 90)
     @Schema(description = "Idade do jogador (mínimo 18 anos)", required = true, example = "25")

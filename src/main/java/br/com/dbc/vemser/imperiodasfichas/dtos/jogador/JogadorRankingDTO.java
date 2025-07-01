@@ -1,4 +1,4 @@
-package br.com.dbc.vemser.imperiodasfichas.dtos;
+package br.com.dbc.vemser.imperiodasfichas.dtos.jogador;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

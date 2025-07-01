@@ -1,8 +1,9 @@
 package br.com.dbc.vemser.imperiodasfichas.controllers;
 
 import br.com.dbc.vemser.imperiodasfichas.documentacao.CarteiraControllerDoc;
-import br.com.dbc.vemser.imperiodasfichas.dtos.CarteiraRequestDTO;
-import br.com.dbc.vemser.imperiodasfichas.dtos.CarteiraResponseDTO;
+import br.com.dbc.vemser.imperiodasfichas.dtos.carteira.CarteiraRequestDTO;
+import br.com.dbc.vemser.imperiodasfichas.dtos.carteira.CarteiraResponseDTO;
+import br.com.dbc.vemser.imperiodasfichas.dtos.carteira.SaldoDTO;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.imperiodasfichas.services.CarteiraService;
 import lombok.RequiredArgsConstructor;
@@ -60,38 +61,38 @@ public class CarteiraController implements CarteiraControllerDoc {
     }
 
     @PutMapping("/{idCarteira}/depositar")
-    public ResponseEntity<CarteiraResponseDTO> depositarDinheiro(@PathVariable("idCarteira") Integer id,
+    public ResponseEntity<SaldoDTO> depositarDinheiro(@PathVariable("idCarteira") Integer id,
                                                                  @RequestParam double valor) throws RegraDeNegocioException {
         log.info("Requisição para depositar R$ {} na carteira ID: {}", valor, id);
-        CarteiraResponseDTO carteiraAtualizada = carteiraService.depositarDinheiro(id, valor);
+        SaldoDTO saldoAtualizado = carteiraService.depositarDinheiro(id, valor);
         log.info("Depósito na carteira ID {} processado com sucesso.", id);
-        return new ResponseEntity<>(carteiraAtualizada, HttpStatus.OK);
+        return new ResponseEntity<>(saldoAtualizado, HttpStatus.OK);
     }
 
     @PutMapping("/{idCarteira}/sacar")
-    public ResponseEntity<CarteiraResponseDTO> sacarDinheiro(@PathVariable("idCarteira") Integer id,
+    public ResponseEntity<SaldoDTO> sacarDinheiro(@PathVariable("idCarteira") Integer id,
                                                              @RequestParam double valor) throws RegraDeNegocioException {
         log.info("Requisição para sacar R$ {} da carteira ID: {}", valor, id);
-        CarteiraResponseDTO carteiraAtualizada = carteiraService.sacarDinheiro(id, valor);
+        SaldoDTO saldoAtualizado = carteiraService.sacarDinheiro(id, valor);
         log.info("Saque da carteira ID {} processado com sucesso.", id);
-        return new ResponseEntity<>(carteiraAtualizada, HttpStatus.OK);
+        return new ResponseEntity<>(saldoAtualizado, HttpStatus.OK);
     }
 
     @PutMapping("/{idCarteira}/comprar")
-    public ResponseEntity<CarteiraResponseDTO> comprarFichas(@PathVariable("idCarteira") Integer id,
+    public ResponseEntity<SaldoDTO> comprarFichas(@PathVariable("idCarteira") Integer id,
                                                              @RequestParam int quantidade) throws RegraDeNegocioException {
         log.info("Requisição para comprar {} fichas para a carteira ID: {}", quantidade, id);
-        CarteiraResponseDTO carteiraAtualizada = carteiraService.comprarFichas(id, quantidade);
+        SaldoDTO saldoAtualizado = carteiraService.comprarFichas(id, quantidade);
         log.info("Compra de fichas para a carteira ID {} processada com sucesso.", id);
-        return new ResponseEntity<>(carteiraAtualizada, HttpStatus.OK);
+        return new ResponseEntity<>(saldoAtualizado, HttpStatus.OK);
     }
 
     @PutMapping("/{idCarteira}/vender")
-    public ResponseEntity<CarteiraResponseDTO> venderFichas(@PathVariable("idCarteira") Integer id,
-                                                            @RequestParam int quantidade) throws RegraDeNegocioException {
+    public ResponseEntity<SaldoDTO> venderFichas(@PathVariable("idCarteira") Integer id,
+                                                 @RequestParam int quantidade) throws RegraDeNegocioException {
         log.info("Requisição para vender {} fichas da carteira ID: {}", quantidade, id);
-        CarteiraResponseDTO carteiraAtualizada = carteiraService.venderFichas(id, quantidade);
+        SaldoDTO saldoAtualizado = carteiraService.venderFichas(id, quantidade);
         log.info("Venda de fichas da carteira ID {} processada com sucesso.", id);
-        return new ResponseEntity<>(carteiraAtualizada, HttpStatus.OK);
+        return new ResponseEntity<>(saldoAtualizado, HttpStatus.OK);
     }
 }

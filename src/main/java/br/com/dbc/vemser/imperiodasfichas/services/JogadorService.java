@@ -21,11 +21,13 @@ import java.util.stream.Collectors;
 public class JogadorService {
 
     private static final String NICKNAME_JA_UTILIZADO = "Esse nickname já está sendo usado por outro jogador.";
+    private static final String EMAIL_JA_UTILIZADO = "Esse email já está sendo usado por outro jogador.";
 
     private final JogadorRepository jogadorRepository;
     private final CarteiraService carteiraService;
     private final PartidaService partidaService;
     private final ObjectMapper objectMapper;
+    private final EmailService emailService;
 
     public JogadorResponseDTO adicionarJogador(JogadorRequestDTO jogador) throws RegraDeNegocioException {
 
@@ -33,9 +35,15 @@ public class JogadorService {
             throw new RegraDeNegocioException(NICKNAME_JA_UTILIZADO);
         }
 
+        if (buscarJogadorPorEmail(jogador.getEmail()) != null) {
+            throw new RegraDeNegocioException(EMAIL_JA_UTILIZADO);
+        }
+
         JogadorEntity jogadorEntity = objectMapper.convertValue(jogador, JogadorEntity.class);
         jogadorEntity = jogadorRepository.adicionar(jogadorEntity);
         log.info("Jogador adicionado com sucesso! ID: {}", jogadorEntity.getIdJogador());
+
+        emailService.sendEmailCreateJogador(jogadorEntity);
 
         CarteiraResponseDTO carteiraCriadaResponse = carteiraService.adicionarCarteira(jogadorEntity.getIdJogador());
 
@@ -82,6 +90,9 @@ public class JogadorService {
         if (jogadorComMesmoNickname != null && !jogadorComMesmoNickname.getIdJogador().equals(jogadorRecuperado.getIdJogador())) {
             throw new RegraDeNegocioException(NICKNAME_JA_UTILIZADO);
         }
+        if (buscarJogadorPorEmail(jogador.getEmail()) != null && !buscarJogadorPorEmail(jogador.getEmail()).getIdJogador().equals(jogadorRecuperado.getIdJogador())) {
+            throw new RegraDeNegocioException(EMAIL_JA_UTILIZADO);
+        }
 
         JogadorEntity jogadorAtualizar = objectMapper.convertValue(jogador, JogadorEntity.class);
         JogadorEntity jogagorAtualizado = jogadorRepository.editar(id, jogadorAtualizar);
@@ -93,13 +104,20 @@ public class JogadorService {
     }
 
     public void removerJogador(Integer idJogador) throws Exception {
-        buscarJogadorPorId(idJogador);
+        JogadorResponseDTO jogadorDTO = buscarJogadorPorId(idJogador);
 
         partidaService.removerPartidasPorIdJogador(idJogador);
         jogadorRepository.remover(idJogador);
+
+        JogadorEntity jogador = objectMapper.convertValue(jogadorDTO, JogadorEntity.class);
+        emailService.sendEmailDeleteJogador(jogador);
     }
 
     private JogadorEntity buscarJogadorPorNickname(String nickname) throws RegraDeNegocioException {
         return jogadorRepository.buscarPorNickname(nickname);
+    }
+
+    private JogadorEntity buscarJogadorPorEmail(String email) throws RegraDeNegocioException {
+        return jogadorRepository.buscarPorEmail(email);
     }
 }

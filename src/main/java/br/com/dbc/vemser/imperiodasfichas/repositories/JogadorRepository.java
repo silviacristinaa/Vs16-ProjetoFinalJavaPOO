@@ -40,7 +40,7 @@ public class JogadorRepository implements GenericRepository<Integer, JogadorEnti
             Integer proximoId = this.getProximoId(con);
             jogador.setIdJogador(proximoId);
 
-            String sqlJogador = "INSERT INTO JOGADOR (ID, NOME, NICKNAME, IDADE) VALUES (?, ?, ?, ?)";
+            String sqlJogador = "INSERT INTO JOGADOR (ID, NOME, NICKNAME, IDADE, EMAIL) VALUES (?, ?, ?, ?, ?)";
 
             PreparedStatement stmtJogador = con.prepareStatement(sqlJogador);
 
@@ -48,6 +48,7 @@ public class JogadorRepository implements GenericRepository<Integer, JogadorEnti
             stmtJogador.setString(2, jogador.getNome());
             stmtJogador.setString(3, jogador.getNickname());
             stmtJogador.setInt(4, jogador.getIdade());
+            stmtJogador.setString(5, jogador.getEmail());
 
             stmtJogador.executeUpdate();
 
@@ -123,6 +124,7 @@ public class JogadorRepository implements GenericRepository<Integer, JogadorEnti
             sql.append(" nome = ?,");
             sql.append(" nickname = ?,");
             sql.append(" idade = ? ");
+            sql.append(" email = ? ");
             sql.append(" WHERE id = ? ");
 
             PreparedStatement stmt = con.prepareStatement(sql.toString());
@@ -130,7 +132,8 @@ public class JogadorRepository implements GenericRepository<Integer, JogadorEnti
             stmt.setString(1, jogadorAtualizar.getNome());
             stmt.setString(2, jogadorAtualizar.getNickname());
             stmt.setInt(3, jogadorAtualizar.getIdade());
-            stmt.setInt(4, idJogador);
+            stmt.setString(4, jogadorAtualizar.getEmail());
+            stmt.setInt(5, idJogador);
 
             stmt.executeUpdate();
 
@@ -161,7 +164,9 @@ public class JogadorRepository implements GenericRepository<Integer, JogadorEnti
         try {
             con = conexaoDataBase.getConnection();
 
-            String sql = "SELECT J.ID, J.NOME, J.NICKNAME, J.IDADE, C.ID AS CARTEIRA_ID, C.FICHAS, C.DINHEIRO " +
+            String sql = "SELECT J.ID, J.NOME, J.NICKNAME, J.IDADE, J.EMAIL, C.ID AS CARTEIRA_ID, C.FICHAS, C" +
+                    ".DINHEIRO" +
+                    " " +
                     "FROM JOGADOR J LEFT JOIN CARTEIRA C ON J.ID = C.ID_JOGADOR " +
                     "WHERE J.ID = ?";
             PreparedStatement stmt = con.prepareStatement(sql);
@@ -174,6 +179,7 @@ public class JogadorRepository implements GenericRepository<Integer, JogadorEnti
                 jogador.setNome(res.getString("NOME"));
                 jogador.setNickname(res.getString("NICKNAME"));
                 jogador.setIdade(res.getInt("IDADE"));
+                jogador.setEmail(res.getString("EMAIL"));
 
                 CarteiraEntity carteira = new CarteiraEntity();
                 carteira.setIdCarteira(res.getInt("CARTEIRA_ID"));
@@ -199,7 +205,9 @@ public class JogadorRepository implements GenericRepository<Integer, JogadorEnti
         try {
             con = conexaoDataBase.getConnection();
 
-            String sql = "SELECT J.ID, J.NOME, J.NICKNAME, J.IDADE, C.ID AS CARTEIRA_ID, C.FICHAS, C.DINHEIRO " +
+            String sql = "SELECT J.ID, J.NOME, J.NICKNAME, J.IDADE, J.EMAIL, C.ID AS CARTEIRA_ID, C.FICHAS, C" +
+                    ".DINHEIRO" +
+                    " " +
                     "FROM JOGADOR J LEFT JOIN CARTEIRA C ON J.ID = C.ID_JOGADOR " +
                     "WHERE J.NICKNAME = ?";
             PreparedStatement stmt = con.prepareStatement(sql);
@@ -212,6 +220,48 @@ public class JogadorRepository implements GenericRepository<Integer, JogadorEnti
                 jogador.setNome(res.getString("NOME"));
                 jogador.setNickname(res.getString("NICKNAME"));
                 jogador.setIdade(res.getInt("IDADE"));
+                jogador.setEmail(res.getString("EMAIL"));
+
+                CarteiraEntity carteira = new CarteiraEntity();
+                carteira.setIdCarteira(res.getInt("CARTEIRA_ID"));
+                jogador.setCarteira(carteira);
+            }
+        } catch (SQLException e) {
+            throw new RegraDeNegocioException(e.getMessage());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return jogador;
+    }
+
+    public JogadorEntity buscarPorEmail(String email) throws RegraDeNegocioException {
+        JogadorEntity jogador = null;
+        Connection con = null;
+        try {
+            con = conexaoDataBase.getConnection();
+
+            String sql = "SELECT J.ID, J.NOME, J.NICKNAME, J.IDADE, J.EMAIL, C.ID AS CARTEIRA_ID, C.FICHAS, C" +
+                    ".DINHEIRO" +
+                    " " +
+                    "FROM JOGADOR J LEFT JOIN CARTEIRA C ON J.ID = C.ID_JOGADOR " +
+                    "WHERE J.EMAIL = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, email);
+            ResultSet res = stmt.executeQuery();
+
+            if (res.next()) {
+                jogador = new JogadorEntity();
+                jogador.setIdJogador(res.getInt("ID"));
+                jogador.setNome(res.getString("NOME"));
+                jogador.setNickname(res.getString("NICKNAME"));
+                jogador.setIdade(res.getInt("IDADE"));
+                jogador.setEmail(res.getString("EMAIL"));
 
                 CarteiraEntity carteira = new CarteiraEntity();
                 carteira.setIdCarteira(res.getInt("CARTEIRA_ID"));
@@ -239,7 +289,8 @@ public class JogadorRepository implements GenericRepository<Integer, JogadorEnti
             con = conexaoDataBase.getConnection();
             Statement stmt = con.createStatement();
 
-            String sql = "SELECT J.ID, J.NOME, J.NICKNAME, J.IDADE, C.ID AS CARTEIRA_ID, C.FICHAS, C.DINHEIRO " +
+            String sql = "SELECT J.ID, J.NOME, J.NICKNAME, J.IDADE, J.EMAIL, C.ID AS CARTEIRA_ID, C.FICHAS, C" +
+                    ".DINHEIRO " +
                     "FROM JOGADOR J LEFT JOIN CARTEIRA C ON J.ID = C.ID_JOGADOR";
 
             ResultSet res = stmt.executeQuery(sql);
@@ -250,6 +301,7 @@ public class JogadorRepository implements GenericRepository<Integer, JogadorEnti
                 jogador.setNome(res.getString("NOME"));
                 jogador.setNickname(res.getString("NICKNAME"));
                 jogador.setIdade(res.getInt("IDADE"));
+                jogador.setEmail(res.getString("EMAIL"));
 
                 CarteiraEntity carteira = new CarteiraEntity();
                 carteira.setIdCarteira(res.getInt("CARTEIRA_ID"));

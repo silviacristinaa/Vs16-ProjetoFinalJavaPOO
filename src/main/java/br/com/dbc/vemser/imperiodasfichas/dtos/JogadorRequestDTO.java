@@ -22,4 +22,11 @@ public class JogadorRequestDTO {
     @Max(value = 90)
     @Schema(description = "Idade do jogador (mínimo 18 anos)", required = true, example = "25")
     private Integer idade;
+
+    @NotBlank
+    @NotNull
+    @Size(max = 255)
+    @Email
+    @Schema(description = "Email do jogador", required = true, example = "email@gmail.com")
+    private String email;
 }

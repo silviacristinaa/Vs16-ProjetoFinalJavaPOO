@@ -4,11 +4,13 @@ import br.com.dbc.vemser.imperiodasfichas.dtos.jogada.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
 
+@Tag(name = "Jogada", description = "Operações relacionadas às jogadas dos jogadores em diferentes jogos.")
 public interface JogadaControllerDoc {
 
     @Operation(summary = "Jogar Roleta Clássica", description = "Realiza uma jogada na Roleta Clássica, apostando em par ou ímpar.")

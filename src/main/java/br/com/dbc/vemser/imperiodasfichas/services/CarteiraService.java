@@ -21,6 +21,7 @@ public class CarteiraService {
 
     private final CarteiraRepository carteiraRepository;
     private final ObjectMapper objectMapper;
+    private final EmailService emailService;
 
     private CarteiraResponseDTO convertToResponseDTO(CarteiraEntity carteira) {
         return objectMapper.convertValue(carteira, CarteiraResponseDTO.class);
@@ -108,6 +109,8 @@ public class CarteiraService {
         carteira.setDinheiro(carteira.getDinheiro() + valor);
         CarteiraEntity carteiraAtualizada = carteiraRepository.editar(idCarteira, carteira);
         log.info("Depósito de R$ {} realizado com sucesso na carteira ID {}. Saldo atual: R$ {}", valor, idCarteira, carteiraAtualizada.getDinheiro());
+
+        emailService.sendEmailDepositarCarteira(carteira, valor);
         return objectMapper.convertValue(carteiraAtualizada, SaldoDTO.class);
     }
 
@@ -124,6 +127,8 @@ public class CarteiraService {
         carteira.setDinheiro(carteira.getDinheiro() - valor);
         CarteiraEntity carteiraAtualizada = carteiraRepository.editar(idCarteira, carteira);
         log.info("Saque de R$ {} realizado com sucesso da carteira ID {}. Saldo atual: R$ {}", valor, idCarteira, carteiraAtualizada.getDinheiro());
+
+        emailService.sendEmailSacarCarteira(carteira, valor);
         return objectMapper.convertValue(carteiraAtualizada, SaldoDTO.class);
     }
 

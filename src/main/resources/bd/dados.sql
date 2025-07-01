@@ -11,26 +11,26 @@ VALUES(SEQ_JOGO.nextval, 'BlackJack', 'Chegue o mais próximo de 21 sem ultrapas
 
 -- Inserção de dados na tabela "Jogadores"
 
-INSERT INTO Jogador (ID, nome, nickname, idade)
-VALUES(SEQ_JOGADOR.nextval, 'Lucas', 'lf', 25);
-INSERT INTO Jogador (ID, nome, nickname, idade)
-VALUES(SEQ_JOGADOR.nextval, 'Gabriela', 'gabss', 21);
-INSERT INTO Jogador (ID, nome, nickname, idade)
-VALUES(SEQ_JOGADOR.nextval, 'William', 'will', 19);
-INSERT INTO Jogador (ID, nome, nickname, idade)
-VALUES(SEQ_JOGADOR.nextval, 'Robson', 'rob', 20);
-INSERT INTO Jogador (ID, nome, nickname, idade)
-VALUES(SEQ_JOGADOR.nextval, 'Silvia', 'sil', 20);
-INSERT INTO Jogador (ID, nome, nickname, idade)
-VALUES(SEQ_JOGADOR.nextval, 'Sarah', 'sarinha', 18);
-INSERT INTO Jogador (ID, nome, nickname, idade)
-VALUES(SEQ_JOGADOR.nextval, 'Sara', 'sasa', 19);
-INSERT INTO Jogador (ID, nome, nickname, idade)
-VALUES(SEQ_JOGADOR.nextval, 'Rafael', 'rafalazzari', 35);
-INSERT INTO Jogador (ID, nome, nickname, idade)
-VALUES(SEQ_JOGADOR.nextval, 'Cristina', 'cris', 40);
-INSERT INTO Jogador (ID, nome, nickname, idade)
-VALUES(SEQ_JOGADOR.nextval, 'Oscar', 'tito', 18);
+INSERT INTO Jogador (ID, nome, nickname, idade, email)
+VALUES(SEQ_JOGADOR.nextval, 'Lucas', 'lf', 25, 'email@gmail.com');
+INSERT INTO Jogador (ID, nome, nickname, idade, email)
+VALUES(SEQ_JOGADOR.nextval, 'Gabriela', 'gabss', 21, 'email2@gmail.com');
+INSERT INTO Jogador (ID, nome, nickname, idade, email)
+VALUES(SEQ_JOGADOR.nextval, 'William', 'will', 19, 'email3@gmail.com');
+INSERT INTO Jogador (ID, nome, nickname, idade, email)
+VALUES(SEQ_JOGADOR.nextval, 'Robson', 'rob', 20, 'email4@gmail.com');
+INSERT INTO Jogador (ID, nome, nickname, idade, email)
+VALUES(SEQ_JOGADOR.nextval, 'Silvia', 'sil', 20, 'email5@gmail.com');
+INSERT INTO Jogador (ID, nome, nickname, idade, email)
+VALUES(SEQ_JOGADOR.nextval, 'Sarah', 'sarinha', 18, 'email6@gmail.com');
+INSERT INTO Jogador (ID, nome, nickname, idade, email)
+VALUES(SEQ_JOGADOR.nextval, 'Sara', 'sasa', 19, 'email7@gmail.com');
+INSERT INTO Jogador (ID, nome, nickname, idade, email)
+VALUES(SEQ_JOGADOR.nextval, 'Rafael', 'rafalazzari', 35, 'email8@gmail.com');
+INSERT INTO Jogador (ID, nome, nickname, idade, email)
+VALUES(SEQ_JOGADOR.nextval, 'Cristina', 'cris', 40, 'email9@gmail.com');
+INSERT INTO Jogador (ID, nome, nickname, idade, email)
+VALUES(SEQ_JOGADOR.nextval, 'Oscar', 'tito', 18, 'email10@gmail.com');
 
 -- Inserção de dados na tabela "Carteira"
 

@@ -169,7 +169,7 @@ public class PartidaRepository implements GenericRepository<Integer, PartidaEnti
                         res.getString("REGRAS"), res.getInt("VALOR_INICIAL"));
 
                 JogadorEntity jogador = new JogadorEntity(res.getInt("ID_JOGADOR"), res.getString("NOME"),
-                        res.getString("NICKNAME"), res.getInt("IDADE"));
+                        res.getString("NICKNAME"), res.getInt("IDADE"), res.getString("EMAIL"));
 
                 partida = new PartidaEntity(
                         res.getInt("ID_PARTIDA"),

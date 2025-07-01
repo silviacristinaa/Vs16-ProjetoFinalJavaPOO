@@ -1,7 +1,7 @@
 package br.com.dbc.vemser.imperiodasfichas.repositories;
 
 import br.com.dbc.vemser.imperiodasfichas.database.ConexaoDataBase;
-import br.com.dbc.vemser.imperiodasfichas.dtos.JogadorRankingDTO;
+import br.com.dbc.vemser.imperiodasfichas.dtos.jogador.JogadorRankingDTO;
 import br.com.dbc.vemser.imperiodasfichas.entities.CarteiraEntity;
 import br.com.dbc.vemser.imperiodasfichas.entities.JogadorEntity;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
@@ -124,7 +124,7 @@ public class JogadorRepository implements GenericRepository<Integer, JogadorEnti
             sql.append("UPDATE JOGADOR SET ");
             sql.append(" nome = ?,");
             sql.append(" nickname = ?,");
-            sql.append(" idade = ? ");
+            sql.append(" idade = ?,");
             sql.append(" email = ? ");
             sql.append(" WHERE id = ? ");
 

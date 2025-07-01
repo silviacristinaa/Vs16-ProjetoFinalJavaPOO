@@ -1,8 +1,8 @@
 package br.com.dbc.vemser.imperiodasfichas.documentacao;
 
-import br.com.dbc.vemser.imperiodasfichas.dtos.JogadorRankingDTO;
-import br.com.dbc.vemser.imperiodasfichas.dtos.JogadorRequestDTO;
-import br.com.dbc.vemser.imperiodasfichas.dtos.JogadorResponseDTO;
+import br.com.dbc.vemser.imperiodasfichas.dtos.jogador.JogadorRankingDTO;
+import br.com.dbc.vemser.imperiodasfichas.dtos.jogador.JogadorRequestDTO;
+import br.com.dbc.vemser.imperiodasfichas.dtos.jogador.JogadorResponseDTO;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

@@ -31,12 +31,15 @@ public class JogoService {
     }
 
     public JogoResponseDTO update(Integer id, JogoRequestDTO jogo) throws RegraDeNegocioException {
+        getJogo(id);
+
         JogoEntity jogoAtualizar = objectMapper.convertValue(jogo, JogoEntity.class);
         JogoEntity jogoAtualizado = jogoRepository.editar(id, jogoAtualizar);
         return objectMapper.convertValue(jogoAtualizado, JogoResponseDTO.class);
     }
 
     public void delete(Integer id) throws RegraDeNegocioException {
+        getJogo(id);
         jogoRepository.remover(id);
     }
 
@@ -54,6 +57,6 @@ public class JogoService {
         return jogoRepository.listar().stream()
                 .filter(jogo -> jogo.getIdJogo().equals(id))
                 .findFirst()
-                .orElseThrow(() -> new RegraDeNegocioException("Jogo não encontrado!"));
+                .orElseThrow(() -> new RegraDeNegocioException("Jogo com ID " + id + " não encontrado."));
     }
 }

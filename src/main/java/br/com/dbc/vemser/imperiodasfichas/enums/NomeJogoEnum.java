@@ -10,7 +10,8 @@ public enum NomeJogoEnum {
     ROLETA_CLASSICA("Roleta Clássica"),
     ROLETA_DAS_CORES("Roleta das Cores"),
     CACA_NIQUEL("Caça Níquel"),
-    BLACKJACK("BlackJack");
+    BLACKJACK("BlackJack"),
+    ROLETA("Roleta");
 
     private String nome;
 

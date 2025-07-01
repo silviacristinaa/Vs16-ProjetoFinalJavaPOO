@@ -1,7 +1,8 @@
 package br.com.dbc.vemser.imperiodasfichas.services;
 
-import br.com.dbc.vemser.imperiodasfichas.dtos.CarteiraRequestDTO;
-import br.com.dbc.vemser.imperiodasfichas.dtos.CarteiraResponseDTO;
+import br.com.dbc.vemser.imperiodasfichas.dtos.carteira.CarteiraRequestDTO;
+import br.com.dbc.vemser.imperiodasfichas.dtos.carteira.CarteiraResponseDTO;
+import br.com.dbc.vemser.imperiodasfichas.dtos.carteira.SaldoDTO;
 import br.com.dbc.vemser.imperiodasfichas.entities.CarteiraEntity;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.imperiodasfichas.repositories.CarteiraRepository;
@@ -97,7 +98,7 @@ public class CarteiraService {
         return convertToResponseDTO(carteiraAtualizada);
     }
 
-    public CarteiraResponseDTO depositarDinheiro(Integer idCarteira, double valor) throws RegraDeNegocioException {
+    public SaldoDTO depositarDinheiro(Integer idCarteira, double valor) throws RegraDeNegocioException {
         buscarCarteiraPorId(idCarteira);
         log.info("Depositando R$ {} na carteira ID: {}", valor, idCarteira);
         CarteiraEntity carteira = carteiraRepository.buscarPorId(idCarteira);
@@ -107,10 +108,10 @@ public class CarteiraService {
         carteira.setDinheiro(carteira.getDinheiro() + valor);
         CarteiraEntity carteiraAtualizada = carteiraRepository.editar(idCarteira, carteira);
         log.info("Depósito de R$ {} realizado com sucesso na carteira ID {}. Saldo atual: R$ {}", valor, idCarteira, carteiraAtualizada.getDinheiro());
-        return convertToResponseDTO(carteiraAtualizada);
+        return objectMapper.convertValue(carteiraAtualizada, SaldoDTO.class);
     }
 
-    public CarteiraResponseDTO sacarDinheiro(Integer idCarteira, double valor) throws RegraDeNegocioException {
+    public SaldoDTO sacarDinheiro(Integer idCarteira, double valor) throws RegraDeNegocioException {
         buscarCarteiraPorId(idCarteira);
         log.info("Sacando R$ {} da carteira ID: {}", valor, idCarteira);
         CarteiraEntity carteira = carteiraRepository.buscarPorId(idCarteira);
@@ -123,10 +124,10 @@ public class CarteiraService {
         carteira.setDinheiro(carteira.getDinheiro() - valor);
         CarteiraEntity carteiraAtualizada = carteiraRepository.editar(idCarteira, carteira);
         log.info("Saque de R$ {} realizado com sucesso da carteira ID {}. Saldo atual: R$ {}", valor, idCarteira, carteiraAtualizada.getDinheiro());
-        return convertToResponseDTO(carteiraAtualizada);
+        return objectMapper.convertValue(carteiraAtualizada, SaldoDTO.class);
     }
 
-    public CarteiraResponseDTO comprarFichas(Integer idCarteira, int quantidadeFicha) throws RegraDeNegocioException {
+    public SaldoDTO comprarFichas(Integer idCarteira, int quantidadeFicha) throws RegraDeNegocioException {
         buscarCarteiraPorId(idCarteira);
         log.info("Comprando {} fichas para a carteira ID: {}", quantidadeFicha, idCarteira);
         CarteiraEntity carteira = carteiraRepository.buscarPorId(idCarteira);
@@ -142,10 +143,10 @@ public class CarteiraService {
         carteira.setDinheiro(carteira.getDinheiro() - custoTotal);
         CarteiraEntity carteiraAtualizada = carteiraRepository.editar(idCarteira, carteira);
         log.info("Compra de {} fichas realizada com sucesso para a carteira ID {}. Fichas atuais: {}, Saldo atual: R$ {}", quantidadeFicha, idCarteira, carteiraAtualizada.getFichas(), carteiraAtualizada.getDinheiro());
-        return convertToResponseDTO(carteiraAtualizada);
+        return objectMapper.convertValue(carteiraAtualizada, SaldoDTO.class);
     }
 
-    public CarteiraResponseDTO venderFichas(Integer idCarteira, int quantidadeFicha) throws RegraDeNegocioException {
+    public SaldoDTO venderFichas(Integer idCarteira, int quantidadeFicha) throws RegraDeNegocioException {
         buscarCarteiraPorId(idCarteira);
         log.info("Vendendo {} fichas da carteira ID: {}", quantidadeFicha, idCarteira);
         CarteiraEntity carteira = carteiraRepository.buscarPorId(idCarteira);
@@ -160,6 +161,6 @@ public class CarteiraService {
         carteira.setDinheiro(carteira.getDinheiro() + (quantidadeFicha * valorFicha));
         CarteiraEntity carteiraAtualizada = carteiraRepository.editar(idCarteira, carteira);
         log.info("Venda de {} fichas realizada com sucesso da carteira ID {}. Fichas atuais: {}, Saldo atual: R$ {}", quantidadeFicha, idCarteira, carteiraAtualizada.getFichas(), carteiraAtualizada.getDinheiro());
-        return convertToResponseDTO(carteiraAtualizada);
+        return objectMapper.convertValue(carteiraAtualizada, SaldoDTO.class);
     }
 }

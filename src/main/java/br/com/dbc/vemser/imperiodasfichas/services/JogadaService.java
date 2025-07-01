@@ -1,6 +1,7 @@
 package br.com.dbc.vemser.imperiodasfichas.services;
 
 import br.com.dbc.vemser.imperiodasfichas.dtos.*;
+import br.com.dbc.vemser.imperiodasfichas.dtos.carteira.CarteiraResponseDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.jogada.*;
 import br.com.dbc.vemser.imperiodasfichas.entities.CarteiraEntity;
 import br.com.dbc.vemser.imperiodasfichas.enums.CoresDaRoletaEnum;

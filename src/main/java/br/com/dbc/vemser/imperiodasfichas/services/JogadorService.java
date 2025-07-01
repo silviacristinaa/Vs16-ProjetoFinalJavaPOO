@@ -1,6 +1,6 @@
 package br.com.dbc.vemser.imperiodasfichas.services;
 
-import br.com.dbc.vemser.imperiodasfichas.dtos.CarteiraResponseDTO;
+import br.com.dbc.vemser.imperiodasfichas.dtos.carteira.CarteiraResponseDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.JogadorRankingDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.JogadorRequestDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.JogadorResponseDTO;

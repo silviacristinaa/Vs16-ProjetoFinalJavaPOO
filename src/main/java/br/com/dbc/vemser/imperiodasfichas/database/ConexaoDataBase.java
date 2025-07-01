@@ -10,6 +10,7 @@ import java.sql.SQLException;
 @Component
 public class ConexaoDataBase {
 
+    // puxa do vm args
     @Value("${db.url}")
     private String url;
 

@@ -1,8 +1,8 @@
 //package br.com.dbc.vemser.imperiodasfichas.repositories;
 //
 //import br.com.dbc.vemser.imperiodasfichas.database.ConexaoDataBase;
-//
-//import br.com.dbc.vemser.imperiodasfichas.entities.CarteiraEntity;
+//import br.com.dbc.vemser.imperiodasfichas.entities.JogoEntity;
+//import br.com.dbc.vemser.imperiodasfichas.enums.NomeJogoEnum;
 //import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 //import lombok.RequiredArgsConstructor;
 //import org.springframework.stereotype.Repository;
@@ -13,12 +13,13 @@
 //
 //@RequiredArgsConstructor
 //@Repository
-//public class CarteiraRepository implements GenericRepository<Integer, CarteiraEntity> {
+//public class JogoRepositoryAntigo implements GenericRepository<Integer, JogoEntity>{
 //    private final ConexaoDataBase conexaoDataBase;
 //
 //    @Override
 //    public Integer getProximoId(Connection connection) throws SQLException {
-//        String sql = "SELECT SEQ_CARTEIRA.nextval mysequence from DUAL";
+//        String sql = "SELECT SEQ_JOGO.nextval mysequence from DUAL";
+//
 //        Statement stmt = connection.createStatement();
 //        ResultSet res = stmt.executeQuery(sql);
 //
@@ -29,31 +30,75 @@
 //    }
 //
 //    @Override
-//    public CarteiraEntity adicionar(CarteiraEntity carteira) throws RegraDeNegocioException {
+//    public JogoEntity adicionar(JogoEntity jogo) throws RegraDeNegocioException {
 //        Connection con = null;
 //        try {
 //            con = conexaoDataBase.getConnection();
-//            con.setAutoCommit(false);
+//            con.setAutoCommit(false); // Inicia a transação
 //
 //            Integer proximoId = this.getProximoId(con);
-//            carteira.setIdCarteira(proximoId);
+//            jogo.setIdJogo(proximoId);
 //
-//            String sql = "INSERT INTO CARTEIRA (ID, FICHAS, DINHEIRO, ID_JOGADOR) VALUES (?, ?, ?, ?)";
-//            PreparedStatement stmt = con.prepareStatement(sql);
+//            String sqlJogo = "INSERT INTO JOGO (ID, NOME_JOGO, REGRAS, VALOR_INICIAL) VALUES (?, ?, ?, ?)";
 //
-//            stmt.setInt(1, carteira.getIdCarteira());
-//            stmt.setInt(2, carteira.getFichas());
-//            stmt.setDouble(3, carteira.getDinheiro());
-//            stmt.setInt(4, carteira.getIdJogador());
+//            PreparedStatement stmtJogo = con.prepareStatement(sqlJogo);
 //
-//            stmt.executeUpdate();
-//            con.commit();
-//            return carteira;
+//            stmtJogo.setInt(1, jogo.getIdJogo());
+//            stmtJogo.setString(2, jogo.getNomeJogo().getNome());
+//            stmtJogo.setString(3, jogo.getRegras());
+//            stmtJogo.setInt(4, jogo.getValorInicial());
+//
+//            stmtJogo.executeUpdate();
+//
+//            con.commit(); // Confirma a transação
+//            return jogo;
 //        } catch (SQLException e) {
 //            try {
 //                if (con != null) {
-//                    con.rollback();
+//                    con.rollback(); // Desfaz a transação em caso de erro
 //                }
+//            } catch (SQLException rollbackEx) {
+//                rollbackEx.printStackTrace();
+//            }
+//            throw new RegraDeNegocioException(e.getMessage());
+//        } finally {
+//            try {
+//                if (con != null) {
+//                    con.close();
+//                }
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
+//
+//    @Override
+//    public JogoEntity editar(Integer id, JogoEntity jogoAtualizar) throws RegraDeNegocioException {
+//        Connection con = null;
+//        try {
+//            con = conexaoDataBase.getConnection();
+//
+//            StringBuilder sql = new StringBuilder();
+//            sql.append("UPDATE JOGO SET ");
+//            sql.append(" nome_jogo = ?,");
+//            sql.append(" regras = ?,");
+//            sql.append(" valor_inicial = ? ");
+//            sql.append(" WHERE id = ? ");
+//
+//            PreparedStatement stmt = con.prepareStatement(sql.toString());
+//
+//            stmt.setString(1, jogoAtualizar.getNomeJogo().getNome());
+//            stmt.setString(2, jogoAtualizar.getRegras());
+//            stmt.setInt(3, jogoAtualizar.getValorInicial());
+//            stmt.setInt(4, id);
+//
+//            stmt.executeUpdate();
+//
+//            jogoAtualizar.setIdJogo(id);
+//            return jogoAtualizar; // Retorna o jogo atualizado (com a carteira também atualizada)
+//        } catch (SQLException e) {
+//            try {
+//                if (con != null) con.rollback(); // Desfaz a transação em caso de erro
 //            } catch (SQLException rollbackEx) {
 //                rollbackEx.printStackTrace();
 //            }
@@ -74,19 +119,20 @@
 //        Connection con = null;
 //        try {
 //            con = conexaoDataBase.getConnection();
-//            con.setAutoCommit(false);
+//            con.setAutoCommit(false); // Inicia a transação
 //
-//            String sql = "DELETE FROM CARTEIRA WHERE ID = ?";
+//            String sql = "DELETE FROM JOGO WHERE ID = ?";
 //            PreparedStatement stmt = con.prepareStatement(sql);
 //
 //            stmt.setInt(1, id);
 //
 //            stmt.executeUpdate();
-//            con.commit();
+//            con.commit(); // Confirma a transação
+//
 //        } catch (SQLException e) {
 //            try {
 //                if (con != null) {
-//                    con.rollback();
+//                    con.rollback(); // Desfaz a transação em caso de erro
 //                }
 //            } catch (SQLException rollbackEx) {
 //                rollbackEx.printStackTrace();
@@ -104,65 +150,25 @@
 //    }
 //
 //    @Override
-//    public CarteiraEntity editar(Integer idCarteira, CarteiraEntity carteiraAtualizar) throws RegraDeNegocioException {
+//    public JogoEntity buscarPorId(Integer id) throws RegraDeNegocioException {
+//        JogoEntity jogo = null;
 //        Connection con = null;
 //        try {
 //            con = conexaoDataBase.getConnection();
 //
-//            StringBuilder sql = new StringBuilder();
-//            sql.append("UPDATE CARTEIRA SET ");
-//            sql.append(" fichas = ?,");
-//            sql.append(" dinheiro = ? ");
-//            sql.append(" WHERE id = ? ");
-//
-//            PreparedStatement stmt = con.prepareStatement(sql.toString());
-//
-//            stmt.setInt(1, carteiraAtualizar.getFichas());
-//            stmt.setDouble(2, carteiraAtualizar.getDinheiro());
-//            stmt.setInt(3, idCarteira);
-//
-//            stmt.executeUpdate();
-//
-//            carteiraAtualizar.setIdCarteira(idCarteira);
-//            return carteiraAtualizar;
-//        } catch (SQLException e) {
-//            try {
-//                if (con != null) con.rollback();
-//            } catch (SQLException rollbackEx) {
-//                rollbackEx.printStackTrace();
-//            }
-//            throw new RegraDeNegocioException(e.getMessage());
-//        } finally {
-//            try {
-//                if (con != null) {
-//                    con.close();
-//                }
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-//
-//    @Override
-//    public CarteiraEntity buscarPorId(Integer id) throws RegraDeNegocioException {
-//        CarteiraEntity carteira = null;
-//        Connection con = null;
-//        try {
-//            // ***** CORREÇÃO APLICADA AQUI *****
-//            con = conexaoDataBase.getConnection();
-//
-//            String sql = "SELECT ID, FICHAS, DINHEIRO, ID_JOGADOR FROM CARTEIRA WHERE ID = ?";
+//            String sql = "SELECT ID, NOME_JOGO, REGRAS, VALOR_INICIAL FROM JOGO WHERE ID = ?";
 //            PreparedStatement stmt = con.prepareStatement(sql);
 //            stmt.setInt(1, id);
 //            ResultSet res = stmt.executeQuery();
 //
 //            if (res.next()) {
-//                carteira = new CarteiraEntity(
-//                        res.getInt("ID"),
-//                        res.getInt("FICHAS"),
-//                        res.getDouble("DINHEIRO"),
-//                        res.getInt("ID_JOGADOR")
-//                );
+//                jogo = new JogoEntity();
+//                jogo.setIdJogo(res.getInt("ID"));
+//                jogo.setNomeJogo(NomeJogoEnum.fromNome(res.getString("NOME_JOGO")));
+//                jogo.setRegras(res.getString("REGRAS"));
+//                jogo.setValorInicial(res.getInt("VALOR_INICIAL"));
+//            } else {
+//                throw new RegraDeNegocioException("Jogo não encontrado com o ID: " + id);
 //            }
 //        } catch (SQLException e) {
 //            throw new RegraDeNegocioException(e.getMessage());
@@ -175,28 +181,26 @@
 //                e.printStackTrace();
 //            }
 //        }
-//        return carteira;
+//        return jogo;
 //    }
 //
-//    public CarteiraEntity buscarCarteiraPorIdJogador(Integer idJogador) throws RegraDeNegocioException {
-//        CarteiraEntity carteira = null;
+//    public JogoEntity buscarPorNomeJogo(NomeJogoEnum nomeJogo) throws RegraDeNegocioException {
+//        JogoEntity jogo = null;
 //        Connection con = null;
 //        try {
-//            // ***** CORREÇÃO APLICADA AQUI *****
 //            con = conexaoDataBase.getConnection();
 //
-//            String sql = "SELECT ID, FICHAS, DINHEIRO, ID_JOGADOR FROM CARTEIRA WHERE ID_JOGADOR = ?";
+//            String sql = "SELECT ID, NOME_JOGO, REGRAS, VALOR_INICIAL FROM JOGO WHERE NOME_JOGO = ?";
 //            PreparedStatement stmt = con.prepareStatement(sql);
-//            stmt.setInt(1, idJogador);
+//            stmt.setString(1, nomeJogo.getNome());
 //            ResultSet res = stmt.executeQuery();
 //
 //            if (res.next()) {
-//                carteira = new CarteiraEntity(
-//                        res.getInt("ID"),
-//                        res.getInt("FICHAS"),
-//                        res.getDouble("DINHEIRO"),
-//                        res.getInt("ID_JOGADOR")
-//                );
+//                jogo = new JogoEntity();
+//                jogo.setIdJogo(res.getInt("ID"));
+//                jogo.setNomeJogo(NomeJogoEnum.fromNome(res.getString("NOME_JOGO")));
+//                jogo.setRegras(res.getString("REGRAS"));
+//                jogo.setValorInicial(res.getInt("VALOR_INICIAL"));
 //            }
 //        } catch (SQLException e) {
 //            throw new RegraDeNegocioException(e.getMessage());
@@ -209,30 +213,27 @@
 //                e.printStackTrace();
 //            }
 //        }
-//        return carteira;
+//        return jogo;
 //    }
 //
 //    @Override
-//    public List<CarteiraEntity> listar() throws RegraDeNegocioException {
-//        List<CarteiraEntity> carteiras = new ArrayList<>();
+//    public List<JogoEntity> listar() throws RegraDeNegocioException {
+//        List<JogoEntity> jogos = new ArrayList<>();
 //        Connection con = null;
 //        try {
-//            // ***** CORREÇÃO APLICADA AQUI *****
 //            con = conexaoDataBase.getConnection();
-//            Statement stmt = con.createStatement();
 //
-//            String sql = "SELECT ID, FICHAS, DINHEIRO, ID_JOGADOR FROM CARTEIRA";
-//
-//            ResultSet res = stmt.executeQuery(sql);
+//            String sql = "SELECT ID, NOME_JOGO, REGRAS, VALOR_INICIAL FROM JOGO";
+//            PreparedStatement stmt = con.prepareStatement(sql);
+//            ResultSet res = stmt.executeQuery();
 //
 //            while (res.next()) {
-//                CarteiraEntity carteira = new CarteiraEntity(
-//                        res.getInt("ID"),
-//                        res.getInt("FICHAS"),
-//                        res.getDouble("DINHEIRO"),
-//                        res.getInt("ID_JOGADOR")
-//                );
-//                carteiras.add(carteira);
+//                JogoEntity jogo = new JogoEntity();
+//                jogo.setIdJogo(res.getInt("ID"));
+//                jogo.setNomeJogo(NomeJogoEnum.fromNome(res.getString("NOME_JOGO")));
+//                jogo.setRegras(res.getString("REGRAS"));
+//                jogo.setValorInicial(res.getInt("VALOR_INICIAL"));
+//                jogos.add(jogo);
 //            }
 //        } catch (SQLException e) {
 //            throw new RegraDeNegocioException(e.getMessage());
@@ -245,6 +246,6 @@
 //                e.printStackTrace();
 //            }
 //        }
-//        return carteiras;
+//        return jogos;
 //    }
 //}

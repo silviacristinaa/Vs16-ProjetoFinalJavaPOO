@@ -1,17 +1,32 @@
 package br.com.dbc.vemser.imperiodasfichas.entities;
 
 import br.com.dbc.vemser.imperiodasfichas.enums.NomeJogoEnum;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import javax.persistence.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
+@Entity(name = "JOGO")
 public class JogoEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "JOGO_SEQ")
+    @SequenceGenerator(name = "JOGO_SEQ", sequenceName = "seq_jogo", allocationSize = 1)
+    @Column(name = "id")
     private Integer idJogo;
+
+    //script update ou recriar
+    @Enumerated(EnumType.STRING)
+    @Column(name = "nome_jogo")
     private NomeJogoEnum nomeJogo;
+
+    @Column(name = "regras")
     private String regras;
+
+    @Column(name = "valor_inicial")
     private int valorInicial;
 
     public JogoEntity(Integer idJogo) {

@@ -1,7 +1,5 @@
 package br.com.dbc.vemser.imperiodasfichas.services;
 
-import br.com.dbc.vemser.imperiodasfichas.dtos.carteira.CarteiraResponseDTO;
-import br.com.dbc.vemser.imperiodasfichas.dtos.jogador.JogadorRankingDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.jogador.JogadorRequestDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.jogador.JogadorResponseDTO;
 import br.com.dbc.vemser.imperiodasfichas.entities.CarteiraEntity;
@@ -26,10 +24,10 @@ public class JogadorService {
     private static final String EMAIL_JA_UTILIZADO = "Esse email já está sendo usado por outro jogador.";
 
     private final JogadorRepository jogadorRepository;
-    //private final CarteiraService carteiraService;
+    private final CarteiraService carteiraService;
     //private final PartidaService partidaService;
     private final ObjectMapper objectMapper;
-    //private final EmailService emailService;
+    private final EmailService emailService;
 
     public JogadorResponseDTO create(JogadorRequestDTO jogador) throws RegraDeNegocioException {
         if (jogadorRepository.findByNickname(jogador.getNickname()).isPresent()) {
@@ -44,14 +42,13 @@ public class JogadorService {
         jogadorEntity = jogadorRepository.save(jogadorEntity);
         log.info("Jogador criado com sucesso! ID: {}", jogadorEntity.getIdJogador());
 
-        //emailService.sendEmailCreateJogador(jogadorEntity);
+        emailService.sendEmailCreateJogador(jogadorEntity);
 
-        //CarteiraResponseDTO carteiraCriadaResponse = carteiraService.adicionarCarteira(jogadorEntity.getIdJogador());
-        //CarteiraEntity carteiraCompleta = objectMapper.convertValue(carteiraCriadaResponse, CarteiraEntity.class);
-        //jogadorEntity.setCarteira(carteiraCompleta);
+        CarteiraEntity carteiraCompleta = carteiraService.adicionarCarteira(jogadorEntity);
+        jogadorEntity.setCarteira(carteiraCompleta);
 
         JogadorResponseDTO jogadorDTO = objectMapper.convertValue(jogadorEntity, JogadorResponseDTO.class);
-        //jogadorDTO.setIdCarteira(carteiraCompleta.getIdCarteira());
+        jogadorDTO.setIdCarteira(carteiraCompleta.getIdCarteira());
         return jogadorDTO;
     }
 
@@ -59,7 +56,7 @@ public class JogadorService {
         return jogadorRepository.findAll().stream()
                 .map(jogador -> {
                     JogadorResponseDTO jogadorDTO = objectMapper.convertValue(jogador, JogadorResponseDTO.class);
-                    //jogadorDTO.setIdCarteira(jogador.getCarteira().getIdCarteira());
+                    jogadorDTO.setIdCarteira(jogador.getCarteira().getIdCarteira());
                     return jogadorDTO;
                 })
                 .collect(Collectors.toList());
@@ -70,7 +67,7 @@ public class JogadorService {
                 .orElseThrow(() -> new RegraDeNegocioException("Jogador com ID " + idJogador + " não encontrado."));
 
         JogadorResponseDTO jogadorDTO = objectMapper.convertValue(jogador, JogadorResponseDTO.class);
-        //jogadorDTO.setIdCarteira(jogador.getCarteira().getIdCarteira());
+        jogadorDTO.setIdCarteira(jogador.getCarteira().getIdCarteira());
         return jogadorDTO;
     }
 
@@ -94,7 +91,9 @@ public class JogadorService {
         jogadorExistente.setEmail(jogadorAtualizar.getEmail());
 
         JogadorEntity jogadorAtualizado = jogadorRepository.save(jogadorExistente);
-        return objectMapper.convertValue(jogadorAtualizado, JogadorResponseDTO.class);
+        JogadorResponseDTO jogadorResponseDTO = objectMapper.convertValue(jogadorAtualizado, JogadorResponseDTO.class);
+        jogadorResponseDTO.setIdCarteira(jogadorExistente.getCarteira().getIdCarteira());
+        return jogadorResponseDTO;
     }
 
     public void delete(Integer idJogador) throws RegraDeNegocioException {
@@ -103,7 +102,7 @@ public class JogadorService {
 
         //partidaService.removerPartidasPorIdJogador(idJogador);
         jogadorRepository.delete(jogador);
-        //emailService.sendEmailDeleteJogador(jogador);
+        emailService.sendEmailDeleteJogador(jogador);
     }
 
     private Optional<JogadorEntity> buscarPorNickname(String nickname) {

@@ -20,7 +20,7 @@ public class JogadorEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "JOGADOR_SEQ")
     @SequenceGenerator(name = "JOGADOR_SEQ", sequenceName = "seq_jogador", allocationSize = 1)
 
-    @Column(name = "idJogador")
+    @Column(name = "id_jogador")
     private Integer idJogador;
 
     @Column(name = "nome")

@@ -4,6 +4,9 @@ import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.List;
+import java.util.stream.Stream;
+
 @Getter
 @AllArgsConstructor
 public enum NomeJogoEnum {
@@ -13,14 +16,5 @@ public enum NomeJogoEnum {
     BLACKJACK("BlackJack"),
     ROLETA("Roleta");
 
-    private String nome;
-
-    public static NomeJogoEnum fromNome(String nome) throws RegraDeNegocioException {
-        for (NomeJogoEnum value : values()) {
-            if (value.nome.equalsIgnoreCase(nome)) {
-                return value;
-            }
-        }
-        throw new RegraDeNegocioException("Nome de jogo inválido: " + nome);
-    }
+    private final String nome;
 }

@@ -10,12 +10,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.text.Normalizer;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class JogoService {
-    //private final JogoRepositoryAntigo jogoRepository;
     private final JogoRepository jogoRepository;
     private final ObjectMapper objectMapper;
 
@@ -56,7 +58,29 @@ public class JogoService {
 
     public JogoResponseDTO buscarPorNomeJogo(NomeJogoEnum nomeJogo) throws RegraDeNegocioException {
         JogoEntity jogo = jogoRepository.findByNomeJogo(nomeJogo);
+        if (jogo == null) {
+            throw new RegraDeNegocioException("Jogo com nome " + nomeJogo + " não encontrado.");
+        }
         return objectMapper.convertValue(jogo, JogoResponseDTO.class);
+    }
+
+
+    public List<JogoResponseDTO> buscarPorNomeJogo(String nomeJogo) throws RegraDeNegocioException {
+        String termoNormalizado = normalizar(nomeJogo);
+        List<JogoEntity> jogos = jogoRepository.findAll();
+        List<JogoEntity> jogosFiltrados = jogos.stream()
+                .filter(jogo -> normalizar(jogo.getNomeJogo().getNome()).contains(termoNormalizado))
+                .toList();
+
+        return jogosFiltrados.stream()
+                .map(jogo -> objectMapper.convertValue(jogo, JogoResponseDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    private String normalizar(String texto) {
+        return Normalizer.normalize(texto, Normalizer.Form.NFD)
+                .replaceAll("[\\p{InCombiningDiacriticalMarks}]", "")
+                .toLowerCase();
     }
 
     private JogoEntity getJogo(Integer id) throws RegraDeNegocioException {

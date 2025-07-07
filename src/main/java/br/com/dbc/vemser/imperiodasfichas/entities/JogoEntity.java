@@ -18,7 +18,6 @@ public class JogoEntity {
     @Column(name = "id")
     private Integer idJogo;
 
-    //script update ou recriar
     @Enumerated(EnumType.STRING)
     @Column(name = "nome_jogo")
     private NomeJogoEnum nomeJogo;

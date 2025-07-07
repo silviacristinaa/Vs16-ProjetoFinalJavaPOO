@@ -1,12 +1,12 @@
 package br.com.dbc.vemser.imperiodasfichas.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.*;
-import javax.persistence.*;
+import lombok.Setter;
 
-import java.util.Set;
+import javax.persistence.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -35,16 +35,19 @@ public class JogadorEntity {
     @Column(name = "email")
     private String email;
 
-    //private CarteiraEntity carteira; //posso comentar a carteira
+    @JsonIgnore
+    @OneToOne(mappedBy = "jogador", cascade = CascadeType.ALL, orphanRemoval = true)
+    private CarteiraEntity carteira;
+
     //private Set<PartidaEntity> partidas;
 
-//    public JogadorEntity(Integer idJogador, String nome, String nickname, int idade, String email) {
-//        this.idJogador = idJogador;
-//        this.nome = nome;
-//        this.nickname = nickname;
-//        this.idade = idade;
-//        this.email = email;
-//    }
+    public JogadorEntity(Integer idJogador, String nome, String nickname, int idade, String email) {
+        this.idJogador = idJogador;
+        this.nome = nome;
+        this.nickname = nickname;
+        this.idade = idade;
+        this.email = email;
+    }
 
     public JogadorEntity(Integer idJogador) {
         this.idJogador = idJogador;

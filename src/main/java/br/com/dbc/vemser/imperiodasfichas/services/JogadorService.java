@@ -33,7 +33,6 @@ public class JogadorService {
 
     private final JogadorRepository jogadorRepository;
     private final CarteiraService carteiraService;
-    //private final PartidaService partidaService;
     private final ObjectMapper objectMapper;
     private final EmailService emailService;
 
@@ -108,7 +107,6 @@ public class JogadorService {
         JogadorEntity jogador = jogadorRepository.findById(idJogador)
                 .orElseThrow(() -> new RegraDeNegocioException("Jogador não encontrado"));
 
-        //partidaService.removerPartidasPorIdJogador(idJogador);
         jogadorRepository.delete(jogador);
         emailService.sendEmailDeleteJogador(jogador);
     }

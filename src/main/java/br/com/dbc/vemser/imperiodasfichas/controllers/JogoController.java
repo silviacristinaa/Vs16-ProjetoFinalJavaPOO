@@ -3,6 +3,7 @@ package br.com.dbc.vemser.imperiodasfichas.controllers;
 import br.com.dbc.vemser.imperiodasfichas.documentacao.JogoControllerDoc;
 import br.com.dbc.vemser.imperiodasfichas.dtos.JogoRequestDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.JogoResponseDTO;
+import br.com.dbc.vemser.imperiodasfichas.enums.NomeJogoEnum;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.imperiodasfichas.services.JogoService;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,13 @@ public class JogoController implements JogoControllerDoc {
         log.info("Buscando jogo com ID: {}", id);
         JogoResponseDTO jogo = jogoService.findById(id);
         return new ResponseEntity<>(jogo, HttpStatus.OK);
+    }
+
+    @GetMapping("/nome/{nomeJogo}") // GET localhost:8080/jogo/nome/{nomeJogo}
+    public ResponseEntity<List<JogoResponseDTO>> buscarPorNomeJogo(@PathVariable("nomeJogo") String nomeJogo) throws RegraDeNegocioException {
+        log.info("Buscando jogo pelo nome: {}", nomeJogo);
+        List<JogoResponseDTO> jogos = jogoService.buscarPorNomeJogo(nomeJogo);
+        return new ResponseEntity<>(jogos, HttpStatus.OK);
     }
 
     @PostMapping // POST localhost:8080/jogo

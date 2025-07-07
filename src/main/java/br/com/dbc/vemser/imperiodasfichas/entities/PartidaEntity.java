@@ -31,7 +31,7 @@ public class PartidaEntity {
 
     // Correção crucial para Jogador
     @ManyToOne
-    @JoinColumn(name = "id_jogador", referencedColumnName = "idJogador")
+    @JoinColumn(name = "id_jogador", referencedColumnName = "id_jogador")
     private JogadorEntity jogador;
 
     // Correção crucial para Jogo

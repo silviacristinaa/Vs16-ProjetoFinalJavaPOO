@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -39,7 +40,9 @@ public class JogadorEntity {
     @OneToOne(mappedBy = "jogador", cascade = CascadeType.ALL, orphanRemoval = true)
     private CarteiraEntity carteira;
 
-    //private Set<PartidaEntity> partidas;
+    @JsonIgnore
+    @OneToMany(mappedBy = "jogador", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<PartidaEntity> partidas;
 
     public JogadorEntity(Integer idJogador, String nome, String nickname, int idade, String email) {
         this.idJogador = idJogador;

@@ -1,13 +1,16 @@
 package br.com.dbc.vemser.imperiodasfichas.documentacao;
 
+import br.com.dbc.vemser.imperiodasfichas.dtos.RelatorioJogadorSimplesDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.jogador.JogadorRankingDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.jogador.JogadorRequestDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.jogador.JogadorResponseDTO;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -82,4 +85,34 @@ public interface JogadorControllerDoc {
     )
     @DeleteMapping("/{idJogador}")
     ResponseEntity<Void> delete(@PathVariable("idJogador") Integer idJogador) throws RegraDeNegocioException;
+
+    @Operation(summary = "Relatório simplificado de jogadores",
+            description = "Gera um relatório com dados básicos de todos os jogadores e suas carteiras")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Relatório gerado com sucesso"),
+                    @ApiResponse(responseCode = "500", description = "Erro ao processar o relatório")
+            }
+    )
+    @GetMapping("/relatorio-simples")
+    ResponseEntity<List<RelatorioJogadorSimplesDTO>> getRelatorioSimples() throws RegraDeNegocioException;
+
+    @Operation(summary = "Relatório paginado de jogadores",
+            description = "Gera um relatório paginado com dados básicos dos jogadores e suas carteiras")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Relatório paginado gerado com sucesso"),
+                    @ApiResponse(responseCode = "400", description = "Parâmetros de paginação inválidos"),
+                    @ApiResponse(responseCode = "500", description = "Erro ao processar o relatório")
+            }
+    )
+    @GetMapping("/relatorio-simples/paginado")
+    ResponseEntity<Page<RelatorioJogadorSimplesDTO>> getRelatorioSimplesPaginado(
+            @Parameter(description = "Número da página (0-based)", example = "0")
+            @RequestParam(defaultValue = "0") Integer pagina,
+
+            @Parameter(description = "Quantidade de itens por página", example = "10")
+            @RequestParam(defaultValue = "10") Integer tamanho) throws RegraDeNegocioException;
 }
+
+

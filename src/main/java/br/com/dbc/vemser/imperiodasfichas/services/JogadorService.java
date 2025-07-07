@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.imperiodasfichas.services;
 
+import br.com.dbc.vemser.imperiodasfichas.dtos.RelatorioPartidasJogadorDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.jogador.JogadorRequestDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.jogador.JogadorResponseDTO;
 import br.com.dbc.vemser.imperiodasfichas.entities.CarteiraEntity;
@@ -120,4 +121,18 @@ public class JogadorService {
         //}
        //return ranking;
     //}
+
+    // No JogadorService.java
+
+    public List<RelatorioPartidasJogadorDTO> listarJogadoresComPartidas() throws RegraDeNegocioException {
+        List<RelatorioPartidasJogadorDTO> resultado = jogadorRepository.findJogadoresComPartidas();
+
+        if (resultado.isEmpty()) {
+            throw new RegraDeNegocioException("Nenhum jogador com partidas encontrado");
+        }
+
+        return resultado;
+    }
+
+
 }

@@ -1,9 +1,13 @@
 package br.com.dbc.vemser.imperiodasfichas.controllers;
 
 import br.com.dbc.vemser.imperiodasfichas.documentacao.JogadorControllerDoc;
+import br.com.dbc.vemser.imperiodasfichas.dtos.RelatorioPartidasJogadorDTO;
+import br.com.dbc.vemser.imperiodasfichas.dtos.RelatorioPartidasJogadorDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.jogador.*;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.imperiodasfichas.services.JogadorService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -69,4 +73,11 @@ public class JogadorController implements JogadorControllerDoc {
 //        List<JogadorRankingDTO> ranking = jogadorService.getRanking();
 //        return new ResponseEntity<>(ranking, HttpStatus.OK);
 //    }
+
+    @Operation(summary = "Listar jogadores com partidas")
+    @GetMapping("/com-partidas")
+    public ResponseEntity<List<RelatorioPartidasJogadorDTO>> getJogadoresComPartidas() throws RegraDeNegocioException {
+        return ResponseEntity.ok(jogadorService.listarJogadoresComPartidas());
+    }
 }
+

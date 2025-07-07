@@ -10,13 +10,13 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RelatorioPartidasJogadorDTO {
-    private Long idJogador;
-    private String nomeJogador;
-    private String email;
-    private Long idPartida;
-    private LocalDateTime dataPartida;
+public class PartidasJogadorDTO {
+    private Integer idJogador;
+    private String nome;
+    private String nickname;
+    private Integer idPartida;
+    private LocalDateTime dataHora;
+    private Integer fichasApostadas;
+    private String ganhou; // "S" ou "N"
     private String nomeJogo;
-    private Integer fichasGanhas;
-    private BigDecimal valorPremio;
 }

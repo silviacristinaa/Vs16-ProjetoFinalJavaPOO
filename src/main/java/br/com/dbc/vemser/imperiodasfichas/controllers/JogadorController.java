@@ -1,8 +1,8 @@
 package br.com.dbc.vemser.imperiodasfichas.controllers;
 
 import br.com.dbc.vemser.imperiodasfichas.documentacao.JogadorControllerDoc;
-import br.com.dbc.vemser.imperiodasfichas.dtos.RelatorioPartidasJogadorDTO;
-import br.com.dbc.vemser.imperiodasfichas.dtos.RelatorioPartidasJogadorDTO;
+
+import br.com.dbc.vemser.imperiodasfichas.dtos.RelatorioJogadorSimplesDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.jogador.*;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.imperiodasfichas.services.JogadorService;
@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -74,10 +76,30 @@ public class JogadorController implements JogadorControllerDoc {
 //        return new ResponseEntity<>(ranking, HttpStatus.OK);
 //    }
 
-    @Operation(summary = "Listar jogadores com partidas")
-    @GetMapping("/com-partidas")
-    public ResponseEntity<List<RelatorioPartidasJogadorDTO>> getJogadoresComPartidas() throws RegraDeNegocioException {
-        return ResponseEntity.ok(jogadorService.listarJogadoresComPartidas());
+    @GetMapping("/relatorio-simples")
+    public ResponseEntity<List<RelatorioJogadorSimplesDTO>> getRelatorioSimples() throws RegraDeNegocioException {
+        return ResponseEntity.ok(jogadorService.gerarRelatorioSimples());
     }
-}
+
+    @GetMapping("/relatorio-simples/paginado")
+    public ResponseEntity<Page<RelatorioJogadorSimplesDTO>> getRelatorioSimplesPaginado(
+            @RequestParam(defaultValue = "0") Integer pagina,
+            @RequestParam(defaultValue = "10") Integer tamanho) throws RegraDeNegocioException {
+        return ResponseEntity.ok(jogadorService.gerarRelatorioSimplesPaginado(pagina, tamanho));
+    }
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 

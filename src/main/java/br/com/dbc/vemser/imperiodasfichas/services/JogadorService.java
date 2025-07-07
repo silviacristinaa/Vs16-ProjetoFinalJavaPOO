@@ -1,15 +1,22 @@
 package br.com.dbc.vemser.imperiodasfichas.services;
 
-import br.com.dbc.vemser.imperiodasfichas.dtos.RelatorioPartidasJogadorDTO;
+//import br.com.dbc.vemser.imperiodasfichas.dtos.RelatorioJogadorCompletoDTO;
+import br.com.dbc.vemser.imperiodasfichas.dtos.RelatorioJogadorSimplesDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.jogador.JogadorRequestDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.jogador.JogadorResponseDTO;
 import br.com.dbc.vemser.imperiodasfichas.entities.CarteiraEntity;
 import br.com.dbc.vemser.imperiodasfichas.entities.JogadorEntity;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.imperiodasfichas.repositories.JogadorRepository;
+import br.com.dbc.vemser.imperiodasfichas.repositories.PartidaRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -121,18 +128,48 @@ public class JogadorService {
         //}
        //return ranking;
     //}
+    public List<RelatorioJogadorSimplesDTO> gerarRelatorioSimples() throws RegraDeNegocioException {
+        log.info("Gerando relatório simplificado de jogadores...");
+        try {
+            List<RelatorioJogadorSimplesDTO> relatorio = jogadorRepository.relatorioJogadoresSimples();
+            log.info("Relatório gerado com {} registros", relatorio.size());
+            return relatorio;
+        } catch (Exception e) {
+            log.error("Erro ao gerar relatório: " + e.getMessage());
+            throw new RegraDeNegocioException("Erro ao gerar relatório de jogadores");
+        }
+    }
 
-    // No JogadorService.java
-
-    public List<RelatorioPartidasJogadorDTO> listarJogadoresComPartidas() throws RegraDeNegocioException {
-        List<RelatorioPartidasJogadorDTO> resultado = jogadorRepository.findJogadoresComPartidas();
-
-        if (resultado.isEmpty()) {
-            throw new RegraDeNegocioException("Nenhum jogador com partidas encontrado");
+    public Page<RelatorioJogadorSimplesDTO> gerarRelatorioSimplesPaginado(Integer pagina, Integer tamanho) throws RegraDeNegocioException {
+        log.info("Gerando relatório simplificado paginado - página {} com {} registros", pagina, tamanho);
+        try {
+            Pageable pageable = PageRequest.of(pagina, tamanho, Sort.by("nome").ascending());
+            Page<RelatorioJogadorSimplesDTO> relatorio = jogadorRepository.relatorioJogadoresSimplesPaginado(pageable);
+            log.info("Relatório paginado gerado: {} itens de {} total",
+                    relatorio.getNumberOfElements(), relatorio.getTotalElements());
+            return relatorio;
+        } catch (Exception e) {
+            log.error("Erro ao gerar relatório paginado: " + e.getMessage());
+            throw new RegraDeNegocioException("Erro ao gerar relatório paginado de jogadores");
         }
 
-        return resultado;
+
     }
 
 
+
+
+
+
+
+
+
+
+
+
+
 }
+
+
+
+

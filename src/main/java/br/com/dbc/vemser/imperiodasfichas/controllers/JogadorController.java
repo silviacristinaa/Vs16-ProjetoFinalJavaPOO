@@ -1,11 +1,16 @@
 package br.com.dbc.vemser.imperiodasfichas.controllers;
 
 import br.com.dbc.vemser.imperiodasfichas.documentacao.JogadorControllerDoc;
-import br.com.dbc.vemser.imperiodasfichas.dtos.jogador.*;
+import br.com.dbc.vemser.imperiodasfichas.dtos.RelatorioJogadorSimplesDTO;
+import br.com.dbc.vemser.imperiodasfichas.dtos.jogador.JogadorRequestDTO;
+import br.com.dbc.vemser.imperiodasfichas.dtos.jogador.JogadorResponseDTO;
+import br.com.dbc.vemser.imperiodasfichas.dtos.jogador.JogadorRankingDTO;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.imperiodasfichas.services.JogadorService;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -27,6 +32,14 @@ public class JogadorController implements JogadorControllerDoc {
     public ResponseEntity<List<JogadorResponseDTO>> list() throws RegraDeNegocioException {
         log.info("Listando todos os jogadores...");
         List<JogadorResponseDTO> jogadores = jogadorService.list();
+        return new ResponseEntity<>(jogadores, HttpStatus.OK);
+    }
+
+    @GetMapping("/paginado")
+    public ResponseEntity<Page<JogadorResponseDTO>> listPaginado(
+            @RequestParam(value = "pagina", required = false, defaultValue = "0") Integer pagina,
+            @RequestParam(value = "tamanho", required = false, defaultValue = "10") Integer tamanho) {
+        Page<JogadorResponseDTO> jogadores = jogadorService.listPaginado(pagina, tamanho);
         return new ResponseEntity<>(jogadores, HttpStatus.OK);
     }
 
@@ -63,10 +76,55 @@ public class JogadorController implements JogadorControllerDoc {
         return ResponseEntity.noContent().build();
     }
 
-//    @GetMapping("/ranking")
-//    public ResponseEntity<List<JogadorRankingDTO>> getRanking() throws RegraDeNegocioException {
-//        log.info("Buscando ranking de jogadores...");
-//        List<JogadorRankingDTO> ranking = jogadorService.getRanking();
-//        return new ResponseEntity<>(ranking, HttpStatus.OK);
-//    }
-}
+    @GetMapping("/ranking")
+    public ResponseEntity<List<JogadorRankingDTO>> getRanking(
+            @RequestParam(value = "idJogador", required = false) Integer idJogador
+    ) throws RegraDeNegocioException {
+        log.info("Buscando ranking de jogadores...");
+        List<JogadorRankingDTO> ranking = jogadorService.getRanking(idJogador);
+        return new ResponseEntity<>(ranking, HttpStatus.OK);
+    }
+
+    @GetMapping("/ranking/paginado")
+    public ResponseEntity<Page<JogadorRankingDTO>> getRankingPaginado(
+            @Parameter(description = "Número da página (0-based)", example = "0")
+            @RequestParam(defaultValue = "0") Integer pagina,
+
+            @Parameter(description = "Quantidade de itens por página", example = "3")
+            @RequestParam(defaultValue = "3") Integer tamanho,
+
+            // exemplo nulo
+            @Parameter(description = "ID do jogador (opcional)")
+            @RequestParam(value = "idJogador", required = false) Integer idJogador
+    ) throws RegraDeNegocioException {
+        return ResponseEntity.ok(jogadorService.getRankingPaginado(idJogador, pagina, tamanho));
+    }
+
+
+    @GetMapping("/relatorio-simples")
+    public ResponseEntity<List<RelatorioJogadorSimplesDTO>> getRelatorioSimples() throws RegraDeNegocioException {
+        return ResponseEntity.ok(jogadorService.gerarRelatorioSimples());
+    }
+
+    @GetMapping("/relatorio-simples/paginado")
+    public ResponseEntity<Page<RelatorioJogadorSimplesDTO>> getRelatorioSimplesPaginado(
+            @RequestParam(defaultValue = "0") Integer pagina,
+            @RequestParam(defaultValue = "10") Integer tamanho) throws RegraDeNegocioException {
+        return ResponseEntity.ok(jogadorService.gerarRelatorioSimplesPaginado(pagina, tamanho));
+    }
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+

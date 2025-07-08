@@ -2,6 +2,7 @@ package br.com.dbc.vemser.imperiodasfichas.documentacao;
 
 import br.com.dbc.vemser.imperiodasfichas.dtos.JogoRequestDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.JogoResponseDTO;
+import br.com.dbc.vemser.imperiodasfichas.enums.NomeJogoEnum;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -41,6 +42,17 @@ public interface JogoControllerDoc {
     )
     @GetMapping("/{id}")
     ResponseEntity<JogoResponseDTO> findById(@PathVariable("id") Integer id) throws RegraDeNegocioException;
+
+    @Operation(summary = "Buscar jogo por nome", description = "Busca um jogo específico pelo seu nome.")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Retorna os detalhes do jogo encontrado."),
+                    @ApiResponse(responseCode = "404", description = "Jogo não encontrado."),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção no servidor.")
+            }
+    )
+    @GetMapping("/nome/{nomeJogo}")
+    ResponseEntity<List<JogoResponseDTO>> buscarPorNomeJogo(@PathVariable("nomeJogo") String nomeJogo) throws RegraDeNegocioException;
 
     @Operation(summary = "Criar um novo jogo", description = "Cadastra um novo jogo no sistema.")
     @ApiResponses(

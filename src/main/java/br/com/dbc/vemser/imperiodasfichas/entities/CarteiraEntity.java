@@ -1,15 +1,31 @@
 package br.com.dbc.vemser.imperiodasfichas.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+
+import javax.persistence.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
+@Entity(name = "CARTEIRA")
 public class CarteiraEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CARTEIRA_SEQ")
+    @SequenceGenerator(name = "CARTEIRA_SEQ", sequenceName = "seq_carteira", allocationSize = 1)
+    @Column(name = "id")
     private Integer idCarteira;
+
+    @Column(name = "fichas")
     private int fichas;
+
+    @Column(name = "dinheiro")
     private double dinheiro;
-    private Integer idJogador;
+
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_jogador", referencedColumnName = "ID_JOGADOR")
+    private JogadorEntity jogador;
 }

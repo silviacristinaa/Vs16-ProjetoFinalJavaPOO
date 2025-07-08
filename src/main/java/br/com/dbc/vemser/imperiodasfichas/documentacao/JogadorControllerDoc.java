@@ -1,13 +1,16 @@
 package br.com.dbc.vemser.imperiodasfichas.documentacao;
 
+import br.com.dbc.vemser.imperiodasfichas.dtos.RelatorioJogadorSimplesDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.jogador.JogadorRankingDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.jogador.JogadorRequestDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.jogador.JogadorResponseDTO;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,15 +20,38 @@ import java.util.List;
 @Tag(name = "Jogador", description = "Operações relacionadas aos jogadores do sistema.")
 public interface JogadorControllerDoc {
 
-//    @Operation(summary = "Listar ranking de jogadores", description = "Lista os jogadores ordenados pelo número de vitórias.")
-//    @ApiResponses(
-//            value = {
-//                    @ApiResponse(responseCode = "200", description = "Retorna o ranking de jogadores."),
-//                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção no servidor.")
-//            }
-//    )
-//    @GetMapping("/ranking")
-//    ResponseEntity<List<JogadorRankingDTO>> getRanking() throws RegraDeNegocioException;
+    @Operation(summary = "Listar ranking de jogadores", description = "Lista os jogadores ordenados pelo número de vitórias.")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Retorna o ranking de jogadores."),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção no servidor.")
+            }
+    )
+    @GetMapping("/ranking")
+    ResponseEntity<List<JogadorRankingDTO>> getRanking(
+            @RequestParam(value = "idJogador", required = false) Integer idJogador
+    ) throws RegraDeNegocioException;
+
+    @Operation(summary = "Listar ranking de jogadores paginado",
+            description = "Lista os jogadores ordenados pelo número de vitórias com paginação.")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Retorna o ranking de jogadores paginado."),
+                    @ApiResponse(responseCode = "400", description = "Parâmetros de paginação inválidos."),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção no servidor.")
+            }
+    )
+    @GetMapping("/ranking/paginado")
+    ResponseEntity<Page<JogadorRankingDTO>> getRankingPaginado(
+            @Parameter(description = "Número da página (0-based)", example = "0")
+            @RequestParam(defaultValue = "0") Integer pagina,
+
+            @Parameter(description = "Quantidade de itens por página", example = "3")
+            @RequestParam(defaultValue = "3") Integer tamanho,
+
+            @Parameter(description = "ID do jogador (opcional)")
+            @RequestParam(value = "idJogador", required = false) Integer idJogador
+    ) throws RegraDeNegocioException;
 
     @Operation(summary = "Listar jogadores", description = "Lista todos os jogadores cadastrados no sistema.")
     @ApiResponses(
@@ -36,6 +62,19 @@ public interface JogadorControllerDoc {
     )
     @GetMapping
     ResponseEntity<List<JogadorResponseDTO>> list() throws RegraDeNegocioException;
+
+    @Operation(summary = "Listar jogadores com paginação", description = "Lista todos os jogadores cadastrados no sistema com paginação.")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Retorna a lista de jogadores com paginação."),
+                    @ApiResponse(responseCode = "400", description = "Requisição inválida. Verifique os parâmetros informados."),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção no servidor.")
+            }
+    )
+    @GetMapping
+    ResponseEntity<Page<JogadorResponseDTO>> listPaginado(
+            @RequestParam(value = "pagina", required = false, defaultValue = "0") Integer pagina,
+            @RequestParam(value = "tamanho", required = false, defaultValue = "10") Integer tamanho);
 
     @Operation(summary = "Buscar jogador por ID", description = "Busca um jogador específico pelo seu ID.")
     @ApiResponses(
@@ -82,4 +121,34 @@ public interface JogadorControllerDoc {
     )
     @DeleteMapping("/{idJogador}")
     ResponseEntity<Void> delete(@PathVariable("idJogador") Integer idJogador) throws RegraDeNegocioException;
+
+    @Operation(summary = "Relatório simplificado de jogadores",
+            description = "Gera um relatório com dados básicos de todos os jogadores e suas carteiras")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Relatório gerado com sucesso"),
+                    @ApiResponse(responseCode = "500", description = "Erro ao processar o relatório")
+            }
+    )
+    @GetMapping("/relatorio-simples")
+    ResponseEntity<List<RelatorioJogadorSimplesDTO>> getRelatorioSimples() throws RegraDeNegocioException;
+
+    @Operation(summary = "Relatório paginado de jogadores",
+            description = "Gera um relatório paginado com dados básicos dos jogadores e suas carteiras")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Relatório paginado gerado com sucesso"),
+                    @ApiResponse(responseCode = "400", description = "Parâmetros de paginação inválidos"),
+                    @ApiResponse(responseCode = "500", description = "Erro ao processar o relatório")
+            }
+    )
+    @GetMapping("/relatorio-simples/paginado")
+    ResponseEntity<Page<RelatorioJogadorSimplesDTO>> getRelatorioSimplesPaginado(
+            @Parameter(description = "Número da página (0-based)", example = "0")
+            @RequestParam(defaultValue = "0") Integer pagina,
+
+            @Parameter(description = "Quantidade de itens por página", example = "10")
+            @RequestParam(defaultValue = "10") Integer tamanho) throws RegraDeNegocioException;
 }
+
+

@@ -789,3 +789,71 @@ Para rodar o projeto localmente, adicione os seguintes parâmetros em sua IDE (E
 👨‍💻 **Desenvolvedores:**
 - William Augusto
 - Daniele Lins
+
+---
+# 🛠️ Implementação do Spring Data (JPA)
+
+## 🗺️ Mapeamento de Entidades
+As entidades do projeto foram mapeadas para refletir as tabelas do banco de dados Oracle, utilizando anotações do JPA:
+- **@Entity**: Define a classe como uma entidade JPA.
+- **@Id**: Marca o campo como a chave primária da entidade.
+- **@GeneratedValue**: Define a estratégia de geração de valores para a chave primária.
+- **@Column**: Mapeia o campo para uma coluna específica na tabela.
+- **@ManyToOne, @OneToMany, @ManyToMany**: Define os relacionamentos entre as entidades, modificando-as para referenciar diretamente as tabelas por meio de objetos e `Sets<>`.
+- **@JoinColumn**: Especifica a coluna de junção para relacionamentos.
+- **@Enumerated**: Mapeia enums para colunas do banco de dados.
+- **@JsonIgnore**: Ignora o campo durante a serialização JSON.
+
+## 🗂️ Novos Repositories
+Os repositories foram alterados para serem interfaces que estendem `JpaRepository`, permitindo operações CRUD 
+automáticas e consultas personalizadas. Destaques:
+1. **JogadorRepository**: 
+   - Uso de Optional nos métodos `findByNickname()` e `findByEmail()`;
+   - Uso de `@Query` para os relatórios `relatorioJogadoresSimples()`, `relatorioJogadoresSimplesPaginado()`, 
+     `getRankingPorVitorias()` e `getRankingPorVitoriasPaginado()`.
+   - Uso de paginação com `Pageable` para os relatórios e rankings.
+   - Uso de `@Param` para os métodos do ranking para aceitar o `idJogador` como parâmetro.
+2. **JogoRepository**:
+   - Uso de método personalizado `findByNomeJogo()` para buscar jogos pelo nome.
+3. **CarteiraRepository**:
+   - Uso de Optional no método `findByJogadorIdJogador()` para buscar a carteira de um jogador específico.
+
+## 💱 Atualização dos Services
+Os serviços foram atualizados para utilizar os novos repositories e implementar a lógica de negócios, destacando-se 
+o uso de métodos nativos do JPA para operações CRUD, como `save()`, `findById()`, `delete()`, além dos métodos 
+personalizados. Destaca-se o uso de paginação também nos métodos `listPaginado()` de `JogadorService` e `listarPaginado
+()` de `PartidaService`, que agora recebem um objeto `Pageable` como parâmetro para controlar a paginação dos resultados.
+
+## 📃 Novos DTOs
+Foram criados novos DTOs (Data Transfer Objects) para encapsular os dados dos relatórios e dos rankings que serão 
+enviados e recebidos pela API:
+- **JogadorRankingDTO**: Representa o ranking de jogadores com o número de vitórias.
+- **RelatórioJogadorSimplesDTO**: Representa um jogador com informações básicas + sua quantidade de fichas e dinheiro.
+
+## 🎮 Atualização dos Controllers
+Os controllers foram atualizados para refletir as mudanças nas entidades, repositories e services. Destaques:
+- **JogadorController**:
+  - Implementação de endpoints para os relatórios e rankings, utilizando os novos DTOs.
+  - Uso de `@GetMapping` com `@RequestParam` para aceitar parâmetros de consulta, como `page` e `size`, para paginação.
+- Atualização de toda a documentação Swagger para refletir as novas rotas e DTOs.
+
+## 🍽️ Coleção do Postman
+A coleção do Postman foi atualizada para refletir as novas rotas e funcionalidades implementadas no projeto. Ela 
+pode ser encontrada na raíz do projeto, no arquivo `Imperio das Fichas API.postman_collection.json`. Como utilizar:
+1. Abra o Postman.
+2. Clique em "Importar" e selecione o arquivo `Imperio das Fichas API.postman_collection.json`.
+3. Após a importação, você verá todas as rotas disponíveis.
+
+## ➕ Funcionalidade Extra
+O método `buscarPorNomeJogo()` implementa o método `normalizar()` que utiliza o `Normalizer` do Java para normalizar o 
+nome do jogo, removendo acentos e caracteres especiais, facilitando a busca por jogos com nomes semelhantes, tendo 
+em vista que o nome do Jogo é um Enum e não uma String.
+
+## 👥 Time Técnico
+
+👩‍💼 **Tech Lead:** Milena Soares
+
+👨‍💻 **Desenvolvedores:**
+- Daniele Lins
+- Sara Salles
+- Silvia Cristina

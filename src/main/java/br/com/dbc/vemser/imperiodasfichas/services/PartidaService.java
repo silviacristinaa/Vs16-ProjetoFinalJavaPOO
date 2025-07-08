@@ -23,7 +23,7 @@ public class PartidaService {
     private final PartidaRepository partidaRepository;
     private final ObjectMapper objectMapper;
 
-    public PartidaResponseDTO adicionarPartida(PartidaRequestDTO partida) throws RegraDeNegocioException {
+    public void adicionarPartida(PartidaRequestDTO partida) {
         PartidaEntity partidaEntity = objectMapper.convertValue(partida, PartidaEntity.class);
         partidaEntity.setFichasApostadas(partida.getQuantidadeFichasApostado());
 
@@ -31,9 +31,7 @@ public class PartidaService {
         partidaEntity.setJogador(new JogadorEntity(partida.getIdJogador()));
         partidaEntity.setGanhou(partida.getGanhou() ? "S" : "N");
 
-        partidaEntity = partidaRepository.save(partidaEntity);
-
-        return converterEntityParaResponse(partidaEntity);
+        partidaRepository.save(partidaEntity);
     }
 
     public PartidaResponseDTO buscarPartidaPorId(Integer idPartida) throws RegraDeNegocioException {

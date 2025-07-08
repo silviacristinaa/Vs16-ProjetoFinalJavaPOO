@@ -79,13 +79,13 @@ public class EmailService {
             helper.setTo(jogador.getEmail());
             helper.setSubject("Atenção: seu cadastro foi removido!");
 
-            String mensagem = String.format("<p>Seu cadastro no Império das Fichas foi removido conforme solicitado.</p>\n" +
+            String mensagem = "<p>Seu cadastro no Império das Fichas foi removido conforme solicitado.</p>\n" +
                     "        \n" +
                     "        <p>Todos os seus dados pessoais foram permanentemente excluídos de nossos sistemas, em conformidade com a Lei Geral de Proteção de Dados (LGPD).</p>\n" +
                     "        \n" +
                     "        <p>Caso tenha sido uma decisão equivocada ou queira voltar a utilizar nossos serviços no futuro, você poderá criar um novo cadastro a qualquer momento.</p>\n" +
                     "        \n" +
-                    "        <p>Agradecemos por ter feito parte da nossa comunidade e esperamos poder servi-lo novamente no futuro.</p>");
+                    "        <p>Agradecemos por ter feito parte da nossa comunidade e esperamos poder servi-lo novamente no futuro.</p>";
 
             String html = getEmailTemplate(jogador.getNome(), from, mensagem);
             helper.setText(html, true);

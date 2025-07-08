@@ -18,7 +18,7 @@ public class JogoResponseDTO {
     @Schema(description = "Valor mínimo de aposta para o jogo", example = "5")
     private int valorInicial;
 
-    public void setNomeJogo(NomeJogoEnum nomeJogo) {
-        this.nomeJogo = nomeJogo.getNome();
-    }
+//    public void setNomeJogo(NomeJogoEnum nomeJogo) {
+//        this.nomeJogo = nomeJogo.getNome();
+//    }
 }

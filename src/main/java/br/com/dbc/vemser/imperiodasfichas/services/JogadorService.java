@@ -69,14 +69,13 @@ public class JogadorService {
 
     public Page<JogadorResponseDTO> listPaginado(Integer pagina, Integer tamanho) {
         Pageable pageable = PageRequest.of(pagina, tamanho);
-        Page<JogadorResponseDTO> jogadores = jogadorRepository.findAll(pageable)
+
+        return jogadorRepository.findAll(pageable)
                 .map(jogador -> {
                     JogadorResponseDTO jogadorDTO = objectMapper.convertValue(jogador, JogadorResponseDTO.class);
                     jogadorDTO.setIdCarteira(jogador.getCarteira().getIdCarteira());
                     return jogadorDTO;
                 });
-
-        return jogadores;
     }
 
     public JogadorResponseDTO findById(Integer idJogador) throws RegraDeNegocioException {
@@ -119,14 +118,6 @@ public class JogadorService {
 
         jogadorRepository.delete(jogador);
         emailService.sendEmailDeleteJogador(jogador);
-    }
-
-    private Optional<JogadorEntity> buscarPorNickname(String nickname) {
-        return jogadorRepository.findByNickname(nickname);
-    }
-
-    private Optional<JogadorEntity> buscarPorEmail(String email) {
-        return jogadorRepository.findByEmail(email);
     }
 
     public Page<JogadorRankingDTO> getRankingPaginado(Integer idJogador, Integer pagina, Integer tamanho)

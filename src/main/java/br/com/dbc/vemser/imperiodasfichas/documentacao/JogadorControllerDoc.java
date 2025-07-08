@@ -20,15 +20,38 @@ import java.util.List;
 @Tag(name = "Jogador", description = "Operações relacionadas aos jogadores do sistema.")
 public interface JogadorControllerDoc {
 
-//    @Operation(summary = "Listar ranking de jogadores", description = "Lista os jogadores ordenados pelo número de vitórias.")
-//    @ApiResponses(
-//            value = {
-//                    @ApiResponse(responseCode = "200", description = "Retorna o ranking de jogadores."),
-//                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção no servidor.")
-//            }
-//    )
-//    @GetMapping("/ranking")
-//    ResponseEntity<List<JogadorRankingDTO>> getRanking() throws RegraDeNegocioException;
+    @Operation(summary = "Listar ranking de jogadores", description = "Lista os jogadores ordenados pelo número de vitórias.")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Retorna o ranking de jogadores."),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção no servidor.")
+            }
+    )
+    @GetMapping("/ranking")
+    ResponseEntity<List<JogadorRankingDTO>> getRanking(
+            @RequestParam(value = "idJogador", required = false) Integer idJogador
+    ) throws RegraDeNegocioException;
+
+    @Operation(summary = "Listar ranking de jogadores paginado",
+            description = "Lista os jogadores ordenados pelo número de vitórias com paginação.")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Retorna o ranking de jogadores paginado."),
+                    @ApiResponse(responseCode = "400", description = "Parâmetros de paginação inválidos."),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção no servidor.")
+            }
+    )
+    @GetMapping("/ranking/paginado")
+    ResponseEntity<Page<JogadorRankingDTO>> getRankingPaginado(
+            @Parameter(description = "Número da página (0-based)", example = "0")
+            @RequestParam(defaultValue = "0") Integer pagina,
+
+            @Parameter(description = "Quantidade de itens por página", example = "3")
+            @RequestParam(defaultValue = "3") Integer tamanho,
+
+            @Parameter(description = "ID do jogador (opcional)")
+            @RequestParam(value = "idJogador", required = false) Integer idJogador
+    ) throws RegraDeNegocioException;
 
     @Operation(summary = "Listar jogadores", description = "Lista todos os jogadores cadastrados no sistema.")
     @ApiResponses(

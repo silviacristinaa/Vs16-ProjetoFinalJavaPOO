@@ -1,6 +1,7 @@
 package br.com.dbc.vemser.imperiodasfichas.services;
 
 import br.com.dbc.vemser.imperiodasfichas.dtos.RelatorioJogadorSimplesDTO;
+import br.com.dbc.vemser.imperiodasfichas.dtos.jogador.JogadorRankingDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.jogador.JogadorRequestDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.jogador.JogadorResponseDTO;
 import br.com.dbc.vemser.imperiodasfichas.entities.CarteiraEntity;
@@ -128,13 +129,37 @@ public class JogadorService {
         return jogadorRepository.findByEmail(email);
     }
 
-    //public List<JogadorRankingDTO> getRanking() throws RegraDeNegocioException {
-    // List<JogadorRankingDTO> ranking = jogadorRepository.getRankingPorVitorias();
-    //for (int i = 0; i < ranking.size(); i++) {
-    //  ranking.get(i).setRank(i + 1);
-    //}
-    //return ranking;
-    //}
+    public Page<JogadorRankingDTO> getRankingPaginado(Integer idJogador, Integer pagina, Integer tamanho)
+            throws RegraDeNegocioException {
+        log.info("Buscando ranking de jogadores paginado - página {} com {} registros", pagina, tamanho);
+        try {
+            Pageable pageable = PageRequest.of(pagina, tamanho);
+            Page<JogadorRankingDTO> ranking = jogadorRepository.getRankingPorVitoriasPaginado(idJogador, pageable);
+
+            for (int i = 0; i < ranking.getContent().size(); i++) {
+                ranking.getContent().get(i).setRank(i + 1);
+            }
+
+            log.info("Ranking paginado gerado: {} itens de {} total",
+                    ranking.getNumberOfElements(), ranking.getTotalElements());
+            return ranking;
+        } catch (Exception e) {
+            log.error("Erro ao gerar ranking paginado: " + e.getMessage());
+            throw new RegraDeNegocioException("Erro ao gerar ranking paginado de jogadores");
+        }
+    }
+
+
+    public List<JogadorRankingDTO> getRanking(Integer idJogador) throws RegraDeNegocioException {
+        List<JogadorRankingDTO> ranking = jogadorRepository.getRankingPorVitorias(idJogador);
+
+        for (int i = 0; i < ranking.size(); i++) {
+            ranking.get(i).setRank(i + 1);
+        }
+
+        return ranking;
+    }
+
 
     public List<RelatorioJogadorSimplesDTO> gerarRelatorioSimples() throws RegraDeNegocioException {
         log.info("Gerando relatório simplificado de jogadores...");

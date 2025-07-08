@@ -1,6 +1,5 @@
 package br.com.dbc.vemser.imperiodasfichas.services;
 
-//import br.com.dbc.vemser.imperiodasfichas.dtos.RelatorioJogadorCompletoDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.RelatorioJogadorSimplesDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.jogador.JogadorRequestDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.jogador.JogadorResponseDTO;
@@ -8,11 +7,9 @@ import br.com.dbc.vemser.imperiodasfichas.entities.CarteiraEntity;
 import br.com.dbc.vemser.imperiodasfichas.entities.JogadorEntity;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.imperiodasfichas.repositories.JogadorRepository;
-import br.com.dbc.vemser.imperiodasfichas.repositories.PartidaRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -69,6 +66,18 @@ public class JogadorService {
                 .collect(Collectors.toList());
     }
 
+    public Page<JogadorResponseDTO> listPaginado(Integer pagina, Integer tamanho) {
+        Pageable pageable = PageRequest.of(pagina, tamanho);
+        Page<JogadorResponseDTO> jogadores = jogadorRepository.findAll(pageable)
+                .map(jogador -> {
+                    JogadorResponseDTO jogadorDTO = objectMapper.convertValue(jogador, JogadorResponseDTO.class);
+                    jogadorDTO.setIdCarteira(jogador.getCarteira().getIdCarteira());
+                    return jogadorDTO;
+                });
+
+        return jogadores;
+    }
+
     public JogadorResponseDTO findById(Integer idJogador) throws RegraDeNegocioException {
         JogadorEntity jogador = jogadorRepository.findById(idJogador)
                 .orElseThrow(() -> new RegraDeNegocioException("Jogador com ID " + idJogador + " não encontrado."));
@@ -120,12 +129,13 @@ public class JogadorService {
     }
 
     //public List<JogadorRankingDTO> getRanking() throws RegraDeNegocioException {
-       // List<JogadorRankingDTO> ranking = jogadorRepository.getRankingPorVitorias();
-        //for (int i = 0; i < ranking.size(); i++) {
-          //  ranking.get(i).setRank(i + 1);
-        //}
-       //return ranking;
+    // List<JogadorRankingDTO> ranking = jogadorRepository.getRankingPorVitorias();
+    //for (int i = 0; i < ranking.size(); i++) {
+    //  ranking.get(i).setRank(i + 1);
     //}
+    //return ranking;
+    //}
+
     public List<RelatorioJogadorSimplesDTO> gerarRelatorioSimples() throws RegraDeNegocioException {
         log.info("Gerando relatório simplificado de jogadores...");
         try {
@@ -153,21 +163,4 @@ public class JogadorService {
 
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
-
-
-
-

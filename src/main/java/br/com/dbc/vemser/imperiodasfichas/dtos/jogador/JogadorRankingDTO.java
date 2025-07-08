@@ -17,4 +17,11 @@ public class JogadorRankingDTO {
 
     @Schema(description = "ID do jogador")
     private Integer idJogador;
+
+    public JogadorRankingDTO(Integer idJogador, String nickname, Long vitorias) {
+        this.idJogador = idJogador;
+        this.nickname = nickname;
+        this.vitorias = vitorias != null ? vitorias.intValue() : 0;
+    }
+
 }

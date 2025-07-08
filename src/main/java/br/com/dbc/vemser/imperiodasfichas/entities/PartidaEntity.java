@@ -29,12 +29,11 @@ public class PartidaEntity {
     @Column(name = "ganhou", nullable = false, length = 1)
     private String ganhou; // 'S' ou 'N'
 
-    // Correção crucial para Jogador
+    // Relacionamento com Jogador e Jogo
     @ManyToOne
     @JoinColumn(name = "id_jogador", referencedColumnName = "idJogador")
     private JogadorEntity jogador;
 
-    // Correção crucial para Jogo
     @ManyToOne
     @JoinColumn(name = "id_jogo", referencedColumnName = "id")
     private JogoEntity jogo;

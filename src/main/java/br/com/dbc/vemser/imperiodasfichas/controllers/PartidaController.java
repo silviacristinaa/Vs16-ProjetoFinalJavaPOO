@@ -1,7 +1,6 @@
 package br.com.dbc.vemser.imperiodasfichas.controllers;
 
 import br.com.dbc.vemser.imperiodasfichas.documentacao.PartidaControllerDoc;
-import br.com.dbc.vemser.imperiodasfichas.dtos.PartidaRequestDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.PartidaResponseDTO;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.imperiodasfichas.services.PartidaService;
@@ -58,13 +57,4 @@ public class PartidaController implements PartidaControllerDoc {
         log.info("Partida removida com sucesso!");
         return ResponseEntity.ok().build();
     }
-
-    //  Novo endpoint para criar partidas manualmente (para testes)
-//    @PostMapping
-//    public ResponseEntity<PartidaResponseDTO> criar(@RequestBody PartidaRequestDTO dto) throws RegraDeNegocioException {
-//        log.info("Criando nova partida...");
-//        PartidaResponseDTO response = partidaService.adicionarPartida(dto);
-//        return new ResponseEntity<>(response, HttpStatus.CREATED);
-//    }
-
 }

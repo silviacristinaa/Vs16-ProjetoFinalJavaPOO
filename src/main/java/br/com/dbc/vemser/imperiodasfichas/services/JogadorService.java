@@ -1,6 +1,5 @@
 package br.com.dbc.vemser.imperiodasfichas.services;
 
-//import br.com.dbc.vemser.imperiodasfichas.dtos.RelatorioJogadorCompletoDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.RelatorioJogadorSimplesDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.jogador.JogadorRankingDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.jogador.JogadorRequestDTO;
@@ -9,11 +8,9 @@ import br.com.dbc.vemser.imperiodasfichas.entities.CarteiraEntity;
 import br.com.dbc.vemser.imperiodasfichas.entities.JogadorEntity;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.imperiodasfichas.repositories.JogadorRepository;
-import br.com.dbc.vemser.imperiodasfichas.repositories.PartidaRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -68,6 +65,18 @@ public class JogadorService {
                     return jogadorDTO;
                 })
                 .collect(Collectors.toList());
+    }
+
+    public Page<JogadorResponseDTO> listPaginado(Integer pagina, Integer tamanho) {
+        Pageable pageable = PageRequest.of(pagina, tamanho);
+        Page<JogadorResponseDTO> jogadores = jogadorRepository.findAll(pageable)
+                .map(jogador -> {
+                    JogadorResponseDTO jogadorDTO = objectMapper.convertValue(jogador, JogadorResponseDTO.class);
+                    jogadorDTO.setIdCarteira(jogador.getCarteira().getIdCarteira());
+                    return jogadorDTO;
+                });
+
+        return jogadores;
     }
 
     public JogadorResponseDTO findById(Integer idJogador) throws RegraDeNegocioException {
@@ -180,7 +189,3 @@ public class JogadorService {
 
     }
 }
-
-
-
-

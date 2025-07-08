@@ -5,8 +5,10 @@ import br.com.dbc.vemser.imperiodasfichas.dtos.PartidaRequestDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.PartidaResponseDTO;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.imperiodasfichas.services.PartidaService;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +28,20 @@ public class PartidaController implements PartidaControllerDoc {
         log.info("Listando todas as partidas...");
         List<PartidaResponseDTO> partidas = partidaService.listar();
         return new ResponseEntity<>(partidas, HttpStatus.OK);
+    }
+
+    // Endpoint de paginação
+    @GetMapping("/paginado")
+    public ResponseEntity<Page<PartidaResponseDTO>> listarPaginado(
+            @Parameter(description = "Número da página que deseja visualizar", example = "0")
+            @RequestParam(defaultValue = "0") int pagina,
+
+            @Parameter(description = "Quantidade de registros por página", example = "10")
+            @RequestParam(defaultValue = "10") int tamanhoPagina
+    ) throws RegraDeNegocioException {
+        log.info("Listando partidas paginadas...");
+        Page<PartidaResponseDTO> partidas = partidaService.listarPaginado(pagina, tamanhoPagina);
+        return ResponseEntity.ok(partidas);
     }
 
     @GetMapping("/{idPartida}")

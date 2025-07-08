@@ -63,6 +63,19 @@ public interface JogadorControllerDoc {
     @GetMapping
     ResponseEntity<List<JogadorResponseDTO>> list() throws RegraDeNegocioException;
 
+    @Operation(summary = "Listar jogadores com paginação", description = "Lista todos os jogadores cadastrados no sistema com paginação.")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Retorna a lista de jogadores com paginação."),
+                    @ApiResponse(responseCode = "400", description = "Requisição inválida. Verifique os parâmetros informados."),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção no servidor.")
+            }
+    )
+    @GetMapping
+    ResponseEntity<Page<JogadorResponseDTO>> listPaginado(
+            @RequestParam(value = "pagina", required = false, defaultValue = "0") Integer pagina,
+            @RequestParam(value = "tamanho", required = false, defaultValue = "10") Integer tamanho);
+
     @Operation(summary = "Buscar jogador por ID", description = "Busca um jogador específico pelo seu ID.")
     @ApiResponses(
             value = {

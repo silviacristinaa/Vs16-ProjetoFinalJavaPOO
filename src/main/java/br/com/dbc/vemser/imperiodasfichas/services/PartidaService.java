@@ -9,6 +9,9 @@ import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.imperiodasfichas.repositories.PartidaRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -64,4 +67,12 @@ public class PartidaService {
                 .orElseThrow(() -> new RegraDeNegocioException("Partida com id: " + idPartida + " não encontrada!"));
         partidaRepository.delete(partida);
     }
+
+    public Page<PartidaResponseDTO> listarPaginado(int pagina, int tamanhoPagina) {
+        Pageable pageable = PageRequest.of(pagina, tamanhoPagina);
+        Page<PartidaEntity> paginaPartidas = partidaRepository.findAll(pageable);
+
+        return paginaPartidas.map(this::converterEntityParaResponse);
+    }
+
 }

@@ -77,3 +77,8 @@ INSERT INTO Partida (id_partida, data_hora, fichas_apostadas, ganhou, id_jogador
 VALUES (SEQ_PARTIDA.NEXTVAL, TO_DATE('17/06/2025 18:00:00', 'DD/MM/YYYY HH24:MI:SS'), 15,  'N', 9, 1);
 INSERT INTO Partida (id_partida, data_hora, fichas_apostadas, ganhou, id_jogador, id_jogo)
 VALUES (SEQ_PARTIDA.NEXTVAL, TO_DATE('17/06/2025 18:30:00', 'DD/MM/YYYY HH24:MI:SS'), 20, 'S', 10, 2);
+
+-- Inserção de dados na tabela "Usuario"
+
+INSERT INTO usuario (id_usuario, login, senha)
+VALUES (seq_usuario.nextval, 'user', '123');

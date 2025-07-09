@@ -11,10 +11,7 @@ import br.com.dbc.vemser.imperiodasfichas.repositories.JogadorRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -120,36 +117,56 @@ public class JogadorService {
         emailService.sendEmailDeleteJogador(jogador);
     }
 
-    public Page<JogadorRankingDTO> getRankingPaginado(Integer idJogador, Integer pagina, Integer tamanho)
-            throws RegraDeNegocioException {
-        log.info("Buscando ranking de jogadores paginado - página {} com {} registros", pagina, tamanho);
-        try {
-            Pageable pageable = PageRequest.of(pagina, tamanho);
-            Page<JogadorRankingDTO> ranking = jogadorRepository.getRankingPorVitoriasPaginado(idJogador, pageable);
 
-            for (int i = 0; i < ranking.getContent().size(); i++) {
-                ranking.getContent().get(i).setRank(i + 1);
-            }
 
-            log.info("Ranking paginado gerado: {} itens de {} total",
-                    ranking.getNumberOfElements(), ranking.getTotalElements());
-            return ranking;
-        } catch (Exception e) {
-            log.error("Erro ao gerar ranking paginado: " + e.getMessage());
-            throw new RegraDeNegocioException("Erro ao gerar ranking paginado de jogadores");
-        }
+public List<JogadorRankingDTO> getRanking(Integer idJogador) throws RegraDeNegocioException {
+    List<JogadorRankingDTO> ranking = jogadorRepository.getRankingPorVitorias();
+
+    for (int i = 0; i < ranking.size(); i++) {
+        ranking.get(i).setRank(i + 1);
     }
 
+    if (idJogador != null) {
+        return ranking.stream().filter(j -> j.getIdJogador().equals(idJogador)).toList();
+    }
 
-    public List<JogadorRankingDTO> getRanking(Integer idJogador) throws RegraDeNegocioException {
-        List<JogadorRankingDTO> ranking = jogadorRepository.getRankingPorVitorias(idJogador);
+    return ranking;
+}
+
+
+
+    public Page<JogadorRankingDTO> getRankingPaginado(Integer idJogador, Integer pagina, Integer tamanho) throws RegraDeNegocioException {
+        List<JogadorRankingDTO> ranking = jogadorRepository.getRankingPorVitorias();
 
         for (int i = 0; i < ranking.size(); i++) {
             ranking.get(i).setRank(i + 1);
         }
 
-        return ranking;
+        if (idJogador != null) {
+            List<JogadorRankingDTO> filtrado = ranking.stream()
+                    .filter(j -> j.getIdJogador().equals(idJogador))
+                    .toList();
+
+            return new PageImpl<>(filtrado, PageRequest.of(0, filtrado.size() == 0 ? 1 : filtrado.size()), filtrado.size());
+        }
+
+        if (pagina == null || tamanho == null) {
+            return new PageImpl<>(ranking, PageRequest.of(0, ranking.size() == 0 ? 1 : ranking.size()), ranking.size());
+        }
+
+        Pageable pageable = PageRequest.of(pagina, tamanho);
+        int inicio = (int) pageable.getOffset();
+        int fim = Math.min(inicio + pageable.getPageSize(), ranking.size());
+
+        if (inicio >= ranking.size()) {
+            return Page.empty(pageable);
+        }
+
+        List<JogadorRankingDTO> pageContent = ranking.subList(inicio, fim);
+
+        return new PageImpl<>(pageContent, pageable, ranking.size());
     }
+
 
 
     public List<RelatorioJogadorSimplesDTO> gerarRelatorioSimples() throws RegraDeNegocioException {

@@ -81,4 +81,4 @@ VALUES (SEQ_PARTIDA.NEXTVAL, TO_DATE('17/06/2025 18:30:00', 'DD/MM/YYYY HH24:MI:
 -- Inserção de dados na tabela "Usuario"
 
 INSERT INTO usuario (id_usuario, login, senha)
-VALUES (seq_usuario.nextval, 'user', '123');
+VALUES (seq_usuario.nextval, 'user', 'f674b02cf77556e9db68ee4bb66a9455677226bd8936bc5c170f049819c9f0e626176a826d8123bf');

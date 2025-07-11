@@ -82,3 +82,25 @@ VALUES (SEQ_PARTIDA.NEXTVAL, TO_DATE('17/06/2025 18:30:00', 'DD/MM/YYYY HH24:MI:
 
 INSERT INTO usuario (id_usuario, login, senha)
 VALUES (seq_usuario.nextval, 'user', '123');
+
+
+
+DROP TABLE USUARIO;
+
+CREATE TABLE USUARIO(
+    ID_USUARIO NUMBER NOT NULL,
+    LOGIN varchar2(512) UNIQUE NOT NULL,
+    SENHA varchar2(512) NOT NULL,
+    PRIMARY KEY(ID_USUARIO)
+);
+
+DROP SEQUENCE seq_usuario;
+
+CREATE SEQUENCE seq_usuario
+ START WITH     1
+ INCREMENT BY   1
+ NOCACHE
+ NOCYCLE;
+
+insert into usuario (id_usuario, login, senha)
+     values (seq_usuario.nextval, 'user', 'f674b02cf77556e9db68ee4bb66a9455677226bd8936bc5c170f049819c9f0e626176a826d8123bf');

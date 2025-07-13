@@ -32,10 +32,26 @@ public class AuthenticationService implements UserDetailsService {
 
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
         Optional<UsuarioEntity> usuarioEntityOptional = usuarioService.findByLogin(username);
-        return usuarioEntityOptional
-                .orElseThrow(() -> new UsernameNotFoundException("Usuario inválido!"));
+
+        if (usuarioEntityOptional.isEmpty()) {
+            try {
+                throw new Exception("Usuário não encontrado: " + username);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        if (!usuarioEntityOptional.get().isEnabled()) {
+            try {
+                throw new Exception("Usuário não está ativo: " + username);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return usuarioEntityOptional.get();
     }
 
 //    public LoginDTO register(@Valid RegisterDTO usuarioCreateDTO) throws RegraDeNegocioException {
@@ -64,6 +80,7 @@ public class AuthenticationService implements UserDetailsService {
 
         UsuarioEntity usuario = objectMapper.convertValue(usuarioCreateDTO, UsuarioEntity.class);
         usuario.setSenha(passwordEncoder.encode(usuarioCreateDTO.getSenha()));
+        usuario.setAtivo("S");
 
         CargoEntity cargo = cargoRepository.findByNomeIgnoreCase(usuarioCreateDTO.getNomeCargo())
                 .orElseThrow(() -> new RegraDeNegocioException("Cargo não encontrado!"));

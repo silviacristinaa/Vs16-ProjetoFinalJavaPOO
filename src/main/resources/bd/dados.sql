@@ -80,8 +80,9 @@ VALUES (SEQ_PARTIDA.NEXTVAL, TO_DATE('17/06/2025 18:30:00', 'DD/MM/YYYY HH24:MI:
 
 -- Inserção de dados na tabela "Usuario"
 
-INSERT INTO usuario (id_usuario, login, senha)
-VALUES (seq_usuario.nextval, 'user', 'f674b02cf77556e9db68ee4bb66a9455677226bd8936bc5c170f049819c9f0e626176a826d8123bf');
+INSERT INTO usuario (id_usuario, login, senha, ativo)
+VALUES (seq_usuario.nextval, 'user',
+        'f674b02cf77556e9db68ee4bb66a9455677226bd8936bc5c170f049819c9f0e626176a826d8123bf', 'S');
 
 -- Inserção de cargos ADMIN e USUARIO
 BEGIN
@@ -133,7 +134,9 @@ CREATE TABLE USUARIO(
     ID_USUARIO NUMBER NOT NULL,
     LOGIN varchar2(512) UNIQUE NOT NULL,
     SENHA varchar2(512) NOT NULL,
-    PRIMARY KEY(ID_USUARIO)
+    ATIVO CHAR(1) NOT NULL,
+    PRIMARY KEY(ID_USUARIO),
+    CONSTRAINT CHK_ATIVO CHECK (ATIVO IN('S', 'N'))
 );
 
 CREATE SEQUENCE seq_usuario
@@ -170,12 +173,12 @@ CREATE TABLE USUARIO_CARGO (
 );
 
 -- Usuário admin (ID 1)
-INSERT INTO usuario (id_usuario, login, senha)
-     VALUES (seq_usuario.nextval, 'admin', '$2a$10$X.AxPaR2usWOKRyUT2ZX/.k5sdTQNkSUly3AlSibvxImFrNb9ulAu');
+INSERT INTO usuario (id_usuario, login, senha, ativo)
+     VALUES (seq_usuario.nextval, 'admin', '$2a$10$X.AxPaR2usWOKRyUT2ZX/.k5sdTQNkSUly3AlSibvxImFrNb9ulAu', 'S');
 
 -- Usuário comum (ID 2)
-INSERT INTO usuario (id_usuario, login, senha)
-     VALUES (seq_usuario.nextval, 'user', '$2a$10$X.AxPaR2usWOKRyUT2ZX/.k5sdTQNkSUly3AlSibvxImFrNb9ulAu');
+INSERT INTO usuario (id_usuario, login, senha, ativo)
+     VALUES (seq_usuario.nextval, 'user', '$2a$10$X.AxPaR2usWOKRyUT2ZX/.k5sdTQNkSUly3AlSibvxImFrNb9ulAu', 'S');
 
 -- ADMIN tem ambos os cargos (admin e usuario)
 INSERT INTO USUARIO_CARGO (ID_USUARIO, ID_CARGO)

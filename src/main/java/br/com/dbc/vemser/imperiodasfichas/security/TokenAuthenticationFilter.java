@@ -3,6 +3,8 @@ package br.com.dbc.vemser.imperiodasfichas.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -14,26 +16,35 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
     private final TokenService tokenService;
-    private final String BEARER = "Bearer ";
+    private static final String BEARER = "Bearer ";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+
         String tokenFromHeader = getTokenFromHeader(request);
 
-        UsernamePasswordAuthenticationToken user = tokenService.isValid(tokenFromHeader);
-        SecurityContextHolder.getContext().setAuthentication(user);
+        if (tokenFromHeader != null) {
+            try {
+                UsernamePasswordAuthenticationToken authentication = tokenService.isValid(tokenFromHeader);
+
+                if (authentication != null) {
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
+            } catch (Exception e) {
+                logger.error("Erro na autenticação via token", e);
+                SecurityContextHolder.clearContext();
+            }
+        }
+
         filterChain.doFilter(request, response);
-
     }
-
 
     private String getTokenFromHeader(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
-        if (token == null) {
+        if (token == null || !token.startsWith(BEARER)) {
             return null;
         }
         return token.replace(BEARER, "");
     }
-
 }

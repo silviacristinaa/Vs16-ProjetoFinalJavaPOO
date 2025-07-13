@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -25,9 +26,18 @@ public class UsuarioEntity implements UserDetails {
     @Column(name = "senha")
     private String senha;
 
+    @ManyToMany
+    @JoinTable(
+            name = "USUARIO_CARGO",
+            joinColumns = @JoinColumn(name = "ID_USUARIO"),
+            inverseJoinColumns = @JoinColumn(name = "ID_CARGO")
+    )
+    private Set<CargoEntity> cargos;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return new ArrayList<>();
+//        return new ArrayList<>();
+        return cargos; //?
     }
 
     @Override

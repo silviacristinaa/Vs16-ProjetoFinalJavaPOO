@@ -3,8 +3,11 @@ package br.com.dbc.vemser.imperiodasfichas.services;
 import br.com.dbc.vemser.imperiodasfichas.entities.UsuarioEntity;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.imperiodasfichas.repositories.UsuarioRepository;
+import ch.qos.logback.classic.Logger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -28,5 +31,17 @@ public class UsuarioService {
             throw new RegraDeNegocioException("Este login não está disponível. Por favor, escolha outro.");
         }
         return usuarioRepository.save(usuarioEntity);
+    }
+
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return usuarioRepository.findByLogin(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
+    }
+    /* O UserDetailsService é uma interface central do Spring Security que você precisa implementar
+     para carregar os detalhes do usuário durante a autenticação.
+      .*/
+
+    public UsuarioEntity create(UsuarioEntity usuario) {
+        return usuarioRepository.save(usuario);
     }
 }

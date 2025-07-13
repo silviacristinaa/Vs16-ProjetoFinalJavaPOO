@@ -8,10 +8,13 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -31,10 +34,16 @@ public class TokenService {
         Date now = new Date();
         Date exp = new Date(now.getTime() + Long.parseLong(expiration));
 
+        // Adicionando os cargos ao token (única mudança necessária)
+        List<String> cargos = usuario.getCargos().stream()
+                .map(cargo -> cargo.getAuthority()) // getAuthority() retorna "ROLE_ADMIN", etc.
+                .collect(Collectors.toList());
+
         return TOKEN_PREFIX + " " +
                 Jwts.builder()
                         .setIssuer("Imperio das Fichas")
                         .claim(Claims.ID, usuario.getIdUsuario().toString())
+                        .claim("cargos", cargos)
                         .setIssuedAt(now)
                         .setExpiration(exp)
                         .signWith(SignatureAlgorithm.HS256, secret)
@@ -49,10 +58,18 @@ public class TokenService {
                     .getBody();
             String user = body.get(Claims.ID, String.class);
 
+            // Obtendo os cargos do token
+            List<String> cargos = body.get("cargos", List.class);
+
             if (user != null) {
-                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                        new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
-                return usernamePasswordAuthenticationToken;
+                // Convertendo cargos para autoridades
+                List<SimpleGrantedAuthority> authorities = cargos.stream()
+                        .map(SimpleGrantedAuthority::new)
+                        .collect(Collectors.toList());
+
+                return new UsernamePasswordAuthenticationToken(
+                        user, null,  authorities // Agora com os cargos/cargos
+                );
             }
         }
         return null;

@@ -727,7 +727,7 @@ Para rodar o projeto localmente, adicione os seguintes parâmetros em sua IDE (E
 ### 📸 Diagrama-ER
 
 <p align="center">
-  <img src="src/main/resources/bd/Diagrama-ER.png" alt="Diagrama-ER" width="700"/>
+  <img src="src/main/resources/diagrams/Diagrama-ER.png" alt="Diagrama-ER" width="700"/>
 </p>
 
 ---

@@ -1,0 +1,128 @@
+flowchart TD
+    subgraph Cargos["Cargos"]
+        USUARIO["USUARIO"]
+        ADMIN["ADMIN"]
+        GUEST["SEM LOGIN"]
+    end
+
+subgraph Endpoints["Endpoints"]
+AUTENTICACAO["ROTAS PÚBLICAS:
+
+Login:
+POST /auth
+
+Cadastro:
+POST /auth/register"]
+
+JOGADOR["ROTAS PARA GERENCIAR JOGADOR:
+
+Listar todos:
+GET /jogador
+
+Listar todos (paginado):
+GET /jogador/paginado
+
+Buscar por ID:
+GET /jogador/{idJogador}
+
+Gerar relatório simples:
+GET /jogador/relatorio-simples
+
+Gerar relatório simples (paginado):
+GET /jogador/relatorio-simples/paginado
+
+Gerar ranking:
+GET /jogador/ranking
+
+Gerar ranking (paginado):
+GET /jogador/ranking/paginado
+
+Criar:
+POST /jogador
+
+Atualizar:
+PUT /jogador/{idJogador}
+
+Deletar:
+DELETE /jogador/{idJogador}"]
+
+JOGADA["ROTAS PARA JOGAR:
+
+Jogar Roleta Clássica:
+POST /jogada/roleta/classica
+
+Jogar Roleta das Cores:
+POST /jogada/roleta/cores
+
+Jogar Caça Níquel:
+POST /jogada/cacaniquel"]
+
+PARTIDA["ROTAS PARA GERENCIAR PARTIDAS:
+
+Listar todas:
+GET /partida
+
+Listar todas (paginado):
+GET /partida/paginado
+
+Buscar por ID:
+GET /partida/{idPartida}
+
+Deletar:
+DELETE /partida/{idPartida}"]
+
+JOGO["ROTAS PARA GERENCIAR JOGOS:
+
+Listar todos:
+GET /jogo
+
+Buscar por ID:
+GET /jogo/{id}
+
+Buscar por nome:
+GET /jogo/nome/{nomeJogo}
+
+Criar:
+POST /jogo
+
+Atualizar:
+PUT /jogo/{id}
+
+Deletar:
+DELETE /jogo/{id}"]
+
+CARTEIRA["ROTAS PARA GERENCIAR CARTEIRAS:
+
+Listar todas:
+GET /carteira
+
+Buscar por ID:
+GET /carteira/{idCarteira}
+
+Buscar por ID do Jogador:
+GET /carteira/jogador/{idJogador}
+
+Atualizar:
+PUT /carteira/{idCarteira}
+
+Depositar:
+POST /carteira/{idCarteira}/depositar
+
+Sacar:
+POST /carteira/{idCarteira}/sacar
+
+Comprar fichas:
+POST /carteira/{idCarteira}/comprar
+
+Vender fichas:
+POST /carteira/{idCarteira}/vender"]
+end
+
+GUEST --> AUTENTICACAO
+USUARIO --> GUEST
+USUARIO --> JOGADOR
+USUARIO --> JOGADA
+USUARIO --> CARTEIRA
+ADMIN --> USUARIO
+ADMIN --> PARTIDA
+ADMIN --> JOGO

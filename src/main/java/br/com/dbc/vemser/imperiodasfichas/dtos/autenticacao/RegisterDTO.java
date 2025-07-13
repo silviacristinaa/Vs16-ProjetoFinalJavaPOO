@@ -15,7 +15,7 @@ public class RegisterDTO {
     private String login;
 
     @NotBlank
-    @Size(min = 6)
+    @Size(min = 3)
     @Schema(description = "Senha do usuário", required = true, example = "senhaSegura123")
     private String senha;
 
@@ -24,6 +24,6 @@ public class RegisterDTO {
     private String confirmarSenha;
 
     @NotBlank
-    @Schema(description = "Nome do cargo (ex: ADMIN, USUARIO)", required = true, example = "JOGADOR")
+    @Schema(description = "Nome do cargo (ex: ADMIN, USUARIO)", required = true, example = "USUARIO")
     private String nomeCargo;
 }

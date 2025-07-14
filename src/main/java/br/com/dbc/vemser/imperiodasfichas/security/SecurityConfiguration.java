@@ -30,6 +30,8 @@ public class SecurityConfiguration {
                         //rotas publicas
                         .antMatchers("/auth", "/", "/auth/register").permitAll()
                         .antMatchers("/auth/trocar-senha").hasAnyAuthority("USUARIO", "ADMIN")
+                        //liberar acesso ao Swagger para adm e usuario
+                        .antMatchers("/auth/logged").hasAnyAuthority("USUARIO", "ADMIN")
                         //usuario pode acessar essas rotas
                         .antMatchers("/jogador/**", "/jogada/**", "/carteira/**").hasAnyAuthority("USUARIO", "ADMIN")
                         //admin pode tudo

@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.imperiodasfichas.controllers;
 
+import br.com.dbc.vemser.imperiodasfichas.documentacao.AuthControllerDoc;
 import br.com.dbc.vemser.imperiodasfichas.dtos.autenticacao.LoginDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.autenticacao.RegisterDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.autenticacao.TrocarSenhaDTO;
@@ -25,7 +26,7 @@ import javax.validation.Valid;
 @RequestMapping("/auth")
 @Validated
 @RequiredArgsConstructor
-public class AuthController {
+public class AuthController implements AuthControllerDoc {
     public final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
     private final AuthenticationService authenticationService;

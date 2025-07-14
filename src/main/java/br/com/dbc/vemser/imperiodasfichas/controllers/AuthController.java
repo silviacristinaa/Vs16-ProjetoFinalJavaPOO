@@ -1,9 +1,6 @@
 package br.com.dbc.vemser.imperiodasfichas.controllers;
 
-import br.com.dbc.vemser.imperiodasfichas.dtos.autenticacao.LoginDTO;
-import br.com.dbc.vemser.imperiodasfichas.dtos.autenticacao.RegisterDTO;
-import br.com.dbc.vemser.imperiodasfichas.dtos.autenticacao.TrocarSenhaDTO;
-import br.com.dbc.vemser.imperiodasfichas.dtos.autenticacao.UsuarioResponseDTO;
+import br.com.dbc.vemser.imperiodasfichas.dtos.autenticacao.*;
 import br.com.dbc.vemser.imperiodasfichas.entities.UsuarioEntity;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.imperiodasfichas.security.AuthenticationService;
@@ -98,4 +95,15 @@ public class AuthController {
         return ResponseEntity.ok(usuarioLogado);
     }
 
+
+    @PutMapping("/atualizar/{login}")
+    public ResponseEntity<UsuarioResponseDTO> update(@PathVariable String login,
+                                                   @RequestBody @Valid AtualizarUsuarioDTO usuarioDTO) throws RegraDeNegocioException {
+        log.info("Atualizando usuário: {}", login);
+
+        UsuarioResponseDTO usuarioAtualizado = usuarioService.atualizar(login, usuarioDTO);
+        log.info("Usuário atualizado com sucesso: {}", usuarioAtualizado.getLogin());
+
+        return ResponseEntity.ok(usuarioAtualizado);
+    }
 }

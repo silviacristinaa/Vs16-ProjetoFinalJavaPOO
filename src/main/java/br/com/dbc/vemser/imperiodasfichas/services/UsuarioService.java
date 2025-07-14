@@ -1,9 +1,12 @@
 package br.com.dbc.vemser.imperiodasfichas.services;
 
+import br.com.dbc.vemser.imperiodasfichas.dtos.autenticacao.AtualizarUsuarioDTO;
+import br.com.dbc.vemser.imperiodasfichas.dtos.autenticacao.LoginDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.autenticacao.UsuarioResponseDTO;
 import br.com.dbc.vemser.imperiodasfichas.entities.CargoEntity;
 import br.com.dbc.vemser.imperiodasfichas.entities.UsuarioEntity;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
+import br.com.dbc.vemser.imperiodasfichas.repositories.CargoRepository;
 import br.com.dbc.vemser.imperiodasfichas.repositories.UsuarioRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +15,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -22,6 +27,7 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final ObjectMapper objectMapper;
+    private final CargoRepository cargoRepository;
 
     public Optional<UsuarioEntity> findByLogin(String login) {
         return usuarioRepository.findByLogin(login);
@@ -112,5 +118,35 @@ public class UsuarioService {
         Integer idLoggedUser = getIdLoggedUser();
         return usuarioRepository.findById(idLoggedUser)
                 .orElseThrow(() -> new RegraDeNegocioException("Usuário com ID " + idLoggedUser + " não encontrado."));
+    }
+
+    public UsuarioResponseDTO atualizar(String login, AtualizarUsuarioDTO usuarioDTO) throws RegraDeNegocioException {
+        UsuarioEntity usuario = usuarioRepository.findByLogin(login)
+                .orElseThrow(() -> new RegraDeNegocioException("Usuário não encontrado"));
+
+        if (usuarioDTO.getLogin() != null && !usuarioDTO.getLogin().isEmpty()) {
+            // Verifica se outro usuário já possui o login
+            Optional<UsuarioEntity> usuarioExistente = usuarioRepository.findByLogin(usuarioDTO.getLogin());
+            if (usuarioExistente.isPresent() && !usuarioExistente.get().getIdUsuario().equals(usuario.getIdUsuario())) {
+                throw new RegraDeNegocioException("Já existe um usuário com este login.");
+            }
+            usuario.setLogin(usuarioDTO.getLogin());
+        }
+
+        // Atualiza o cargo (movido para fora do bloco if anterior)
+        if (usuarioDTO.getNomeCargo() != null && !usuarioDTO.getNomeCargo().isEmpty()) {
+            CargoEntity cargo = cargoRepository.findByNomeIgnoreCase(usuarioDTO.getNomeCargo())
+                    .orElseThrow(() -> new RegraDeNegocioException("Cargo não encontrado!"));
+
+            // Cria um novo HashSet mutável ao invés de Set.of()
+            usuario.setCargos(new HashSet<>(Collections.singleton(cargo)));
+        }
+
+        usuarioRepository.save(usuario);
+
+        UsuarioResponseDTO usuarioResponseDTO = objectMapper.convertValue(usuario, UsuarioResponseDTO.class);
+        usuarioResponseDTO.setNomeCargo(Collections.singleton(usuarioDTO.getNomeCargo()));
+
+        return usuarioResponseDTO;
     }
 }

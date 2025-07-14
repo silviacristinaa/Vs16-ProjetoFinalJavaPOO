@@ -18,14 +18,12 @@ public interface JogadorRepository extends JpaRepository<JogadorEntity, Integer>
 
     Optional<JogadorEntity> findByEmail(String email);
 
-
     @Query("SELECT NEW br.com.dbc.vemser.imperiodasfichas.dtos.RelatorioJogadorSimplesDTO(" +
             "j.idJogador, j.nome, j.email, j.nickname, j.idade, " +
             "c.fichas, c.dinheiro) " +
             "FROM JOGADOR j " +
             "LEFT JOIN j.carteira c")
     Page<RelatorioJogadorSimplesDTO> relatorioJogadoresSimplesPaginado(Pageable pageable);
-
 
     @Query("SELECT new br.com.dbc.vemser.imperiodasfichas.dtos.jogador.JogadorRankingDTO(" +
             "j.id, j.nickname, COUNT(p)) " +
@@ -35,11 +33,6 @@ public interface JogadorRepository extends JpaRepository<JogadorEntity, Integer>
             "GROUP BY j.id, j.nickname " +
             "ORDER BY COUNT(p) DESC")
     List<JogadorRankingDTO> getRankingPorVitorias();
-
-
-
-
-
 
     @Query("SELECT NEW br.com.dbc.vemser.imperiodasfichas.dtos.RelatorioJogadorSimplesDTO(" +
             "j.idJogador, j.nome, j.email, j.nickname, j.idade, " +

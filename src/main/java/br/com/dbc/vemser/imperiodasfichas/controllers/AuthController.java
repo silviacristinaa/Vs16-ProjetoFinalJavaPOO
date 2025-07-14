@@ -8,6 +8,7 @@ import br.com.dbc.vemser.imperiodasfichas.entities.UsuarioEntity;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.imperiodasfichas.security.AuthenticationService;
 import br.com.dbc.vemser.imperiodasfichas.security.TokenService;
+import br.com.dbc.vemser.imperiodasfichas.services.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +16,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -31,6 +29,7 @@ public class AuthController {
     public final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
     private final AuthenticationService authenticationService;
+    private final UsuarioService usuarioService;
 
     @PostMapping
     public String auth(@RequestBody @Valid LoginDTO loginDTO) throws RegraDeNegocioException {
@@ -53,7 +52,7 @@ public class AuthController {
     public ResponseEntity<String> createUser(@RequestBody @Valid RegisterDTO registerDTO) throws RegraDeNegocioException {
         log.info("Registrando usuário: {}", registerDTO.getLogin());
 
-        LoginDTO loginDTO = authenticationService.register(registerDTO);
+        authenticationService.register(registerDTO);
         log.info("Usuário registrado. Tentando autenticar...");
 
         try {
@@ -73,5 +72,17 @@ public class AuthController {
             log.error("Falha na autenticação: {}", e.getMessage(), e);
             throw new RegraDeNegocioException("Falha ao autenticar usuário");
         }
+    }
+
+    @PostMapping("/desativar/{login}")
+    public ResponseEntity<String> desativarUsuario(@PathVariable String login) throws RegraDeNegocioException {
+        usuarioService.desativarUsuario(login);
+        return ResponseEntity.ok("Usuário desativado com sucesso");
+    }
+
+    @PostMapping("/ativar/{login}")
+    public ResponseEntity<String> ativarUsuario(@PathVariable String login) throws RegraDeNegocioException {
+        usuarioService.ativarUsuario(login);
+        return ResponseEntity.ok("Usuário ativado com sucesso");
     }
 }

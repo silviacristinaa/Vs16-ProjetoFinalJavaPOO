@@ -44,4 +44,43 @@ public class UsuarioService {
     public UsuarioEntity create(UsuarioEntity usuario) {
         return usuarioRepository.save(usuario);
     }
+
+    public void desativarUsuario(String login) throws RegraDeNegocioException {
+        Integer idUsuario = usuarioRepository.findByLogin(login)
+                .orElseThrow(() -> new RegraDeNegocioException("Usuário não encontrado"))
+                .getIdUsuario();
+
+        UsuarioEntity usuario = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new RegraDeNegocioException("Usuário não encontrado"));
+
+        if (usuario.isEnabled()) {
+            usuario.setAtivo("N");
+        } else {
+            throw new RegraDeNegocioException("Usuário já está desativado");
+        }
+
+        usuarioRepository.save(usuario);
+    }
+
+    public void ativarUsuario(String login) throws RegraDeNegocioException {
+        Integer idUsuario = usuarioRepository.findByLogin(login)
+                .orElseThrow(() -> new RegraDeNegocioException("Usuário não encontrado"))
+                .getIdUsuario();
+
+        UsuarioEntity usuario = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new RegraDeNegocioException("Usuário não encontrado"));
+
+        if (!usuario.isEnabled()) {
+            usuario.setAtivo("S");
+        } else {
+            throw new RegraDeNegocioException("Usuário já está ativo");
+        }
+
+        usuarioRepository.save(usuario);
+    }
+
+    public UsuarioEntity findById(Integer idUsuario) throws RegraDeNegocioException {
+        return usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new RegraDeNegocioException("Usuário com ID " + idUsuario + " não encontrado."));
+    }
 }

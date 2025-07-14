@@ -6,8 +6,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Set;
 
 @Getter
@@ -26,6 +26,9 @@ public class UsuarioEntity implements UserDetails {
     @Column(name = "senha")
     private String senha;
 
+    @Column(name = "ativo")
+    private String ativo = "S";
+
     @ManyToMany
     @JoinTable(
             name = "USUARIO_CARGO",
@@ -36,8 +39,7 @@ public class UsuarioEntity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return new ArrayList<>();
-        return cargos; //?
+        return cargos;
     }
 
     @Override
@@ -67,6 +69,6 @@ public class UsuarioEntity implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return Objects.equals(ativo, "S");
     }
 }

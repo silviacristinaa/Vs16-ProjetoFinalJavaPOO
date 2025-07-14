@@ -1,6 +1,7 @@
 package br.com.dbc.vemser.imperiodasfichas.security;
 
 import br.com.dbc.vemser.imperiodasfichas.entities.UsuarioEntity;
+import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.imperiodasfichas.services.UsuarioService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -50,26 +51,29 @@ public class TokenService {
                         .compact();
     }
 
-    public UsernamePasswordAuthenticationToken isValid(String token) {
+    public UsernamePasswordAuthenticationToken isValid(String token) throws RegraDeNegocioException {
         if (token != null) {
             Claims body = Jwts.parser()
                     .setSigningKey(secret)
                     .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
                     .getBody();
-            String user = body.get(Claims.ID, String.class);
+            String userId = body.get(Claims.ID, String.class);
 
             // Obtendo os cargos do token
             List<String> cargos = body.get("cargos", List.class);
 
-            if (user != null) {
+            if (userId != null) {
+                UsuarioEntity usuario = usuarioService.findById(Integer.parseInt(userId));
                 // Convertendo cargos para autoridades
-                List<SimpleGrantedAuthority> authorities = cargos.stream()
-                        .map(SimpleGrantedAuthority::new)
-                        .collect(Collectors.toList());
+                if (usuario != null && usuario.isEnabled()) {
+                    List<SimpleGrantedAuthority> authorities = cargos.stream()
+                            .map(SimpleGrantedAuthority::new)
+                            .collect(Collectors.toList());
 
-                return new UsernamePasswordAuthenticationToken(
-                        user, null,  authorities // Agora com os cargos/cargos
-                );
+                    return new UsernamePasswordAuthenticationToken(
+                            userId, null,  authorities // Agora com os cargos/cargos
+                    );
+                }
             }
         }
         return null;

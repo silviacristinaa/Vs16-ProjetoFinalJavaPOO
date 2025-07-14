@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.imperiodasfichas.controllers;
 
+import br.com.dbc.vemser.imperiodasfichas.documentacao.AuthControllerDoc;
 import br.com.dbc.vemser.imperiodasfichas.dtos.autenticacao.*;
 import br.com.dbc.vemser.imperiodasfichas.entities.UsuarioEntity;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
@@ -22,7 +23,7 @@ import javax.validation.Valid;
 @RequestMapping("/auth")
 @Validated
 @RequiredArgsConstructor
-public class AuthController {
+public class AuthController implements AuthControllerDoc {
     public final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
     private final AuthenticationService authenticationService;

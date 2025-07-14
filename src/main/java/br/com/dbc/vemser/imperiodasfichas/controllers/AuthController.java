@@ -3,6 +3,7 @@ package br.com.dbc.vemser.imperiodasfichas.controllers;
 import br.com.dbc.vemser.imperiodasfichas.dtos.autenticacao.LoginDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.autenticacao.RegisterDTO;
 import br.com.dbc.vemser.imperiodasfichas.dtos.autenticacao.TrocarSenhaDTO;
+import br.com.dbc.vemser.imperiodasfichas.dtos.autenticacao.UsuarioResponseDTO;
 import br.com.dbc.vemser.imperiodasfichas.entities.UsuarioEntity;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.imperiodasfichas.security.AuthenticationService;
@@ -90,4 +91,11 @@ public class AuthController {
         authenticationService.trocarSenha(trocarSenhaDTO);
         return ResponseEntity.ok("Senha atualizada com sucesso.");
     }
+
+    @GetMapping("/logged")
+    public ResponseEntity<UsuarioResponseDTO> getLoggedUser() throws RegraDeNegocioException {
+        UsuarioResponseDTO usuarioLogado = usuarioService.getLoggedUser();
+        return ResponseEntity.ok(usuarioLogado);
+    }
+
 }

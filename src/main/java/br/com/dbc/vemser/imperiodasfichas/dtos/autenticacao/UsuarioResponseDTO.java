@@ -3,6 +3,8 @@ package br.com.dbc.vemser.imperiodasfichas.dtos.autenticacao;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.util.Set;
+
 @Data
 public class UsuarioResponseDTO {
 
@@ -16,5 +18,5 @@ public class UsuarioResponseDTO {
     private String ativo;
 
     @Schema(description = "Nome do cargo (ex: ADMIN, USUARIO)", example = "USUARIO")
-    private String nomeCargo;
+    private Set<String>nomeCargo;
 }

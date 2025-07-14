@@ -89,6 +89,13 @@ public class AuthController {
         return ResponseEntity.ok("Senha atualizada com sucesso.");
     }
 
+    @GetMapping("/logged")
+    public ResponseEntity<UsuarioResponseDTO> getLoggedUser() throws RegraDeNegocioException {
+        UsuarioResponseDTO usuarioLogado = usuarioService.getLoggedUser();
+        return ResponseEntity.ok(usuarioLogado);
+    }
+
+
     @PutMapping("/atualizar/{login}")
     public ResponseEntity<UsuarioResponseDTO> update(@PathVariable String login,
                                                    @RequestBody @Valid AtualizarUsuarioDTO usuarioDTO) throws RegraDeNegocioException {

@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -97,8 +98,15 @@ public class UsuarioService {
     public UsuarioResponseDTO getLoggedUser() throws RegraDeNegocioException {
         UsuarioEntity usuarioLogado = findById(getIdLoggedUser());
 
-        UsuarioResponseDTO usuarioResponseDTO = objectMapper.convertValue(usuarioLogado, UsuarioResponseDTO.class);
-        return usuarioResponseDTO;
+        UsuarioResponseDTO dto = objectMapper.convertValue(usuarioLogado, UsuarioResponseDTO.class);
+        // Mapeia os nomes dos cargos para um Set<String>
+        Set<String> nomesCargos = usuarioLogado.getCargos().stream()
+                .map(CargoEntity::getNome)
+                .collect(Collectors.toSet());
+
+        dto.setNomeCargo(nomesCargos);
+
+        return dto;
     }
 
     public UsuarioEntity findById(Integer idUsuario) throws RegraDeNegocioException {
@@ -137,7 +145,7 @@ public class UsuarioService {
         usuarioRepository.save(usuario);
 
         UsuarioResponseDTO usuarioResponseDTO = objectMapper.convertValue(usuario, UsuarioResponseDTO.class);
-        usuarioResponseDTO.setNomeCargo(usuarioDTO.getNomeCargo());
+        usuarioResponseDTO.setNomeCargo(Collections.singleton(usuarioDTO.getNomeCargo()));
 
         return usuarioResponseDTO;
     }

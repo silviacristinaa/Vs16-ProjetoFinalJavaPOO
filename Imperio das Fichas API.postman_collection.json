@@ -1,10 +1,9 @@
 {
 	"info": {
-		"_postman_id": "89b04a69-daf8-4adf-a4e7-f46ebc7d83d2",
-		"name": "Imperio das Fichas API",
+		"_postman_id": "8e613b8b-9b3e-4540-9528-7ff172a11ae0",
+		"name": "Império das Fichas API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "43108151",
-		"_collection_link": "https://www.postman.com/aviation-cosmologist-67515966/workspace/vs-16/collection/43108151-89b04a69-daf8-4adf-a4e7-f46ebc7d83d2?action=share&source=collection_link&creator=43108151"
+		"_exporter_id": "43108151"
 	},
 	"item": [
 		{
@@ -1061,8 +1060,221 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Autenticar",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let token = pm.response.text();\r",
+									"\r",
+									"pm.environment.set(\"tokenJwt\", token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\":\"admin\",\r\n    \"senha\":\"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastrar",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let token = pm.response.text();\r",
+									"\r",
+									"pm.environment.set(\"tokenJwt\", token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\": \"usuario123\",\r\n    \"senha\": \"123\",\r\n    \"confirmarSenha\": \"123\",\r\n    \"nomeCargo\": \"USUARIO\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Desativar usuário",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/auth/desativar/usuario123",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"desativar",
+								"usuario123"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ativar usuário",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/auth/ativar/usuario123",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"ativar",
+								"usuario123"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Trocar senha",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"senhaAtual\": \"123\",\r\n    \"novaSenha\": \"1234\",\r\n    \"confirmarNovaSenha\": \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/trocar-senha",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"trocar-senha"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar usuário",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\": \"usuario1234\",\r\n    \"nomeCargo\": \"ADMIN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/atualizar/usuario123",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"atualizar",
+								"usuario123"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar usuário logado",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/auth/logged",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"logged"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{tokenJwt}}",
+				"type": "string"
+			}
+		]
+	},
 	"event": [
 		{
 			"listen": "prerequest",
@@ -1086,11 +1298,6 @@
 		}
 	],
 	"variable": [
-		{
-			"key": "baseUrl",
-			"value": "http://localhost:8080",
-			"type": "string"
-		},
 		{
 			"key": "idJogadorCriado",
 			"value": "1",

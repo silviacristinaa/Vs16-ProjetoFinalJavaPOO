@@ -1,10 +1,9 @@
 package br.com.dbc.vemser.imperiodasfichas.security;
 
+import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -24,19 +23,13 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
         String tokenFromHeader = getTokenFromHeader(request);
 
-        if (tokenFromHeader != null) {
-            try {
-                UsernamePasswordAuthenticationToken authentication = tokenService.isValid(tokenFromHeader);
-
-                if (authentication != null) {
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                }
-            } catch (Exception e) {
-                logger.error("Erro na autenticação via token", e);
-                SecurityContextHolder.clearContext();
-            }
+        UsernamePasswordAuthenticationToken user = null;
+        try {
+            user = tokenService.isValid(tokenFromHeader);
+        } catch (RegraDeNegocioException e) {
+            throw new RuntimeException(e);
         }
-
+        SecurityContextHolder.getContext().setAuthentication(user);
         filterChain.doFilter(request, response);
     }
 

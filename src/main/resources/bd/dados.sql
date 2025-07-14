@@ -174,11 +174,11 @@ CREATE TABLE USUARIO_CARGO (
 
 -- Usuário admin (ID 1)
 INSERT INTO usuario (id_usuario, login, senha, ativo)
-     VALUES (seq_usuario.nextval, 'admin', '$2a$10$X.AxPaR2usWOKRyUT2ZX/.k5sdTQNkSUly3AlSibvxImFrNb9ulAu', 'S');
+     VALUES (seq_usuario.nextval, 'admin', '4152cc17f005c8b8a29af0bd2c09180122ff5ebaf8a9aad5f5216a56ddf155182ea395d69bf4a742', 'S');
 
 -- Usuário comum (ID 2)
 INSERT INTO usuario (id_usuario, login, senha, ativo)
-     VALUES (seq_usuario.nextval, 'user', '$2a$10$X.AxPaR2usWOKRyUT2ZX/.k5sdTQNkSUly3AlSibvxImFrNb9ulAu', 'S');
+     VALUES (seq_usuario.nextval, 'user', '4152cc17f005c8b8a29af0bd2c09180122ff5ebaf8a9aad5f5216a56ddf155182ea395d69bf4a742', 'S');
 
 -- ADMIN tem ambos os cargos (admin e usuario)
 INSERT INTO USUARIO_CARGO (ID_USUARIO, ID_CARGO)

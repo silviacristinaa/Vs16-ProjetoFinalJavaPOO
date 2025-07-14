@@ -16,8 +16,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -66,7 +67,7 @@ public class AuthenticationService implements UserDetailsService {
 //
 //    }
 
-    public LoginDTO register(@Valid RegisterDTO usuarioCreateDTO) throws RegraDeNegocioException {
+    public void register(@Valid RegisterDTO usuarioCreateDTO) throws RegraDeNegocioException {
         if (usuarioService.findByLogin(usuarioCreateDTO.getLogin()).isPresent()) {
             throw new RuntimeException("Usuário já existe!");
         }
@@ -82,10 +83,10 @@ public class AuthenticationService implements UserDetailsService {
         CargoEntity cargo = cargoRepository.findByNomeIgnoreCase(usuarioCreateDTO.getNomeCargo())
                 .orElseThrow(() -> new RegraDeNegocioException("Cargo não encontrado!"));
 
-        usuario.setCargos(Set.of(cargo));
+        usuario.setCargos(new HashSet<>(Collections.singleton(cargo)));
 
         UsuarioEntity usuarioCadastrado = usuarioService.cadastrarUsuario(usuario);
-        return objectMapper.convertValue(usuarioCadastrado, LoginDTO.class);
+        objectMapper.convertValue(usuarioCadastrado, LoginDTO.class);
     }
 
     public void trocarSenha(TrocarSenhaDTO trocarSenhaDTO) throws RegraDeNegocioException {

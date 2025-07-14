@@ -1,11 +1,12 @@
 package br.com.dbc.vemser.imperiodasfichas.services;
 
+import br.com.dbc.vemser.imperiodasfichas.dtos.autenticacao.UsuarioResponseDTO;
 import br.com.dbc.vemser.imperiodasfichas.entities.UsuarioEntity;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.imperiodasfichas.repositories.UsuarioRepository;
-import ch.qos.logback.classic.Logger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -17,10 +18,7 @@ import java.util.Optional;
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
-
-    public Optional<UsuarioEntity> findByLoginAndSenha(String login, String senha) {
-        return usuarioRepository.findByLoginAndSenha(login, senha);
-    }
+    private final ObjectMapper objectMapper;
 
     public Optional<UsuarioEntity> findByLogin(String login) {
         return usuarioRepository.findByLogin(login);
@@ -79,8 +77,30 @@ public class UsuarioService {
         usuarioRepository.save(usuario);
     }
 
+    public void save(UsuarioEntity usuario) throws RegraDeNegocioException {
+        usuarioRepository.save(usuario);
+    }
+
+    public Integer getIdLoggedUser() {
+        String principal = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return Integer.valueOf(principal);
+    }
+
+    public UsuarioResponseDTO getLoggedUser() throws RegraDeNegocioException {
+        UsuarioEntity usuarioLogado = findById(getIdLoggedUser());
+
+        UsuarioResponseDTO usuarioResponseDTO = objectMapper.convertValue(usuarioLogado, UsuarioResponseDTO.class);
+        return usuarioResponseDTO;
+    }
+
     public UsuarioEntity findById(Integer idUsuario) throws RegraDeNegocioException {
         return usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new RegraDeNegocioException("Usuário com ID " + idUsuario + " não encontrado."));
+    }
+
+    public UsuarioEntity findByLoggedUser() throws RegraDeNegocioException {
+        Integer idLoggedUser = getIdLoggedUser();
+        return usuarioRepository.findById(idLoggedUser)
+                .orElseThrow(() -> new RegraDeNegocioException("Usuário com ID " + idLoggedUser + " não encontrado."));
     }
 }

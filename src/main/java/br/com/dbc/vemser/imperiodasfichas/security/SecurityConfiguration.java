@@ -8,8 +8,8 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -29,13 +29,12 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests((authz) -> authz
                         //rotas publicas
                         .antMatchers("/auth", "/", "/auth/register").permitAll()
+                        .antMatchers("/auth/trocar-senha").hasAnyAuthority("USUARIO", "ADMIN")
                         //usuario pode acessar essas rotas
                         .antMatchers("/jogador/**", "/jogada/**", "/carteira/**").hasAnyAuthority("USUARIO", "ADMIN")
                         //admin pode tudo
-                        .anyRequest().hasAnyAuthority("ADMIN")
-                        .and()
-
-
+                        .antMatchers("/**").hasAuthority("ADMIN")
+                        .anyRequest().denyAll()
                 );
         http.addFilterBefore(new TokenAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
 
@@ -69,10 +68,6 @@ public class SecurityConfiguration {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        return new StandardPasswordEncoder();
     }
-
-
-
-
 }

@@ -78,4 +78,9 @@ public class UsuarioService {
 
         usuarioRepository.save(usuario);
     }
+
+    public UsuarioEntity findById(Integer idUsuario) throws RegraDeNegocioException {
+        return usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new RegraDeNegocioException("Usuário com ID " + idUsuario + " não encontrado."));
+    }
 }

@@ -1,6 +1,7 @@
 package br.com.dbc.vemser.imperiodasfichas.services;
 
 import br.com.dbc.vemser.imperiodasfichas.dtos.autenticacao.UsuarioResponseDTO;
+import br.com.dbc.vemser.imperiodasfichas.entities.CargoEntity;
 import br.com.dbc.vemser.imperiodasfichas.entities.UsuarioEntity;
 import br.com.dbc.vemser.imperiodasfichas.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.imperiodasfichas.repositories.UsuarioRepository;
@@ -12,6 +13,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -89,8 +92,15 @@ public class UsuarioService {
     public UsuarioResponseDTO getLoggedUser() throws RegraDeNegocioException {
         UsuarioEntity usuarioLogado = findById(getIdLoggedUser());
 
-        UsuarioResponseDTO usuarioResponseDTO = objectMapper.convertValue(usuarioLogado, UsuarioResponseDTO.class);
-        return usuarioResponseDTO;
+        UsuarioResponseDTO dto = objectMapper.convertValue(usuarioLogado, UsuarioResponseDTO.class);
+        // Mapeia os nomes dos cargos para um Set<String>
+        Set<String> nomesCargos = usuarioLogado.getCargos().stream()
+                .map(CargoEntity::getNome)
+                .collect(Collectors.toSet());
+
+        dto.setNomeCargo(nomesCargos);
+
+        return dto;
     }
 
     public UsuarioEntity findById(Integer idUsuario) throws RegraDeNegocioException {
